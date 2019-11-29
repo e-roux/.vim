@@ -1,0 +1,9 @@
+[submodule "pack/custom/start/vim-airline"]
+	path = pack/custom/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "pack/custom/start/nerdtree"]
+	path = pack/custom/start/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "pack/custom/start/vim-multiple-cursors"]
+	path = pack/custom/start/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors.git
