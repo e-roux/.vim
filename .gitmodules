@@ -10,3 +10,18 @@
 [submodule "pack/custom/start/youcompleteme"]
 	path = pack/custom/start/youcompleteme
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "pack/custom/start/tagbar"]
+	path = pack/custom/start/tagbar
+	url = https://github.com/majutsushi/tagbar.git
+[submodule "pack/custom/start/ranger.vim"]
+	path = pack/custom/start/ranger.vim
+	url = https://github.com/francoiscabrol/ranger.vim.git
+[submodule "pack/custom/start/gist-vim"]
+	path = pack/custom/start/gist-vim
+	url = https://github.com/mattn/gist-vim.git
+[submodule "pack/custom/start/webapi-vim"]
+	path = pack/custom/start/webapi-vim
+	url = https://github.com/mattn/webapi-vim.git
+[submodule "pack/custom/start/vim-move"]
+	path = pack/custom/start/vim-move
+	url = https://github.com/matze/vim-move.git
