@@ -30,6 +30,12 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+
+set mouse=a
+
+" Set highlight search
+set hlsearch
+  
 " Use deoplete.
 " let g:deoplete#enable_at_startup = 1
 
@@ -48,4 +54,38 @@ set cursorline
 highlight clear CursorLine
 highlight CursorLineNR cterm=bold ctermfg=grey
 
- 
+" Completion
+set wildmenu
+set wildmode=longest,list,full
+
+function! GoogleSearch()
+     let searchterm = getreg("g")
+     silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" &"
+endfunction
+vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+
+
