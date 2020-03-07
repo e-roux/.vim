@@ -28,3 +28,9 @@
 [submodule "pack/custom/start/vim-markdown"]
 	path = pack/custom/start/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown
+[submodule "pack/custom/start/nerdcommenter"]
+	path = pack/custom/start/nerdcommenter
+	url = git@github.com:preservim/nerdcommenter.git
+[submodule "pack/custom/start/vim-minimap"]
+	path = pack/custom/start/vim-minimap
+	url = git@github.com:severin-lemaignan/vim-minimap.git
