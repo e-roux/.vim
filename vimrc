@@ -5,8 +5,18 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 set number
-" set rtp+=/usr/local/share/vim/airline
-" source ~/.vim/airline/autoload/airline.vim
+
+"##################################################################
+" Theming
+"##################################################################
+"" https://github.com/tomasr/molokai
+colorscheme molokai
+set background=dark
+let g:molokai_original = 0
+let g:rehash256 = 1
+" Set background as black
+highlight Normal ctermbg=black 
+
 source /usr/share/doc/fzf/examples/plugin/fzf.vim
 
 " map <C-o> :NERDTreeToggle<CR>
@@ -41,14 +51,7 @@ set hlsearch
 
 " enable ncm1 for all buffers
 " autocmd BufEnter * call ncm2#enable_for_buffer()
- 
-" IMPORTANT: :help Ncm2PopupOpen for more information
-" set completeopt=noinsert,menuone,noselect
-" set background=dark
-colorscheme solarized8_flat
-set cursorline
-highlight clear CursorLine
-highlight CursorLineNR cterm=bold ctermfg=white
+
 
 set cursorline
 highlight clear CursorLine
