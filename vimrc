@@ -5,7 +5,6 @@
 " General
 "##################################################################
 
-
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -46,7 +45,7 @@ let g:molokai_original = 0
 " Set background as black
 highlight Normal ctermbg=black 
 
-source /usr/share/doc/fzf/examples/plugin/fzf.vim
+" source /usr/share/doc/fzf/examples/plugin/fzf.vim
 
 " map <C-o> :NERDTreeToggle<CR>
 " nmap <F8> :TagbarToggle<CR>
