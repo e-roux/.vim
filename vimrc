@@ -171,9 +171,14 @@ let g:syntastic_check_on_wq = 0
 
 
 " fzf
-"
-source /usr/share/doc/fzf/examples/fzf.vim
-" set rtp+=/usr/bin/fzf
+" Install topics...
+if filereadable("/usr/share/doc/fzf/examples/fzf.vim")
+  source /usr/share/doc/fzf/examples/fzf.vim
+endif
+if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
+  source /usr/local/share/fzf/plugin/fzf.vim
+endif
+  " set rtp+=/usr/bin/fzf
 
 " This is the default extra key bindings
 let g:fzf_action = {
