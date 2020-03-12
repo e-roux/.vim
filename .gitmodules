@@ -25,9 +25,15 @@
 [submodule "pack/custom/start/vim-minimap"]
 	path = pack/custom/start/vim-minimap
 	url = git@github.com:severin-lemaignan/vim-minimap.git
-[submodule "pack/custom/start/syntastic"]
-	path = pack/custom/start/syntastic
-	url = git@github.com:vim-syntastic/syntastic.git
 [submodule "pack/custom/start/fzf-vim"]
 	path = pack/custom/start/fzf-vim
 	url = git@github.com:junegunn/fzf.vim.git
+[submodule "pack/custom/start/ack"]
+	path = pack/custom/start/ack
+	url = git@github.com:mileszs/ack.vim.git
+[submodule "pack/custom/start/python-mode"]
+	path = pack/custom/start/python-mode
+	url = git@github.com:python-mode/python-mode.git
+[submodule "pack/custom/start/syntastic"]
+	path = pack/custom/start/syntastic
+	url = git@github.com:vim-syntastic/syntastic.git
