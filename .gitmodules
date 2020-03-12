@@ -37,3 +37,9 @@
 [submodule "pack/custom/start/syntastic"]
 	path = pack/custom/start/syntastic
 	url = git@github.com:vim-syntastic/syntastic.git
+[submodule "pack/custom/start/vim-commentary"]
+	path = pack/custom/start/vim-commentary
+	url = git@github.com:tpope/vim-commentary.git
+[submodule "pack/custom/start/vim-polyglot"]
+	path = pack/custom/start/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git
