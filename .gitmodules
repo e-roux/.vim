@@ -40,3 +40,6 @@
 [submodule "pack/custom/start/vim-polyglot"]
 	path = pack/custom/start/vim-polyglot
 	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "pack/custom/start/python-mode"]
+	path = pack/custom/start/python-mode
+	url = git@github.com:python-mode/python-mode.git

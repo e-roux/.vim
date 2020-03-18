@@ -7,6 +7,7 @@ This is my `.vim`
 ```
 git clone git@github.com:fesaille/.vim.git ~/.vim
 echo 'runtime vimrc' >> ~/.vimrc
+cd ~/.vim && git submodule update --init --recursive
 ```
 
 ## Usage
