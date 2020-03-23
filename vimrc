@@ -7,18 +7,24 @@
 
 " Sets how many lines of history VIM has to remember
 set history=500
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set number
+
+set mouse=a
+
+" map the leader to ','
+let mapleader = ','
 
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
+set omnifunc=syntaxcomplete#Complete
 
 " Set to auto read when a file is changed from the outside
 set autoread
 au FocusGained,BufEnter * checktime
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -27,16 +33,22 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
-
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-set number
-
 " Buffers
 set hidden
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
+
+" map <C-PageUp> :bprevious<CR>
+" map <C-PageDown> :bNext<CR>
+" unmap <M-j>
+
+" Copy to system clipboard
+" see https://vi.stackexchange.com/questions/84
+vnoremap <leader>y "*y
+vnoremap <Leader>p "*p
+vnoremap <Leader>Y "+y
+vnoremap <Leader>P "+p
+
 
 "##################################################################
 " Theme
@@ -54,40 +66,22 @@ highlight Normal ctermbg=black
 " map <C-o> :NERDTreeToggle<CR>
 " nmap <F8> :TagbarToggle<CR>
 
-map <C-A> <Home>
-map <C-E> <End>
-inoremap <C-A> <Home>
-inoremap <C-E> <End>
-
-"folding settings
-set foldmethod=indent   "fold based on indent
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
-set foldlevel=1         "this is just what i use
-
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+" map <C-A> <Home>
+" map <C-e> <End>
+" inoremap <C-A> <Home>
+" inoremap <C-E> <End>
+" nnoremap <A-j> :m .+1<CR>==
+" nnoremap <A-k> :m .-2<CR>==
+" inoremap <A-j> <Esc>:m .+1<CR>==gi
+" inoremap <A-k> <Esc>:m .-2<CR>==gi
+" vnoremap <A-j> :m '>+1<CR>gv=gv
+" vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " nnoremap <A-c> gcc
 
-map <C-PageUp> :bprevious<CR>
-map <C-PageDown> :bNext<CR>
-
-set mouse=a
-
-" Set highlight search
+" Set highlight search and map 
 set hlsearch
-  
-" Use deoplete.
-" let g:deoplete#enable_at_startup = 1
-
-" enable ncm1 for all buffers
-" autocmd BufEnter * call ncm2#enable_for_buffer()
-
+nnoremap <silent> <leader><space> :nohlsearch<CR>
 
 set cursorline
 highlight clear CursorLine
@@ -99,12 +93,11 @@ set wildmode=longest,list,full
 
 function! GoogleSearch()
      let searchterm = getreg("g")
-     silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" &"
+     silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
+     redraw!
 endfunction
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
 
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
 
 "#############################################################################
 " Extensions
@@ -127,7 +120,6 @@ map <leader>g :Ack
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
 " Do :help cope if you are unsure what cope is. It's super useful!
 "
 " When you search with Ack, display your results in cope by doing:
@@ -161,23 +153,21 @@ set statusline+=%*
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Syntastics
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-
-
-
 " fzf
-" Install topics...
-if filereadable("/usr/share/doc/fzf/examples/fzf.vim")
-  source /usr/share/doc/fzf/examples/fzf.vim
-endif
-if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
-  source /usr/local/share/fzf/plugin/fzf.vim
-endif
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fix different install location on ubuntu
+let s:ubuntu_fzf = [
+  \ "/usr/share/doc/fzf/examples/fzf.vim",
+  \ "/usr/local/share/fzf/plugin/fzf.vim",
+  \ ]
+for f in s:ubuntu_fzf
+  if filereadable(f)
+    execute 'source '.fnameescape(f)
+  endif
+endfor
+" if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
+"   source /usr/local/share/fzf/plugin/fzf.vim
+" endif
   " set rtp+=/usr/bin/fzf
 
 " This is the default extra key bindings
@@ -234,10 +224,32 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python-mode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:pymode_python = 'python3'
-let g:pymode_virtualenv_path = $VIRTUAL_ENV
-let g:pymode_lint = 0
-let g:pymode_lint_checkers = ['pep8']
+" let g:pymode_python = 'python3'
+" let g:pymode_virtualenv_path = $VIRTUAL_ENV
+" let g:pymode_lint = 0
+" let g:pymode_lint_checkers = ['pep8']
+" " Trim unused white spaces on save.
+" let g:pymode_trim_whitespaces = 1
+" let g:py
 
+" Setup default python options.
+" let g:pymode_options = 1
+" is equivalent to:
+  
+" setlocal complete+=t
+" setlocal formatoptions-=t
+" if v:version > 702 && !&relativenumber
+"     setlocal number
+" endif
+" setlocal nowrap
+" setlocal textwidth=79
+" setlocal commentstring=#%s
+" setlocal define=^\s*\\(def\\\\|class\\)
 
-
+" Turn on the rope script
+" let g:pymode_rope = 0
+" Turn on code completion support in the plugin.
+" let g:pymode_rope_completion = 1
+" Keymap for autocomplete.
+" let g:pymode_rope_completion_bind = '<C-Space>'
+nnoremap <leader>r :CocCommand python.execInTerminal<cr>
