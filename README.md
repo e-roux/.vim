@@ -3,6 +3,16 @@
 This is my `.vim` 
 
 
+
+## Install
+
+```
+git clone git@github.com:fesaille/.vim.git ~/.vim
+echo 'runtime vimrc' >> ~/.vimrc
+cd ~/.vim && git submodule update --init --recursive
+```
+
+
 ## Plugins
 
 ### [vim-commmentary](https://vimawesome.com/plugin/commentary-vim)
@@ -19,18 +29,7 @@ You can also use it as a command:
 - with a range like `:7,17Commentary`
 - as part of a `:global` invocation like with `:g/TODO/Commentary`.
 
-
-## Install
-
-```
-git clone git@github.com:fesaille/.vim.git ~/.vim
-echo 'runtime vimrc' >> ~/.vimrc
-cd ~/.vim && git submodule update --init --recursive
-```
-
-## Usage
-
-### Plugin: Ack
+### Ack
 
 ```
 :Ack [options] {pattern} [{directories}]
