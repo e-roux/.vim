@@ -35,8 +35,8 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " Buffers
 set hidden
-nnoremap <C-N> :bnext<CR>
-nnoremap <C-P> :bprev<CR>
+nnoremap <C-h> :bprev<CR>
+nnoremap <C-l> :bnext<CR>
 
 " map <C-PageUp> :bprevious<CR>
 " map <C-PageDown> :bNext<CR>
@@ -148,7 +148,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 
