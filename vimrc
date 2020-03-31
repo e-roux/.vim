@@ -15,7 +15,7 @@ set number
 set mouse=a
 
 " map the leader to ','
-let mapleader = ','
+let mapleader=','
 
 " Enable filetype plugins
 filetype plugin on
@@ -49,6 +49,8 @@ vnoremap <Leader>p "*p
 vnoremap <Leader>Y "+y
 vnoremap <Leader>P "+p
 
+" Fold
+set foldcolumn=4
 
 "##################################################################
 " Theme
@@ -92,9 +94,9 @@ set wildmenu
 set wildmode=longest,list,full
 
 function! GoogleSearch()
-     let searchterm = getreg("g")
-     silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
-     redraw!
+   let searchterm = getreg("g")
+   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
+   redraw!
 endfunction
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
 
@@ -109,7 +111,7 @@ vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use the the_silver_searcher
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'ag --vimgrep --smart-case'
 endif
 
 " When you press gv you Ack after the selected text
@@ -157,37 +159,37 @@ set statusline+=%*
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fix different install location on ubuntu
 let s:ubuntu_fzf = [
-  \ "/usr/share/doc/fzf/examples/fzf.vim",
-  \ "/usr/local/share/fzf/plugin/fzf.vim",
-  \ ]
+\ "/usr/share/doc/fzf/examples/fzf.vim",
+\ "/usr/local/share/fzf/plugin/fzf.vim",
+\ ]
 for f in s:ubuntu_fzf
-  if filereadable(f)
-    execute 'source '.fnameescape(f)
-  endif
+if filereadable(f)
+  execute 'source '.fnameescape(f)
+endif
 endfor
 " if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
 "   source /usr/local/share/fzf/plugin/fzf.vim
 " endif
-  " set rtp+=/usr/bin/fzf
+" set rtp+=/usr/bin/fzf
 
 " This is the default extra key bindings
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+\ 'ctrl-t': 'tab split',
+\ 'ctrl-x': 'split',
+\ 'ctrl-v': 'vsplit' }
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
-  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
+call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+copen
+cc
 endfunction
 
 let g:fzf_action = {
-  \ 'ctrl-q': function('s:build_quickfix_list'),
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+\ 'ctrl-q': function('s:build_quickfix_list'),
+\ 'ctrl-t': 'tab split',
+\ 'ctrl-x': 'split',
+\ 'ctrl-v': 'vsplit' }
 
 " Default fzf layout
 " - down / up / left / right
@@ -201,18 +203,18 @@ let g:fzf_layout = { 'window': '10new' }
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+\ 'bg':      ['bg', 'Normal'],
+\ 'hl':      ['fg', 'Comment'],
+\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+\ 'hl+':     ['fg', 'Statement'],
+\ 'info':    ['fg', 'PreProc'],
+\ 'border':  ['fg', 'Ignore'],
+\ 'prompt':  ['fg', 'Conditional'],
+\ 'pointer': ['fg', 'Exception'],
+\ 'marker':  ['fg', 'Keyword'],
+\ 'spinner': ['fg', 'Label'],
+\ 'header':  ['fg', 'Comment'] }
 
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
@@ -220,6 +222,17 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
+map <leader>z :FZF<CR>
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python-mode
@@ -235,7 +248,7 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " Setup default python options.
 " let g:pymode_options = 1
 " is equivalent to:
-  
+
 " setlocal complete+=t
 " setlocal formatoptions-=t
 " if v:version > 702 && !&relativenumber
@@ -252,4 +265,18 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " let g:pymode_rope_completion = 1
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
+au BufNewFile,BufRead *.py set foldmethod=indent
+
 nnoremap <leader>r :CocCommand python.execInTerminal<cr>
+
+" Use <Tab> and <S-Tab> to navigate the completion list:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use <cr> to confirm completion
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" make <cr> select the first completion item and confirm the completion when
+" no item has been selected
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+" Close the preview window when completion is done.
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+

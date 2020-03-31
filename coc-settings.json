@@ -1,0 +1,15 @@
+{
+  "python.jediEnabled": true,
+  "suggest.maxCompleteItemCount": 20,
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+    "typescript.tsx"
+  ],
+  "python.autoComplete.extraPaths": [
+    "${env:SPARK_HOME}/python",
+    "${env:SPARK_HOME}/python/pyspark"
+  ],
+}

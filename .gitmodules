@@ -19,9 +19,6 @@
 [submodule "pack/custom/start/webapi-vim"]
 	path = pack/custom/start/webapi-vim
 	url = https://github.com/mattn/webapi-vim.git
-[submodule "pack/custom/start/vim-markdown"]
-	path = pack/custom/start/vim-markdown
-	url = https://github.com/plasticboy/vim-markdown
 [submodule "pack/custom/start/fzf-vim"]
 	path = pack/custom/start/fzf-vim
 	url = git@github.com:junegunn/fzf.vim.git
