@@ -38,6 +38,17 @@ set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
+
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> h :TmuxNavigateLeft<cr>
+nnoremap <silent> j :TmuxNavigateDown<cr>
+nnoremap <silent> k :TmuxNavigateUp<cr>
+nnoremap <silent> l :TmuxNavigateRight<cr>
+nnoremap <silent> \ :TmuxNavigatePrevious<cr>
+
+nnoremap <leader>d :bd<CR>
+
 " map <C-PageUp> :bprevious<CR>
 " map <C-PageDown> :bNext<CR>
 " unmap <M-j>
@@ -52,10 +63,35 @@ vnoremap <Leader>P "+p
 " Fold
 set foldcolumn=4
 
+" ###############################################################################
+" # Panes
+" ###############################################################################
+" #
+" # ┌───┐ Splitting windows into panes with memorizable commands
+" # ┝━━━┥ A vertical split positions panes up and down.
+" # └───┘ Think of - as the separating line.
+nnoremap \| <C-w>v
+
+" # ┌─┰─┐ Splitting windows into panes with memorizable commands
+" # │ ┃ │ A horizontal split positions panes left and right.
+" # └─┸─┘ Think of | (pipe symbol) as the separating line.
+nnoremap _ <C-w>s
+
 "##################################################################
 " Theme
 "##################################################################
 "" https://github.com/tomasr/molokai
+
+" important!!
+" set termguicolors
+"
+" " the configuration options should be placed before `colorscheme sonokai`
+" let g:sonokai_style = 'andromeda'
+" let g:sonokai_enable_italic = 1
+" let g:sonokai_disable_italic_comment = 1
+
+" colorscheme sonokai
+
 colorscheme molokai
 set background=dark
 let g:molokai_original = 0
@@ -66,6 +102,7 @@ highlight Normal ctermbg=black
 " source /usr/share/doc/fzf/examples/plugin/fzf.vim
 
 " map <C-o> :NERDTreeToggle<CR>
+"
 " nmap <F8> :TagbarToggle<CR>
 
 " map <C-A> <Home>
@@ -153,6 +190,7 @@ set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+" let g:airline_theme = 'sonokai'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " fzf

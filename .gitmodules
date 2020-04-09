@@ -34,3 +34,12 @@
 [submodule "pack/custom/start/intellisense"]
 	path = pack/custom/start/intellisense
 	url = git@github.com:neoclide/coc.nvim.git
+[submodule "pack/custom/start/nnn-vim"]
+	path = pack/custom/start/nnn-vim
+	url = https://github.com/mcchrish/nnn.vim
+[submodule "pack/custom/start/vim-tmux-navigator"]
+	path = pack/custom/start/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "pack/custom/start/bufexplorer"]
+	path = pack/custom/start/bufexplorer
+	url = https://github.com/jlanzarotta/bufexplorer.git

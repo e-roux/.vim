@@ -12,4 +12,6 @@
     "${env:SPARK_HOME}/python",
     "${env:SPARK_HOME}/python/pyspark"
   ],
+  "html.enable": true,
+  "html.autoClosingTags": true,
 }
