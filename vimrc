@@ -1,9 +1,9 @@
 " For package management using git submodules:
 " https://shapeshed.com/vim-packages/
 
-"##################################################################
-" General
-"##################################################################
+"##############################################################################
+"# ===    General   ===
+"##############################################################################
 
 " Sets how many lines of history VIM has to remember
 set history=500
@@ -33,12 +33,47 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
-" Buffers
+"##############################################################################
+"# ===    Buffers    ===
+"##############################################################################
 set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
+" Delete buffer
+nnoremap <leader>d :bd<CR>
 
+"##############################################################################
+"# ===     Fold   ===
+"##############################################################################
+set foldcolumn=4
+
+"##############################################################################
+"# ===     Copy and clipboard      ===
+"##############################################################################
+" see https://vi.stackexchange.com/questions/84
+vnoremap <leader>y "*y
+vnoremap <Leader>p "*p
+vnoremap <Leader>Y "+y
+vnoremap <Leader>P "+p
+
+"###############################################################################
+"# ===   Panes   ===
+"###############################################################################
+"#
+"# ┌───┐ Splitting windows into panes with memorizable commands
+"# ┝━━━┥ A vertical split positions panes up and down.
+"# └───┘ Think of - as the separating line.
+nnoremap \| <C-w>v
+
+"# ┌─┰─┐ Splitting windows into panes with memorizable commands
+"# │ ┃ │ A horizontal split positions panes left and right.
+"# └─┸─┘ Think of | (pipe symbol) as the separating line.
+nnoremap _ <C-w>s
+
+" From here, Vim Tmux Navigator
+" https://github.com/christoomey/vim-tmux-navigator
+" Navigation
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> h :TmuxNavigateLeft<cr>
@@ -47,50 +82,27 @@ nnoremap <silent> k :TmuxNavigateUp<cr>
 nnoremap <silent> l :TmuxNavigateRight<cr>
 nnoremap <silent> \ :TmuxNavigatePrevious<cr>
 
-nnoremap <leader>d :bd<CR>
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
 
-" map <C-PageUp> :bprevious<CR>
-" map <C-PageDown> :bNext<CR>
-" unmap <M-j>
-
-" Copy to system clipboard
-" see https://vi.stackexchange.com/questions/84
-vnoremap <leader>y "*y
-vnoremap <Leader>p "*p
-vnoremap <Leader>Y "+y
-vnoremap <Leader>P "+p
-
-" Fold
-set foldcolumn=4
-
-" ###############################################################################
-" # Panes
-" ###############################################################################
-" #
-" # ┌───┐ Splitting windows into panes with memorizable commands
-" # ┝━━━┥ A vertical split positions panes up and down.
-" # └───┘ Think of - as the separating line.
-nnoremap \| <C-w>v
-
-" # ┌─┰─┐ Splitting windows into panes with memorizable commands
-" # │ ┃ │ A horizontal split positions panes left and right.
-" # └─┸─┘ Think of | (pipe symbol) as the separating line.
-nnoremap _ <C-w>s
-
-"##################################################################
-" Theme
-"##################################################################
-"" https://github.com/tomasr/molokai
-
-" important!!
-" set termguicolors
+"##############################################################################
+"# ===    Appearence and status bar  ===
+"##############################################################################
+" ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+" ┃buf01 │ buf02 │ buf03                                                      ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┃                                                                           ┃
+" ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 "
-" " the configuration options should be placed before `colorscheme sonokai`
-" let g:sonokai_style = 'andromeda'
-" let g:sonokai_enable_italic = 1
-" let g:sonokai_disable_italic_comment = 1
-
-" colorscheme sonokai
+" Theme
+"" https://github.com/tomasr/molokai
 
 colorscheme molokai
 set background=dark
@@ -99,26 +111,7 @@ let g:molokai_original = 0
 " Set background as black
 highlight Normal ctermbg=black 
 
-" source /usr/share/doc/fzf/examples/plugin/fzf.vim
-
-" map <C-o> :NERDTreeToggle<CR>
-"
-" nmap <F8> :TagbarToggle<CR>
-
-" map <C-A> <Home>
-" map <C-e> <End>
-" inoremap <C-A> <Home>
-" inoremap <C-E> <End>
-" nnoremap <A-j> :m .+1<CR>==
-" nnoremap <A-k> :m .-2<CR>==
-" inoremap <A-j> <Esc>:m .+1<CR>==gi
-" inoremap <A-k> <Esc>:m .-2<CR>==gi
-" vnoremap <A-j> :m '>+1<CR>gv=gv
-" vnoremap <A-k> :m '<-2<CR>gv=gv
-
-" nnoremap <A-c> gcc
-
-" Set highlight search and map 
+" Set highlight search and map to <leader> <space>
 set hlsearch
 nnoremap <silent> <leader><space> :nohlsearch<CR>
 
@@ -130,16 +123,8 @@ highlight CursorLineNR cterm=bold ctermfg=grey
 set wildmenu
 set wildmode=longest,list,full
 
-function! GoogleSearch()
-   let searchterm = getreg("g")
-   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
-   redraw!
-endfunction
-vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
-
-
 "#############################################################################
-" Extensions
+" ===   Extensions   ===
 "#############################################################################
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -179,7 +164,7 @@ map <leader>p :cp<cr>
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" AIRLINE
+" ===   AIRLINE   ===
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -193,7 +178,7 @@ set statusline+=%*
 " let g:airline_theme = 'sonokai'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" fzf
+" ===   fzf   ===
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Fix different install location on ubuntu
 let s:ubuntu_fzf = [
@@ -218,9 +203,9 @@ let g:fzf_action = {
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
-call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-copen
-cc
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
 endfunction
 
 let g:fzf_action = {
@@ -259,7 +244,7 @@ let g:fzf_colors =
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
-
+	
 map <leader>z :FZF<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -317,4 +302,16 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 " Close the preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+"###############################################################################
+"# ===   Custom functions   ===
+"###############################################################################
+function! GoogleSearch()
+   let searchterm = getreg("g")
+   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
+   redraw!
+endfunction
+
+vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
+
 
