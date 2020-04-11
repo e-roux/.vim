@@ -257,6 +257,14 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+
+
+" Use fd for ctrlp.
+if executable('fd')
+    let g:ctrlp_user_command = 'fd -c never "" "%s"'
+    let g:ctrlp_use_caching = 0
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python-mode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -288,7 +296,31 @@ nmap <silent> gr <Plug>(coc-references)
 " let g:pymode_rope_completion = 1
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
-au BufNewFile,BufRead *.py set foldmethod=indent
+au! BufNewFile,BufRead *.py set foldmethod=indent
+
+" add yaml stuffs
+autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab foldlevel=2
+
+
+function! JSFolds()
+  let thisline = getline(v:lnum)
+  if thisline =~? '\v^\s*$'
+    return '-1'
+  endif
+
+  if thisline =~ '^import.*$'
+    return 1
+  else
+    return indent(v:lnum) / &shiftwidth
+  endif
+endfunction
+
+autocmd! BufNewFile,BufReadPost *.{js,ts,json} set filetype=javascript foldmethod=expr
+" autocmd FileType javascript syntax region braceFold start="{" end="}" transparent fold
+autocmd FileType javascript setlocal foldexpr=JSFolds()
+autocmd FileType javascript setlocal foldlevel=1
+
 
 nnoremap <leader>r :CocCommand python.execInTerminal<cr>
 
