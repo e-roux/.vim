@@ -1,9 +1,6 @@
 [submodule "pack/custom/start/vim-airline"]
 	path = pack/custom/start/vim-airline
 	url = https://github.com/vim-airline/vim-airline.git
-[submodule "pack/custom/start/nerdtree"]
-	path = pack/custom/start/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
 [submodule "pack/custom/start/vim-multiple-cursors"]
 	path = pack/custom/start/vim-multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors.git
@@ -22,9 +19,6 @@
 [submodule "pack/custom/start/fzf-vim"]
 	path = pack/custom/start/fzf-vim
 	url = git@github.com:junegunn/fzf.vim.git
-[submodule "pack/custom/start/ack"]
-	path = pack/custom/start/ack
-	url = git@github.com:mileszs/ack.vim.git
 [submodule "pack/custom/start/vim-commentary"]
 	path = pack/custom/start/vim-commentary
 	url = git@github.com:tpope/vim-commentary.git

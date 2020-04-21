@@ -1,4 +1,7 @@
 {
+  "go.goplsOptions": {
+    "completeUnimported": true
+  },
   "python.jediEnabled": true,
   "suggest.maxCompleteItemCount": 20,
   "eslint.filetypes": [
@@ -14,4 +17,12 @@
   ],
   "html.enable": true,
   "html.autoClosingTags": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "disableWorkspaceFolders": true,
+      "filetypes": ["go"]
+    }
+  }
 }

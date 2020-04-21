@@ -57,6 +57,7 @@ vnoremap <Leader>p "*p
 vnoremap <Leader>Y "+y
 vnoremap <Leader>P "+p
 
+nnoremap <Leader>a  ggvGy 
 "###############################################################################
 "# ===   Panes   ===
 "###############################################################################
@@ -122,6 +123,12 @@ highlight CursorLineNR cterm=bold ctermfg=grey
 " Completion
 set wildmenu
 set wildmode=longest,list,full
+
+"##############################################################################
+"    ===   Motion   ===
+"##############################################################################
+
+
 
 "#############################################################################
 " ===   Extensions   ===
@@ -320,9 +327,12 @@ autocmd! BufNewFile,BufReadPost *.{js,ts,json} set filetype=javascript foldmetho
 " autocmd FileType javascript syntax region braceFold start="{" end="}" transparent fold
 autocmd FileType javascript setlocal foldexpr=JSFolds()
 autocmd FileType javascript setlocal foldlevel=1
+map <leader>r yi":!npm run <C-r>"<CR>
 
+autocmd FileType javascript nnoremap <leader>r :!node %<cr>
 
-nnoremap <leader>r :CocCommand python.execInTerminal<cr>
+autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
+
 
 " Use <Tab> and <S-Tab> to navigate the completion list:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
