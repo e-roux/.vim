@@ -33,6 +33,20 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
+" Remap gf: create buffer if file does not exists
+:nnoremap gf :e <cfile><cr>
+
+function! s:Saving_scroll(cmd)
+  let save_scroll = &scroll
+  execute 'normal! ' . a:cmd
+  let &scroll = save_scroll
+endfunction
+nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
+vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
+nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
+vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
+
+
 "##############################################################################
 "# ===    Buffers    ===
 "##############################################################################
@@ -57,7 +71,7 @@ vnoremap <Leader>p "*p
 vnoremap <Leader>Y "+y
 vnoremap <Leader>P "+p
 
-nnoremap <Leader>a  ggvGy 
+nnoremap <Leader>a  ggvG$yggvG$"+y 
 "###############################################################################
 "# ===   Panes   ===
 "###############################################################################
@@ -265,7 +279,6 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 
-
 " Use fd for ctrlp.
 if executable('fd')
     let g:ctrlp_user_command = 'fd -c never "" "%s"'
@@ -303,14 +316,18 @@ endif
 " let g:pymode_rope_completion = 1
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
+
+" --------------- Python ---------------------
 au! BufNewFile,BufRead *.py set foldmethod=indent
 
+" ---------------- YAML ----------------------
 " add yaml stuffs
 autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab foldlevel=2
 
 
-function! JSFolds()
+" ---------------- JS ----------------------
+function! JSFolds() 
   let thisline = getline(v:lnum)
   if thisline =~? '\v^\s*$'
     return '-1'
@@ -331,7 +348,14 @@ map <leader>r yi":!npm run <C-r>"<CR>
 
 autocmd FileType javascript nnoremap <leader>r :!node %<cr>
 
+" ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
+
+" ---------------- GO ----------------------
+autocmd! BufNewFile,BufReadPost *.{go} set filetype=go 
+map <leader>r yi":!go run % <C-r>"<CR>
+" foldmethod=indent
+
 
 
 " Use <Tab> and <S-Tab> to navigate the completion list:
