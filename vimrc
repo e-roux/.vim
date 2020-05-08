@@ -46,6 +46,9 @@ vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 
+" Set syntax color on
+syntax on
+
 
 "##############################################################################
 "# ===    Buffers    ===
