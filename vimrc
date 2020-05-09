@@ -1,4 +1,4 @@
-" For package management using git submodules:
+"For package management using git submodules:
 " https://shapeshed.com/vim-packages/
 
 "##############################################################################
@@ -12,6 +12,7 @@ set shiftwidth=2
 set softtabstop=2
 set number
 
+set backspace=2
 set mouse=a
 
 " map the leader to ','
