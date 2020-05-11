@@ -26,7 +26,7 @@
 	path = pack/custom/start/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
 [submodule "pack/custom/start/intellisense"]
-	path = pack/custom/start/intellisense
+	path = pack/custom/start/coc.vim
 	url = https://github.com/neoclide/coc.nvim.git
 [submodule "pack/custom/start/nnn-vim"]
 	path = pack/custom/start/nnn-vim
