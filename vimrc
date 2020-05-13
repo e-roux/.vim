@@ -42,6 +42,7 @@ function! s:Saving_scroll(cmd)
   execute 'normal! ' . a:cmd
   let &scroll = save_scroll
 endfunction
+
 nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
 vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
@@ -104,6 +105,8 @@ nnoremap <silent> \ :TmuxNavigatePrevious<cr>
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 
+nnoremap <c-w>z <c-w>_ \| <c-w>\|
+
 "##############################################################################
 "# ===    Appearence and status bar  ===
 "##############################################################################
@@ -156,29 +159,13 @@ set wildmode=longest,list,full
 " => Ack searching and cope displaying
 "    requires ack.vim - it's much better than vimgrep/grep
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use the the_silver_searcher
-if executable('ag')
-let g:ackprg = 'ag --vimgrep --smart-case'
-endif
-
 " When you press gv you Ack after the selected text
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
-" Open Ack and put the cursor in the right position
-map <leader>g :Ack 
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 " Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with Ack, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
 "
 map <leader>cc :botright cope<cr>
 map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg

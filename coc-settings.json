@@ -2,7 +2,7 @@
   "go.goplsOptions": {
     "completeUnimported": true
   },
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
   "suggest.maxCompleteItemCount": 20,
   "eslint.filetypes": [
     "javascript",

@@ -12,5 +12,6 @@ func! FoldIndent() abort
         return -1
     endif
 endfunc
+
 setlocal foldexpr=FoldIndent()
 setlocal foldmethod=expr
