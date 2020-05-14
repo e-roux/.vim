@@ -20,10 +20,16 @@
   "html.autoClosingTags": true,
   "languageserver": {
     "golang": {
+      // https://github.com/golang/tools/blob/master/gopls/doc/vim.md#cocnvim
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "disableWorkspaceFolders": true,
-      "filetypes": ["go"]
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "gocodeCompletionEnabled": true,
+        "diagnosticsEnabled": true,
+        "lintTool": "golint"
+      }
     }
   }
 }
