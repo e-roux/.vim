@@ -34,9 +34,6 @@
 [submodule "pack/custom/start/vim-tmux-navigator"]
 	path = pack/custom/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
-[submodule "pack/custom/start/bufexplorer"]
-	path = pack/custom/start/bufexplorer
-	url = https://github.com/jlanzarotta/bufexplorer.git
 [submodule "pack/custom/start/vim-dadbod"]
 	path = pack/custom/start/vim-dadbod
 	url = https://github.com/tpope/vim-dadbod.git
