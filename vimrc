@@ -5,6 +5,9 @@
 "# ===    General   ===
 "##############################################################################
 
+set nocompatible      " We're running Vim, not Vi!
+syntax on             " Set syntax color on
+
 " Sets how many lines of history VIM has to remember
 set history=500
 set expandtab
@@ -18,9 +21,10 @@ set mouse=a
 " map the leader to ','
 let mapleader=','
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
 set omnifunc=syntaxcomplete#Complete
 
 " Set to auto read when a file is changed from the outside
@@ -28,7 +32,7 @@ set autoread
 au FocusGained,BufEnter * checktime
 
 " Fast saving
-nmap <leader>w :w!<cr>
+nmap <leader>w :w!<cr>    
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -48,13 +52,13 @@ vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 
-" Set syntax color on
-syntax on
 
 
 "##############################################################################
 "# ===    Buffers    ===
 "##############################################################################
+"  Unsaved modified buffer when opening a new file is hidden instead of closed
+
 set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
@@ -127,7 +131,7 @@ nnoremap <c-w>z <c-w>_ \| <c-w>\|
 "" https://github.com/tomasr/molokai
 
 colorscheme molokai
-set background=dark
+" set background=dark
 let g:molokai_original = 0
 " let g:rehash256 = 1
 " Set background as black
@@ -139,7 +143,7 @@ nnoremap <silent> <leader><space> :nohlsearch<CR>
 
 set cursorline
 highlight clear CursorLine
-highlight CursorLineNR cterm=bold ctermfg=grey
+highlight CursorLineNR cterm=bold ctermfg=yellow
 
 " Completion
 set wildmenu
@@ -349,10 +353,8 @@ autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 
 " ---------------- GO ----------------------
 autocmd! BufNewFile,BufReadPost *.{go} set filetype=go 
-map <leader>r yi":!go run % <C-r>"<CR>
+" map <leader>r yi":!go run % <C-r>"<CR>
 " foldmethod=indent
-
-
 
 " Use <Tab> and <S-Tab> to navigate the completion list:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -364,6 +366,12 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 " Close the preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+
+let g:ruby_indent_access_modifier_style = 'indent'
+let g:ruby_indent_block_style = 'expression'
+let g:ruby_indent_assignment_style = 'hanging'
+let g:polyglot_disabled = ['ruby']
 
 "###############################################################################
 "# ===   Custom functions   ===
