@@ -53,7 +53,6 @@ nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 
 
-
 "##############################################################################
 "# ===    Buffers    ===
 "##############################################################################
@@ -130,11 +129,11 @@ nnoremap <c-w>z <c-w>_ \| <c-w>\|
 " Theme
 "" https://github.com/tomasr/molokai
 
-colorscheme molokai
-" set background=dark
-let g:molokai_original = 0
-" let g:rehash256 = 1
-" Set background as black
+" colorscheme molokai
+" let g:molokai_original = 0
+colorscheme solarized
+set background=light
+
 highlight Normal ctermbg=black 
 
 " Set highlight search and map to <leader> <space>
@@ -384,4 +383,5 @@ endfunction
 
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
 
+set background=light
 
