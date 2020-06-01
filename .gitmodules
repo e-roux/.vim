@@ -1,9 +1,6 @@
 [submodule "pack/custom/start/vim-airline"]
 	path = pack/custom/start/vim-airline
 	url = https://github.com/vim-airline/vim-airline.git
-[submodule "pack/custom/start/vim-multiple-cursors"]
-	path = pack/custom/start/vim-multiple-cursors
-	url = https://github.com/terryma/vim-multiple-cursors.git
 [submodule "pack/custom/start/tagbar"]
 	path = pack/custom/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -52,3 +49,6 @@
 [submodule "pack/custom/start/vim-go"]
 	path = pack/custom/start/vim-go
 	url = https://github.com/fatih/vim-go.git
+[submodule "pack/custom/start/govim"]
+	path = pack/custom/start/govim
+	url = https://github.com/govim/govim

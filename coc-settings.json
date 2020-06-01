@@ -1,7 +1,4 @@
 {
-  "go.goplsOptions": {
-    "completeUnimported": true
-  },
   "python.jediEnabled": false,
   "suggest.maxCompleteItemCount": 20,
   "eslint.filetypes": [
@@ -12,6 +9,33 @@
     "typescript.tsx"
   ],
   "suggest.enablePreview": true,
+	  "suggest.completionItemKindLabels": {
+		"keyword": "\uf1de",
+		"variable": "\ue79b",
+		"value": "\uf89f",
+		"operator": "\u03a8",
+		"function": "\u0192",
+		"reference": "\ufa46",
+		"constant": "\uf8fe",
+		"method": "\uf09a",
+		"struct": "\ufb44",
+		"class": "\uf0e8",
+		"interface": "\uf417",
+		"text": "\ue612",
+		"enum": "\uf435",
+		"enumMember": "\uf02b",
+		"module": "\uf40d",
+		"color": "\ue22b",
+		"property": "\ue624",
+		"field": "\uf9be",
+		"unit": "\uf475",
+		"event": "\ufacd",
+		"file": "\uf723",
+		"folder": "\uf114",
+		"snippet": "\ue60b",
+		"typeParameter": "\uf728",
+		"default": "\uf29c"
+	},
   "python.autoComplete.extraPaths": [
     "${env:SPARK_HOME}/python",
     "${env:SPARK_HOME}/python/pyspark"
@@ -26,9 +50,7 @@
       "disableWorkspaceFolders": true,
       "filetypes": ["go"],
       "initializationOptions": {
-        "gocodeCompletionEnabled": true,
-        "diagnosticsEnabled": true,
-        "lintTool": "golint"
+        "usePlaceholders": true
       }
     }
   }
