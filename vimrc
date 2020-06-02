@@ -278,6 +278,10 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 
+" Start multiple cursors session
+" add current character range to cursors
+nmap <silent> <C-c> <Plug>(coc-cursors-position)
+
 " Use fd for ctrlp.
 if executable('fd')
     let g:ctrlp_user_command = 'fd -c never "" "%s"'
@@ -296,7 +300,7 @@ endif
 " let g:py
 
 " Setup default python options.
-" let g:pymode_options = 1
+"  g:pymode_options = 1
 " is equivalent to:
 
 " setlocal complete+=t
@@ -325,27 +329,6 @@ autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab foldlevel=2
 
 
-" ---------------- JS ----------------------
-function! JSFolds() 
-  let thisline = getline(v:lnum)
-  if thisline =~? '\v^\s*$'
-    return '-1'
-  endif
-
-  if thisline =~ '^import.*$'
-    return 1
-  else
-    return indent(v:lnum) / &shiftwidth
-  endif
-endfunction
-
-autocmd! BufNewFile,BufReadPost *.{js,ts,json} set filetype=javascript foldmethod=expr
-" autocmd FileType javascript syntax region braceFold start="{" end="}" transparent fold
-autocmd FileType javascript setlocal foldexpr=JSFolds()
-autocmd FileType javascript setlocal foldlevel=1
-map <leader>r yi":!npm run <C-r>"<CR>
-
-autocmd FileType javascript nnoremap <leader>r :!node %<cr>
 
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
@@ -384,4 +367,20 @@ endfunction
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
 
 set background=light
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Use <Tab> and <S-Tab> to navigate the completion list:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use <cr> to confirm completion
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 

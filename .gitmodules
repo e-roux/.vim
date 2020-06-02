@@ -52,3 +52,6 @@
 [submodule "pack/custom/start/govim"]
 	path = pack/custom/start/govim
 	url = https://github.com/govim/govim
+[submodule "pack/custom/start/vim-dadbod-ui"]
+	path = pack/custom/start/vim-dadbod-ui
+	url = https://github.com/kristijanhusak/vim-dadbod-ui.git
