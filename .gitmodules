@@ -55,3 +55,6 @@
 [submodule "pack/custom/start/vim-dadbod-ui"]
 	path = pack/custom/start/vim-dadbod-ui
 	url = https://github.com/kristijanhusak/vim-dadbod-ui.git
+[submodule "pack/custom/start/vim-table-mode"]
+	path = pack/custom/start/vim-table-mode
+	url = https://github.com/dhruvasagar/vim-table-mode.git
