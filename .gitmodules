@@ -43,9 +43,6 @@
 [submodule "pack/custom/start/vim-fugitive"]
 	path = pack/custom/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "pack/custom/start/vim-startify"]
-	path = pack/custom/start/vim-startify
-	url = https://github.com/mhinz/vim-startify.git
 [submodule "pack/custom/start/vim-go"]
 	path = pack/custom/start/vim-go
 	url = https://github.com/fatih/vim-go.git
