@@ -1,6 +1,3 @@
-[submodule "pack/custom/start/vim-airline"]
-	path = pack/custom/start/vim-airline
-	url = https://github.com/vim-airline/vim-airline.git
 [submodule "pack/custom/start/tagbar"]
 	path = pack/custom/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
@@ -55,3 +52,9 @@
 [submodule "pack/custom/start/vim-table-mode"]
 	path = pack/custom/start/vim-table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode.git
+[submodule "pack/custom/start/lightline"]
+	path = pack/custom/start/lightline
+	url = https://github.com/itchyny/lightline.vim
+[submodule "pack/custom/start/vim-buftabline"]
+	path = pack/custom/start/vim-buftabline
+	url = https://github.com/ap/vim-buftabline
