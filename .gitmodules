@@ -58,3 +58,6 @@
 [submodule "pack/custom/start/vim-buftabline"]
 	path = pack/custom/start/vim-buftabline
 	url = https://github.com/ap/vim-buftabline
+[submodule "pack/custom/start/auto-pairs"]
+	path = pack/custom/start/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs
