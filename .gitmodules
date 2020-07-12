@@ -61,3 +61,7 @@
 [submodule "pack/custom/start/auto-pairs"]
 	path = pack/custom/start/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs
+[submodule "LSP"]
+	path = pack/custom/start/LanguageClient-neovim
+	url = https://github.com/autozimu/LanguageClient-neovim
+	branch = next
