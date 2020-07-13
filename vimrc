@@ -1,6 +1,3 @@
-"For package management using git submodules:
-" https://shapeshed.com/vim-packages/
-
 "##############################################################################
 "# ===    General   ===
 "##############################################################################
@@ -8,28 +5,29 @@
 set nocompatible      " We're running Vim, not Vi!
 syntax on             " Set syntax color on
 
-" Sets how many lines of history VIM has to remember
-set history=500
-set expandtab
-set shiftwidth=2
+set dir=~/.cache/vim
+
+set history=500       " how many lines of history to remember
+set shiftwidth=2      " When shifting, indent using x spaces
 set softtabstop=2
-set number
 
 set backspace=2
-set mouse=a
 
-" map the leader to ','
-let mapleader=','
+let mapleader=','     " map the leader to ','
 
 filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
+
+set expandtab         " Convert tabs to spaces
+set autoindent        " New lines inherit indentation of previous line
+set smartindent
+filetype indent on    " Enable filetype-specific indenting
 
 set omnifunc=syntaxcomplete#Complete
 
 " Set to auto read when a file is changed from the outside
 set autoread
-au FocusGained,BufEnter * checktime
+autocmd FocusGained,BufEnter * checktime
 
 " Fast saving
 nmap <leader>w :w!<cr>    
@@ -183,19 +181,34 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 map <leader>p :Prettier
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ===   AIRLINE   ===
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" User Interface Options
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set laststatus=2      " Always display the status bar
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+set number            " Show line numbers on the sidebars
+set noerrorbells      " Disable beep on errors
+set mouse=a           " Enable mouse for scrolling and resizing
+
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#left_sep = ' '
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 " let g:airline_theme = 'sonokai'
+
+"   lightline
+"
+let g:lightline = {
+\ 'colorscheme': 'solarized',
+\ }
+
+"   buftabline
+"
+let g:buftabline_separators=1   " vertical line between tabs
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ===   fzf   ===
@@ -268,19 +281,18 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 map <leader>z :FZF<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" nmap <silent> [g <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
 " Start multiple cursors session
 " add current character range to cursors
-nmap <silent> <C-c> <Plug>(coc-cursors-position)
+" nmap <silent> <C-c> <Plug>(coc-cursors-position)
 
 " Use fd for ctrlp.
 if executable('fd')
@@ -328,13 +340,10 @@ au! BufNewFile,BufRead *.py set foldmethod=indent
 autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab foldlevel=2
 
-
-
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 
-" ---------------- GO ----------------------
-autocmd! BufNewFile,BufReadPost *.{go} set filetype=go 
+autocmd! BufNewFile,BufReadPost *.{go} set filetype=go
 " map <leader>r yi":!go run % <C-r>"<CR>
 " foldmethod=indent
 
@@ -384,3 +393,25 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use <cr> to confirm completion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'go': ['/home/manu/go/bin/gopls'],
+    \ 'python': ['/tmp/pls/bin/pyls'],
+    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    \ 
+    \}
+
+
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+    " Completion
+    inoremap <tab> <c-x><c-o>
+  endif
+endfunction
+
+autocmd FileType * call LC_maps()
