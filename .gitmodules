@@ -52,12 +52,6 @@
 [submodule "pack/custom/start/vim-table-mode"]
 	path = pack/custom/start/vim-table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode.git
-[submodule "pack/custom/start/lightline"]
-	path = pack/custom/start/lightline
-	url = https://github.com/itchyny/lightline.vim
-[submodule "pack/custom/start/vim-buftabline"]
-	path = pack/custom/start/vim-buftabline
-	url = https://github.com/ap/vim-buftabline
 [submodule "pack/custom/start/auto-pairs"]
 	path = pack/custom/start/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs
@@ -65,3 +59,12 @@
 	path = pack/custom/start/LanguageClient-neovim
 	url = https://github.com/autozimu/LanguageClient-neovim
 	branch = next
+[submodule "airline"]
+	path = pack/custom/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule "vim-vinegar"]
+	path = pack/custom/start/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar.git
+[submodule "pack/custom/start/vim-slime"]
+	path = pack/custom/start/vim-slime
+	url = https://github.com/jpalardy/vim-slime

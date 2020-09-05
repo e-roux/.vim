@@ -10,6 +10,7 @@ set dir=~/.cache/vim
 set history=500       " how many lines of history to remember
 set shiftwidth=2      " When shifting, indent using x spaces
 set softtabstop=2
+set tabstop=4
 
 set backspace=2
 
@@ -23,14 +24,15 @@ set autoindent        " New lines inherit indentation of previous line
 set smartindent
 filetype indent on    " Enable filetype-specific indenting
 
+set clipboard=unnamedplus
+" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 set omnifunc=syntaxcomplete#Complete
 
 " Set to auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * checktime
 
-" Fast saving
-nmap <leader>w :w!<cr>    
+
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -60,24 +62,13 @@ set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
-" Delete buffer
-nnoremap <leader>d :bd<CR>
+
 
 "##############################################################################
 "# ===     Fold   ===
 "##############################################################################
 set foldcolumn=4
 
-"##############################################################################
-"# ===     Copy and clipboard      ===
-"##############################################################################
-" see https://vi.stackexchange.com/questions/84
-vnoremap <leader>y "*y
-vnoremap <Leader>p "*p
-vnoremap <Leader>Y "+y
-vnoremap <Leader>P "+p
-
-nnoremap <Leader>a  ggvG$yggvG$"+y 
 "###############################################################################
 "# ===   Panes   ===
 "###############################################################################
@@ -97,6 +88,8 @@ nnoremap _ <C-w>s
 " Navigation
 let g:tmux_navigator_no_mappings = 1
 
+" execute "set <M-".a:char.">=\<Esc>".a:char
+" execute "set <M-j>=\x1bj"
 nnoremap <silent> h :TmuxNavigateLeft<cr>
 nnoremap <silent> j :TmuxNavigateDown<cr>
 nnoremap <silent> k :TmuxNavigateUp<cr>
@@ -138,6 +131,29 @@ highlight Normal ctermbg=black
 set hlsearch
 nnoremap <silent> <leader><space> :nohlsearch<CR>
 
+
+" From http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
+
+" makes * and # work on visual mode too.
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+" recursively vimgrep for word under cursor or selection if you hit leader-star
+if maparg('<leader>*', 'n') == ''
+  nmap <leader>* :execute 'noautocmd vimgrep /\V' . substitute(escape(expand("<cword>"), '\'), '\n', '\\n', 'g') . '/ **'<CR>
+endif
+if maparg('<leader>*', 'v') == ''
+  vmap <leader>* :<C-u>call <SID>VSetSearch()<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>
+endif
+
+
 set cursorline
 highlight clear CursorLine
 highlight CursorLineNR cterm=bold ctermfg=yellow
@@ -168,8 +184,8 @@ vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 " Do :help cope if you are unsure what cope is. It's super useful!
 "
-map <leader>cc :botright cope<cr>
-map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+" map <leader>cc :botright cope<cr>
+" map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 " map <leader>p :cp<cr>
 
@@ -179,8 +195,8 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ===   Coc  ===
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-map <leader>p :Prettier
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" map <leader>p :Prettier
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " User Interface Options
@@ -194,21 +210,25 @@ set number            " Show line numbers on the sidebars
 set noerrorbells      " Disable beep on errors
 set mouse=a           " Enable mouse for scrolling and resizing
 
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline_right_sep=''
+let g:airline_left_sep=''
+" tabline acivated in airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 " let g:airline_theme = 'sonokai'
+let g:airline_powerline_fonts = 1
 
 "   lightline
 "
-let g:lightline = {
-\ 'colorscheme': 'solarized',
-\ }
+" let g:lightline = {
+" \ 'colorscheme': 'solarized',
+" \ }
 
 "   buftabline
 "
-let g:buftabline_separators=1   " vertical line between tabs
+" let g:buftabline_separators=1   " vertical line between tabs
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ===   fzf   ===
@@ -278,7 +298,6 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 	
-map <leader>z :FZF<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
 " nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -359,6 +378,19 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
+function! SmartTabComplete()
+  " get 
+  let if_char_preceding = strpart(getline('.'), col('.') - 1, 1)      " from the start of the current
+  if strlen(if_char_preceding)                            " nothing to match on empty string
+    " echo strlen(if_char_preceding)
+    return "\<tab>"
+  else
+    " echo "no"
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+
+
 let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_indent_block_style = 'expression'
 let g:ruby_indent_assignment_style = 'hanging'
@@ -410,8 +442,34 @@ function LC_maps()
     nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
     nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
     " Completion
-    inoremap <tab> <c-x><c-o>
+    " inoremap <tab> <c-x><c-o>
   endif
 endfunction
 
-autocmd FileType * call LC_maps()
+
+" autocmd FileType * call LC_maps()
+" " inoremap <tab> <c-r>=SmartTabComplete()<CR>
+" let g:netrw_banner = 0
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 4
+" let g:netrw_altv = 1
+" let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
+nnoremap <Leader>a  ggvG$yggvG$"+y 
+nmap <leader>w :w!<cr>    " Fast saving
+map <leader>z :FZF<CR>
+
+
+nnoremap <leader>d :bd<CR>  " Delete buffer 
+" see https://vi.stackexchange.com/questions/84
+vnoremap <Leader>P "+p
+vnoremap <Leader>Y "+y
+vnoremap <Leader>p "*p
+vnoremap <leader>y "*y
+
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
