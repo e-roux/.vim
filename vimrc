@@ -2,27 +2,27 @@
 "# ===    General   ===
 "##############################################################################
 
-set nocompatible      " We're running Vim, not Vi!
-syntax on             " Set syntax color on
+set nocompatible          " We're running Vim, not Vi!
+syntax on                 " Set syntax color on
 
 set dir=~/.cache/vim
 
-set history=500       " how many lines of history to remember
-set shiftwidth=2      " When shifting, indent using x spaces
-set softtabstop=2
-set tabstop=4
+set history=500           " number of command-lines that are remembered
+set shiftwidth=2          " number of spaces to use for (auto)indent step
+set softtabstop=2         " number of spaces that <Tab> uses while editing
+set tabstop=4             " number of spaces that <Tab> in file uses
 
-set backspace=2
+set bs=2   " how backspace (bs) works at start of line
 
-let mapleader=','     " map the leader to ','
+let mapleader=','         " map the leader to ','
 
-filetype on           " Enable filetype detection
-filetype plugin on    " Enable filetype-specific plugins
+filetype on               " Enable filetype detection
+filetype plugin on        " Enable filetype-specific plugins
 
-set expandtab         " Convert tabs to spaces
-set autoindent        " New lines inherit indentation of previous line
+set expandtab             " Convert tabs to spaces
+set autoindent            " New lines inherit indentation of previous line
 set smartindent
-filetype indent on    " Enable filetype-specific indenting
+filetype indent on        " Enable filetype-specific indenting
 
 set clipboard=unnamedplus
 " https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
@@ -31,8 +31,6 @@ set omnifunc=syntaxcomplete#Complete
 " Set to auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * checktime
-
-
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -62,8 +60,6 @@ set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
-
-
 "##############################################################################
 "# ===     Fold   ===
 "##############################################################################
@@ -85,9 +81,6 @@ nnoremap _ <C-w>s
 
 " From here, Vim Tmux Navigator
 " https://github.com/christoomey/vim-tmux-navigator
-" Navigation
-let g:tmux_navigator_no_mappings = 1
-
 " execute "set <M-".a:char.">=\<Esc>".a:char
 " execute "set <M-j>=\x1bj"
 nnoremap <silent> h :TmuxNavigateLeft<cr>
@@ -131,7 +124,6 @@ highlight Normal ctermbg=black
 set hlsearch
 nnoremap <silent> <leader><space> :nohlsearch<CR>
 
-
 " From http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
 
 " makes * and # work on visual mode too.
@@ -162,16 +154,6 @@ highlight CursorLineNR cterm=bold ctermfg=yellow
 set wildmenu
 set wildmode=longest,list,full
 
-"##############################################################################
-"    ===   Motion   ===
-"##############################################################################
-
-
-
-"#############################################################################
-" ===   Extensions   ===
-"#############################################################################
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Ack searching and cope displaying
 "    requires ack.vim - it's much better than vimgrep/grep
@@ -191,12 +173,6 @@ map <leader>n :cn<cr>
 
 " Make sure that enter is never overriden in the quickfix window
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ===   Coc  ===
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" map <leader>p :Prettier
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " User Interface Options
@@ -219,16 +195,6 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 " let g:airline_theme = 'sonokai'
 let g:airline_powerline_fonts = 1
-
-"   lightline
-"
-" let g:lightline = {
-" \ 'colorscheme': 'solarized',
-" \ }
-
-"   buftabline
-"
-" let g:buftabline_separators=1   " vertical line between tabs
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ===   fzf   ===
@@ -299,20 +265,6 @@ let g:fzf_colors =
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 	
 
-" Use `[g` and `]g` to navigate diagnostics
-" nmap <silent> [g <Plug>(coc-diagnostic-prev)
-" nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
-
-" Start multiple cursors session
-" add current character range to cursors
-" nmap <silent> <C-c> <Plug>(coc-cursors-position)
-
 " Use fd for ctrlp.
 if executable('fd')
     let g:ctrlp_user_command = 'fd -c never "" "%s"'
@@ -351,20 +303,13 @@ endif
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
 
-" --------------- Python ---------------------
-au! BufNewFile,BufRead *.py set foldmethod=indent
 
 " ---------------- YAML ----------------------
 " add yaml stuffs
-autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab foldlevel=2
+" autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
-
-autocmd! BufNewFile,BufReadPost *.{go} set filetype=go
-" map <leader>r yi":!go run % <C-r>"<CR>
-" foldmethod=indent
 
 " Use <Tab> and <S-Tab> to navigate the completion list:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -389,7 +334,6 @@ function! SmartTabComplete()
     return "\<C-X>\<C-O>"                         " plugin matching
   endif
 endfunction
-
 
 let g:ruby_indent_access_modifier_style = 'indent'
 let g:ruby_indent_block_style = 'expression'
@@ -424,40 +368,6 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use <cr> to confirm completion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'go': ['/home/manu/go/bin/gopls'],
-    \ 'python': ['/tmp/pls/bin/pyls'],
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    \ 
-    \}
-
-
-function LC_maps()
-  if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-    " Completion
-    " inoremap <tab> <c-x><c-o>
-  endif
-endfunction
-
-
-" autocmd FileType * call LC_maps()
-" " inoremap <tab> <c-r>=SmartTabComplete()<CR>
-" let g:netrw_banner = 0
-" let g:netrw_liststyle = 3
-" let g:netrw_browse_split = 4
-" let g:netrw_altv = 1
-" let g:netrw_winsize = 25
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
 
 nnoremap <Leader>a  ggvG$yggvG$"+y 
 nmap <leader>w :w!<cr>    " Fast saving

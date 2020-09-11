@@ -1,9 +1,3 @@
-[submodule "pack/custom/start/tagbar"]
-	path = pack/custom/start/tagbar
-	url = https://github.com/majutsushi/tagbar.git
-[submodule "pack/custom/start/ranger.vim"]
-	path = pack/custom/start/ranger.vim
-	url = https://github.com/francoiscabrol/ranger.vim.git
 [submodule "pack/custom/start/gist-vim"]
 	path = pack/custom/start/gist-vim
 	url = https://github.com/mattn/gist-vim.git
@@ -19,9 +13,6 @@
 [submodule "pack/custom/start/vim-polyglot"]
 	path = pack/custom/start/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
-[submodule "pack/custom/start/intellisense"]
-	path = pack/custom/start/coc.vim
-	url = https://github.com/neoclide/coc.nvim.git
 [submodule "pack/custom/start/nnn-vim"]
 	path = pack/custom/start/nnn-vim
 	url = https://github.com/mcchrish/nnn.vim
