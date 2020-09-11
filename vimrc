@@ -81,6 +81,7 @@ nnoremap _ <C-w>s
 
 " From here, Vim Tmux Navigator
 " https://github.com/christoomey/vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
 " execute "set <M-".a:char.">=\<Esc>".a:char
 " execute "set <M-j>=\x1bj"
 nnoremap <silent> h :TmuxNavigateLeft<cr>
