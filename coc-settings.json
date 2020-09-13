@@ -1,5 +1,5 @@
 {
-  "python.jediEnabled": false,
+  "pyls.configurationSource": ["pylint", "pyls_mypy"],
   "pyls.plugins.pyls_mypy": {
     "enabled": true,
     "live_mode": false

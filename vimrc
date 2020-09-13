@@ -209,10 +209,14 @@ endfunction
 inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 set omnifunc=syntaxcomplete#Complete
+        set completepopup=height:10,width:60,highlight:InfoPopup
+" set wildmenu
+" set wildmode=longest,list,full
 
-set wildmenu
-set wildmode=longest,list,full
-
+" https://vimhelp.org/options.txt.html#%27completeopt%27
+" menu: Use a popup menu to show the possible completions
+" preview
+set completeopt=menu,longest,noinsert,preview
 " augroup completion
 " 	autocmd!
 " 	autocmd FileType go,python setlocal omnifunc=LanguageClient#complete
