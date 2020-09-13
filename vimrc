@@ -26,13 +26,35 @@ filetype indent on        " Enable filetype-specific indenting
 
 set clipboard=unnamedplus
 " https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+function! Smart_TabComplete()
+  let line = getline('.')                         " current line
+
+  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
+                                                  " line to one character right
+                                                  " of the cursor
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  if (strlen(substr)==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash)
+    return "\<C-X>\<C-P>"                         " existing text matching
+  elseif ( has_slash )
+    return "\<C-X>\<C-F>"                         " file matching
+  else
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+
 set omnifunc=syntaxcomplete#Complete
 
 " Set to auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * checktime
 
-" :W sudo saves the file 
+" :W sudo saves the file
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
@@ -52,6 +74,15 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 
 
 "##############################################################################
+"# ===    Folding    ===
+"##############################################################################
+
+nnoremap z1 :set foldlevel=1<CR>
+nnoremap z2 :set foldlevel=2<CR>
+nnoremap z3 :set foldlevel=3<CR>
+nnoremap z4 :set foldlevel=4<CR>
+
+"##############################################################################
 "# ===    Buffers    ===
 "##############################################################################
 "  Unsaved modified buffer when opening a new file is hidden instead of closed
@@ -59,11 +90,6 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
-
-"##############################################################################
-"# ===     Fold   ===
-"##############################################################################
-set foldcolumn=4
 
 "###############################################################################
 "# ===   Panes   ===
@@ -81,19 +107,26 @@ nnoremap _ <C-w>s
 
 " From here, Vim Tmux Navigator
 " https://github.com/christoomey/vim-tmux-navigator
+" Navigation
 let g:tmux_navigator_no_mappings = 1
-" execute "set <M-".a:char.">=\<Esc>".a:char
-" execute "set <M-j>=\x1bj"
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
 nnoremap <silent> h :TmuxNavigateLeft<cr>
 nnoremap <silent> j :TmuxNavigateDown<cr>
 nnoremap <silent> k :TmuxNavigateUp<cr>
 nnoremap <silent> l :TmuxNavigateRight<cr>
 nnoremap <silent> \ :TmuxNavigatePrevious<cr>
 
-" Disable tmux navigator when zooming the Vim pane
-let g:tmux_navigator_disable_when_zoomed = 1
 
 nnoremap <c-w>z <c-w>_ \| <c-w>\|
+
+" Close pane
+nnoremap <leader>pc <C-w>c
+nnoremap <leader>ph <C-w>H
+nnoremap <leader>pj <C-w>J
+nnoremap <leader>pk <C-w>K
+nnoremap <leader>pl <C-w>L
 
 "##############################################################################
 "# ===    Appearence and status bar  ===
@@ -119,7 +152,11 @@ nnoremap <c-w>z <c-w>_ \| <c-w>\|
 colorscheme solarized
 set background=light
 
-highlight Normal ctermbg=black 
+highlight Normal ctermbg=black
+
+set cursorline
+highlight clear CursorLine
+highlight CursorLineNR cterm=bold ctermfg=yellow
 
 " Set highlight search and map to <leader> <space>
 set hlsearch
@@ -147,10 +184,6 @@ if maparg('<leader>*', 'v') == ''
 endif
 
 
-set cursorline
-highlight clear CursorLine
-highlight CursorLineNR cterm=bold ctermfg=yellow
-
 " Completion
 set wildmenu
 set wildmode=longest,list,full
@@ -162,14 +195,13 @@ set wildmode=longest,list,full
 " When you press gv you Ack after the selected text
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
-
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 " Do :help cope if you are unsure what cope is. It's super useful!
 "
 " map <leader>cc :botright cope<cr>
 " map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-map <leader>n :cn<cr>
+" map <leader>n :cn<cr>
 " map <leader>p :cp<cr>
 
 " Make sure that enter is never overriden in the quickfix window
@@ -197,6 +229,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 " let g:airline_theme = 'sonokai'
 let g:airline_powerline_fonts = 1
 
+set background=light
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ===   fzf   ===
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -264,7 +297,6 @@ let g:fzf_colors =
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
-	
 
 " Use fd for ctrlp.
 if executable('fd')
@@ -305,10 +337,6 @@ endif
 " let g:pymode_rope_completion_bind = '<C-Space>'
 
 
-" ---------------- YAML ----------------------
-" add yaml stuffs
-" autocmd! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
-
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 
@@ -324,22 +352,35 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
-function! SmartTabComplete()
-  " get 
-  let if_char_preceding = strpart(getline('.'), col('.') - 1, 1)      " from the start of the current
-  if strlen(if_char_preceding)                            " nothing to match on empty string
-    " echo strlen(if_char_preceding)
-    return "\<tab>"
-  else
-    " echo "no"
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'go': ['/home/manu/go/bin/gopls'],
+    \ 'python': ['/tmp/pls/bin/pyls'],
+    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
+    \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
+    \}
 
-let g:ruby_indent_access_modifier_style = 'indent'
-let g:ruby_indent_block_style = 'expression'
-let g:ruby_indent_assignment_style = 'hanging'
-let g:polyglot_disabled = ['ruby']
+function SetLSPShortcuts()
+  nnoremap <leader>gd :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>gx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LanguageServerOpts
+  autocmd!
+  autocmd FileType yaml,python,js,go call SetLSPShortcuts()
+  autocmd FileType yaml,python,js,go setlocal omnifunc=LanguageClient#complete
+augroup END
 
 "###############################################################################
 "# ===   Custom functions   ===
@@ -350,9 +391,8 @@ function! GoogleSearch()
    redraw!
 endfunction
 
-vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR> 
+vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 
-set background=light
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -370,17 +410,16 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use <cr> to confirm completion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-nnoremap <Leader>a  ggvG$yggvG$"+y 
+nnoremap <leader>a  ggvG$yggvG$"+y
 nmap <leader>w :w!<cr>    " Fast saving
 map <leader>z :FZF<CR>
 
-
-nnoremap <leader>d :bd<CR>  " Delete buffer 
+nnoremap <leader>d :bd<CR>  " Delete buffer
 " see https://vi.stackexchange.com/questions/84
-vnoremap <Leader>P "+p
-vnoremap <Leader>Y "+y
-vnoremap <Leader>p "*p
-vnoremap <leader>y "*y
+" vnoremap <leader>P "+p
+" vnoremap <leader>Y "+y
+" vnoremap <leader>p "*p
+" vnoremap <leader>y "*y
 
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}

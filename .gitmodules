@@ -34,9 +34,6 @@
 [submodule "pack/custom/start/vim-go"]
 	path = pack/custom/start/vim-go
 	url = https://github.com/fatih/vim-go.git
-[submodule "pack/custom/start/govim"]
-	path = pack/custom/start/govim
-	url = https://github.com/govim/govim
 [submodule "pack/custom/start/vim-dadbod-ui"]
 	path = pack/custom/start/vim-dadbod-ui
 	url = https://github.com/kristijanhusak/vim-dadbod-ui.git
@@ -53,9 +50,9 @@
 [submodule "airline"]
 	path = pack/custom/start/vim-airline
 	url = https://github.com/vim-airline/vim-airline
-[submodule "vim-vinegar"]
-	path = pack/custom/start/vim-vinegar
-	url = https://github.com/tpope/vim-vinegar.git
 [submodule "pack/custom/start/vim-slime"]
 	path = pack/custom/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime
+[submodule "pack/custom/start/deoplete"]
+	path = pack/custom/start/deoplete
+	url = https://github.com/Shougo/deoplete.nvim.git

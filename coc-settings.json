@@ -53,5 +53,11 @@
         "usePlaceholders": true
       }
     }
-  }
+  },
+  "yaml.schemas": {
+	        "kubernetes": "/*.yaml"
+  },
+  "yaml.format.enable": true,
+	"yaml.completion" : true
+
 }
