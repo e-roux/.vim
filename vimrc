@@ -1,5 +1,6 @@
-"##############################################################################
-"# ===    General   ===
+" This is my vimrc
+"
+" General {{{1
 "##############################################################################
 
 set nocompatible          " We're running Vim, not Vi!
@@ -71,10 +72,18 @@ nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
 vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
+nnoremap <leader>a  ggvG$yggvG$"+y
+nnoremap <leader>w :w!<cr>    " Fast saving
 
 
-"##############################################################################
-"# ===    Folding    ===
+" see https://vi.stackexchange.com/questions/84
+" vnoremap <leader>P "+p
+" vnoremap <leader>Y "+y
+" vnoremap <leader>p "*p
+" vnoremap <leader>y "*y
+
+"##########################################################################}}}1
+" Folding {{{1
 "##############################################################################
 
 nnoremap z1 :set foldlevel=1<CR>
@@ -82,8 +91,15 @@ nnoremap z2 :set foldlevel=2<CR>
 nnoremap z3 :set foldlevel=3<CR>
 nnoremap z4 :set foldlevel=4<CR>
 
-"##############################################################################
-"# ===    Buffers    ===
+
+
+augroup vimrc 
+  autocmd!
+  autocmd VimEnter * for f in ['vimrc', 'zshrc'] | if @% == f | set foldmethod=marker | endif | endfor
+augroup END
+
+"##########################################################################}}}1
+"Buffers {{{1
 "##############################################################################
 "  Unsaved modified buffer when opening a new file is hidden instead of closed
 
@@ -91,8 +107,9 @@ set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
-"###############################################################################
-"# ===   Panes   ===
+nnoremap <leader>d :bd<CR>  " Delete buffer
+"##########################################################################}}}1
+" Panes  {{{1
 "###############################################################################
 "#
 "# ┌───┐ Splitting windows into panes with memorizable commands
@@ -128,8 +145,8 @@ nnoremap <leader>pj <C-w>J
 nnoremap <leader>pk <C-w>K
 nnoremap <leader>pl <C-w>L
 
-"##############################################################################
-"# ===    Appearence and status bar  ===
+"##########################################################################}}}1
+" Appearence and status bar {{{1
 "##############################################################################
 " ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 " ┃buf01 │ buf02 │ buf03                                                      ┃
@@ -207,9 +224,9 @@ vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 " Make sure that enter is never overriden in the quickfix window
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" User Interface Options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"##########################################################################}}}1
+" User Interface Options {{{1
+"##############################################################################
 set laststatus=2      " Always display the status bar
 set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
@@ -218,6 +235,38 @@ set statusline+=%*
 set number            " Show line numbers on the sidebars
 set noerrorbells      " Disable beep on errors
 set mouse=a           " Enable mouse for scrolling and resizing
+
+"##########################################################################}}}1
+" Custom functions {{{1 
+"###############################################################################
+function! GoogleSearch()
+   let searchterm = getreg("g")
+   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
+   redraw!
+endfunction
+
+vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
+
+" use <tab> for trigger completion and navigate to the next complete item
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~ '\s'
+" endfunction
+
+" inoremap <silent><expr> <Tab>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<Tab>" :
+"       \ coc#refresh()
+
+" " Use <Tab> and <S-Tab> to navigate the completion list:
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" " Use <cr> to confirm completion
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+"##########################################################################}}}1"}}}
+" Plugins {{{1{{{
+"##############################################################################
 
 let g:airline_right_sep=''
 let g:airline_left_sep=''
@@ -230,9 +279,11 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_powerline_fonts = 1
 
 set background=light
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ===   fzf   ===
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"##############################################################################
+" fzf {{{2
+"##############################################################################
+ 
 " Fix different install location on ubuntu
 let s:ubuntu_fzf = [
 \ "/usr/share/doc/fzf/examples/fzf.vim",
@@ -298,15 +349,46 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" Use fd for ctrlp.
-if executable('fd')
-    let g:ctrlp_user_command = 'fd -c never "" "%s"'
-    let g:ctrlp_use_caching = 0
-endif
+nnoremap <leader>z :FZF<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Python-mode
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"##########################################################################}}}2
+" LanguageClient {{{2
+"##############################################################################
+let g:LanguageClient_serverCommands = {
+    \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
+    \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
+    \ 'go': ['/home/manu/go/bin/gopls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'python': ['/tmp/pls/bin/pyls'],
+    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
+    \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
+    \}
+
+function SetLSPShortcuts()
+  nnoremap <leader>gd :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>gx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LanguageServerOpts
+  autocmd!
+  autocmd FileType yaml,python,js,go call SetLSPShortcuts()
+  autocmd FileType yaml,python,js,go setlocal omnifunc=LanguageClient#complete
+augroup END
+
+"#######################################################################}}}2
+" Python mode {{{2
+"##############################################################################
 " let g:pymode_python = 'python3'
 " let g:pymode_virtualenv_path = $VIRTUAL_ENV
 " let g:pymode_lint = 0
@@ -352,74 +434,11 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'go': ['/home/manu/go/bin/gopls'],
-    \ 'python': ['/tmp/pls/bin/pyls'],
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
-    \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
-    \}
-
-function SetLSPShortcuts()
-  nnoremap <leader>gd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>gx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-endfunction()
-
-augroup LanguageServerOpts
-  autocmd!
-  autocmd FileType yaml,python,js,go call SetLSPShortcuts()
-  autocmd FileType yaml,python,js,go setlocal omnifunc=LanguageClient#complete
-augroup END
-
-"###############################################################################
-"# ===   Custom functions   ===
-"###############################################################################
-function! GoogleSearch()
-   let searchterm = getreg("g")
-   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
-   redraw!
-endfunction
-
-vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
-
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
-
-" Use <Tab> and <S-Tab> to navigate the completion list:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" Use <cr> to confirm completion
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-nnoremap <leader>a  ggvG$yggvG$"+y
-nmap <leader>w :w!<cr>    " Fast saving
-map <leader>z :FZF<CR>
-
-nnoremap <leader>d :bd<CR>  " Delete buffer
-" see https://vi.stackexchange.com/questions/84
-" vnoremap <leader>P "+p
-" vnoremap <leader>Y "+y
-" vnoremap <leader>p "*p
-" vnoremap <leader>y "*y
+"##########################################################################}}}2
+" slime {{{2
+"##############################################################################
 
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+"##########################################################################}}}2
+"#######################################################################}}}1
