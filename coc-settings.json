@@ -1,5 +1,9 @@
 {
   "python.jediEnabled": false,
+  "pyls.plugins.pyls_mypy": {
+    "enabled": true,
+    "live_mode": false
+  },
   "suggest.maxCompleteItemCount": 20,
   "eslint.filetypes": [
     "javascript",
@@ -44,7 +48,6 @@
   "html.autoClosingTags": true,
   "languageserver": {
     "golang": {
-      // https://github.com/golang/tools/blob/master/gopls/doc/vim.md#cocnvim
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "disableWorkspaceFolders": true,

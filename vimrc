@@ -27,30 +27,6 @@ filetype indent on        " Enable filetype-specific indenting
 
 set clipboard=unnamedplus
 " https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
-
-  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
-
-set omnifunc=syntaxcomplete#Complete
-
 " Set to auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * checktime
@@ -75,7 +51,6 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
 
-
 " see https://vi.stackexchange.com/questions/84
 " vnoremap <leader>P "+p
 " vnoremap <leader>Y "+y
@@ -90,8 +65,6 @@ nnoremap z1 :set foldlevel=1<CR>
 nnoremap z2 :set foldlevel=2<CR>
 nnoremap z3 :set foldlevel=3<CR>
 nnoremap z4 :set foldlevel=4<CR>
-
-
 
 augroup vimrc 
   autocmd!
@@ -121,20 +94,6 @@ nnoremap \| <C-w>v
 "# │ ┃ │ A horizontal split positions panes left and right.
 "# └─┸─┘ Think of | (pipe symbol) as the separating line.
 nnoremap _ <C-w>s
-
-" From here, Vim Tmux Navigator
-" https://github.com/christoomey/vim-tmux-navigator
-" Navigation
-let g:tmux_navigator_no_mappings = 1
-" Disable tmux navigator when zooming the Vim pane
-let g:tmux_navigator_disable_when_zoomed = 1
-
-nnoremap <silent> h :TmuxNavigateLeft<cr>
-nnoremap <silent> j :TmuxNavigateDown<cr>
-nnoremap <silent> k :TmuxNavigateUp<cr>
-nnoremap <silent> l :TmuxNavigateRight<cr>
-nnoremap <silent> \ :TmuxNavigatePrevious<cr>
-
 
 nnoremap <c-w>z <c-w>_ \| <c-w>\|
 
@@ -200,11 +159,6 @@ if maparg('<leader>*', 'v') == ''
   vmap <leader>* :<C-u>call <SID>VSetSearch()<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>
 endif
 
-
-" Completion
-set wildmenu
-set wildmode=longest,list,full
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Ack searching and cope displaying
 "    requires ack.vim - it's much better than vimgrep/grep
@@ -214,13 +168,7 @@ vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-" Do :help cope if you are unsure what cope is. It's super useful!
 "
-" map <leader>cc :botright cope<cr>
-" map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-" map <leader>n :cn<cr>
-" map <leader>p :cp<cr>
-
 " Make sure that enter is never overriden in the quickfix window
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
@@ -237,6 +185,40 @@ set noerrorbells      " Disable beep on errors
 set mouse=a           " Enable mouse for scrolling and resizing
 
 "##########################################################################}}}1
+" Completion {{{1 
+"###############################################################################
+function! Smart_TabComplete()
+  let line = getline('.')                         " current line
+  " from the start of the current line to one character right of the cursor
+  let substr = strpart(line, -1, col('.')+1)     
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  if (strlen(substr)==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash)
+    return "\<C-X>\<C-P>"                         " existing text matching
+  elseif ( has_slash )
+    return "\<C-X>\<C-F>"                         " file matching
+  else
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+
+inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+set omnifunc=syntaxcomplete#Complete
+
+set wildmenu
+set wildmode=longest,list,full
+
+" augroup completion
+" 	autocmd!
+" 	autocmd FileType go,python setlocal omnifunc=LanguageClient#complete
+" augroup END
+
+"##########################################################################}}}1
 " Custom functions {{{1 
 "###############################################################################
 function! GoogleSearch()
@@ -246,23 +228,6 @@ function! GoogleSearch()
 endfunction
 
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
-
-" use <tab> for trigger completion and navigate to the next complete item
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-
-" inoremap <silent><expr> <Tab>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<Tab>" :
-"       \ coc#refresh()
-
-" " Use <Tab> and <S-Tab> to navigate the completion list:
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" " Use <cr> to confirm completion
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 "##########################################################################}}}1"}}}
 " Plugins {{{1{{{
@@ -360,18 +325,26 @@ let g:LanguageClient_serverCommands = {
     \ 'go': ['/home/manu/go/bin/gopls'],
     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'python': ['/tmp/pls/bin/pyls'],
+    \ 'python': ['~/.opt/pyenv/versions/3.8.3/envs/vim/bin/pyls'],
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
     \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
     \}
 
+let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
+
+let g:LanguageClient_trace = "verbose"
+let g:LanguageClient_loggingFile = "/tmp/LSP.log"
+let g:LanguageClient_loggingLevel = "DEBUG"
+
+command! LSPFormat :call LanguageClient#textDocument_formatting()
+
 function SetLSPShortcuts()
   nnoremap <leader>gd :call LanguageClient#textDocument_definition()<CR>
   nnoremap <leader>gx :call LanguageClient#textDocument_references()<CR>
   nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lf LSPFormat<CR>
   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
   nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
   nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
@@ -383,8 +356,9 @@ endfunction()
 augroup LanguageServerOpts
   autocmd!
   autocmd FileType yaml,python,js,go call SetLSPShortcuts()
-  autocmd FileType yaml,python,js,go setlocal omnifunc=LanguageClient#complete
+  autocmd FileType yaml,python,js,go,vim setlocal omnifunc=LanguageClient#complete
 augroup END
+
 
 "#######################################################################}}}2
 " Python mode {{{2
@@ -422,18 +396,6 @@ augroup END
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 
-" Use <Tab> and <S-Tab> to navigate the completion list:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" Use <cr> to confirm completion
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" make <cr> select the first completion item and confirm the completion when
-" no item has been selected
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
-" Close the preview window when completion is done.
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-
 "##########################################################################}}}2
 " slime {{{2
 "##############################################################################
@@ -441,4 +403,19 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 "##########################################################################}}}2
-"#######################################################################}}}1
+" Tmux Navigator {{{2
+"##############################################################################
+" https://github.com/christoomey/vim-tmux-navigator
+"
+" Navigation
+let g:tmux_navigator_no_mappings = 1
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
+nnoremap <silent> h :TmuxNavigateLeft<cr>
+nnoremap <silent> j :TmuxNavigateDown<cr>
+nnoremap <silent> k :TmuxNavigateUp<cr>
+nnoremap <silent> l :TmuxNavigateRight<cr>
+nnoremap <silent> \ :TmuxNavigatePrevious<cr>
+"##########################################################################}}}2
+"##########################################################################}}}1

@@ -11,10 +11,6 @@
 
 
 " autocmd Filetype go BufWrite :GoImports
-" augroup go_file_types
-" 	autocmd!
-" 	autocmd FileType go setlocal omnifunc=LanguageClient#complete
-" augroup END
 
 
 " auto :GoImports on save
