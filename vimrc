@@ -61,10 +61,10 @@ nnoremap <leader>w :w!<cr>    " Fast saving
 " Folding {{{1
 "##############################################################################
 
-nnoremap z1 :set foldlevel=1<CR>
-nnoremap z2 :set foldlevel=2<CR>
-nnoremap z3 :set foldlevel=3<CR>
-nnoremap z4 :set foldlevel=4<CR>
+" nnoremap z1 :set foldlevel=1<CR>
+" nnoremap z2 :set foldlevel=2<CR>
+" nnoremap z3 :set foldlevel=3<CR>
+" nnoremap z4 :set foldlevel=4<CR>
 
 augroup vimrc 
   autocmd!
@@ -209,7 +209,7 @@ endfunction
 inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
 set omnifunc=syntaxcomplete#Complete
-        set completepopup=height:10,width:60,highlight:InfoPopup
+set completepopup=height:10,width:60,highlight:InfoPopup
 " set wildmenu
 " set wildmode=longest,list,full
 
@@ -327,26 +327,28 @@ let g:LanguageClient_serverCommands = {
     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'go': ['/home/manu/go/bin/gopls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
     \ 'python': ['~/.opt/pyenv/versions/3.8.3/envs/vim/bin/pyls'],
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
     \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
     \}
+    " \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
 
-let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
-
-let g:LanguageClient_trace = "verbose"
 let g:LanguageClient_loggingFile = "/tmp/LSP.log"
 let g:LanguageClient_loggingLevel = "DEBUG"
+let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
+let g:LanguageClient_trace = "verbose"
 
 command! LSPFormat :call LanguageClient#textDocument_formatting()
+command! LSPReference :call LanguageClient#textDocument_references()
+command! LSPMenu :call LanguageClient_contextMenu()
+command! LSPDefinition :call LanguageClient#textDocument_definition()
 
-function SetLSPShortcuts()
-  nnoremap <leader>gd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>gx :call LanguageClient#textDocument_references()<CR>
+function SetLSPShortcuts() " {{{3
+  nnoremap <leader>gd LSPDefinition<CR>
+  nnoremap <leader>gx LSPReference<CR>
   nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
   nnoremap <leader>lf LSPFormat<CR>
   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
@@ -354,8 +356,18 @@ function SetLSPShortcuts()
   nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
   nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-endfunction()
+  nnoremap <leader>lm LSPMenu<CR>
+  " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+  " nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+  " nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+  " nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+  " nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+  " nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+  " nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+  " nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+  " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+
+endfunction() " }}}3
 
 augroup LanguageServerOpts
   autocmd!
