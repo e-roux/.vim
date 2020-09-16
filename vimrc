@@ -25,8 +25,6 @@ set autoindent            " New lines inherit indentation of previous line
 set smartindent
 filetype indent on        " Enable filetype-specific indenting
 
-set clipboard=unnamedplus
-" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 " Set to auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * checktime
@@ -51,6 +49,20 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
 
+"---------------------------------------------------------------------------{{{0
+" Clipboard
+"---------------------------------------------------------------------------}}}0
+" Yank selection, word or line to system clipboard
+" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+set clipboard=unnamedplus
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>yw "+yw
+nnoremap <leader>ye "+ye
+
+" Search vim help for subject under cursor: K in normal mode
+" set keywordprg=:help
+
 " see https://vi.stackexchange.com/questions/84
 " vnoremap <leader>P "+p
 " vnoremap <leader>Y "+y
@@ -68,7 +80,7 @@ nnoremap <leader>w :w!<cr>    " Fast saving
 
 augroup vimrc 
   autocmd!
-  autocmd VimEnter * for f in ['vimrc', 'zshrc'] | if @% == f | set foldmethod=marker | endif | endfor
+  autocmd VimEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
 augroup END
 
 "##########################################################################}}}1
@@ -233,6 +245,11 @@ endfunction
 
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 
+
+function! Codify()
+
+endfunction
+
 "##########################################################################}}}1"}}}
 " Plugins {{{1{{{
 "##############################################################################
@@ -341,20 +358,29 @@ let g:LanguageClient_loggingLevel = "DEBUG"
 let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
 let g:LanguageClient_trace = "verbose"
 
-command! LSPFormat :call LanguageClient#textDocument_formatting()
-command! LSPReference :call LanguageClient#textDocument_references()
+" For references, see
+" https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
+command! Completion :call LanguageClient#textDocument_completion()
+command! Hover :call LanguageClient#textDocument_hover()
+command! Definition :call LanguageClient#textDocument_definition()
+command! DocumentFormatting :call LanguageClient#textDocument_formatting()
 command! LSPMenu :call LanguageClient_contextMenu()
-command! LSPDefinition :call LanguageClient#textDocument_definition()
+command! Reference :call LanguageClient#textDocument_references()
+command! Rename :call LanguageClient#textDocument_rename()
+command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
+
+" nnoremap <Esc> A
+" nnoremap <Esc> <NOP>
 
 function SetLSPShortcuts() " {{{3
-  nnoremap <leader>gd LSPDefinition<CR>
-  nnoremap <leader>gx LSPReference<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf LSPFormat<CR>
+  nnoremap <leader>gd :Definition<CR>
+  nnoremap <leader>gx :Reference<CR>
+  nnoremap <leader>lr :Rename<CR>
+  nnoremap <leader>lf :DocumentFormatting<CR>
   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
   nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>lc :Completion<CR>
+  nnoremap <leader>lh :Hover<CR>
   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <leader>lm LSPMenu<CR>
   " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -371,9 +397,13 @@ endfunction() " }}}3
 
 augroup LanguageServerOpts
   autocmd!
-  autocmd FileType yaml,python,js,go call SetLSPShortcuts()
-  autocmd FileType yaml,python,js,go,vim setlocal omnifunc=LanguageClient#complete
+  autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
+  autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
 augroup END
+
+" set cmdheight=2
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 
 
 "#######################################################################}}}2
