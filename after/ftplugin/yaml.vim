@@ -1,3 +1,6 @@
+
+set tabstop=2
+
 function! YamlFolds()
   let previous_level = indent(prevnonblank(v:lnum - 1)) / &shiftwidth
   let current_level = indent(v:lnum) / &shiftwidth
