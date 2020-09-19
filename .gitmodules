@@ -50,9 +50,6 @@
 [submodule "pack/custom/start/deoplete"]
 	path = pack/custom/start/deoplete
 	url = https://github.com/Shougo/deoplete.nvim.git
-[submodule "pack/custom/start/echodoc"]
-	path = pack/custom/start/echodoc
-	url = https://github.com/Shougo/echodoc.vim
 [submodule "pack/custom/start/webapi-git"]
 	path = pack/custom/start/webapi-git
 	url = https://github.com/mattn/webapi-vim.git
