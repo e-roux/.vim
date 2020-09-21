@@ -341,6 +341,7 @@ nnoremap <leader>z :FZF<CR>
 " LanguageClient {{{2
 "##############################################################################
 let g:LanguageClient_serverCommands = {
+    \ 'bash': ['/usr/bin/bash-language-server', 'start'],
     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'go': ['/home/manu/go/bin/gopls'],
@@ -405,6 +406,8 @@ augroup END
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'signature'
 
+" DVC
+autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
 
 "#######################################################################}}}2
 " Python mode {{{2
