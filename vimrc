@@ -341,15 +341,15 @@ nnoremap <leader>z :FZF<CR>
 " LanguageClient {{{2
 "##############################################################################
 let g:LanguageClient_serverCommands = {
-    \ 'bash': ['/usr/bin/bash-language-server', 'start'],
+    \ 'bash': ['bash-language-server', 'start'],
     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'go': ['/home/manu/go/bin/gopls'],
-    \ 'python': ['~/.opt/pyenv/versions/3.8.3/envs/vim/bin/pyls'],
+    \ 'go': ['gopls'],
+    \ 'python': ['pyls'],
     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'vim': ['/usr/bin/vim-language-server', '--stdio'],
-    \ 'yaml': ['/usr/lib/node_modules/yaml-language-server/bin/yaml-language-server', '--stdio'],
+    \ 'vim': ['vim-language-server', '--stdio'],
+    \ 'yaml': ['yaml-language-server', '--stdio'],
     \}
     " \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
     " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
