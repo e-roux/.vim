@@ -53,3 +53,15 @@
 [submodule "pack/custom/start/webapi-git"]
 	path = pack/custom/start/webapi-git
 	url = https://github.com/mattn/webapi-vim.git
+[submodule "pack/custom/start/vim-toml"]
+	path = pack/custom/start/vim-toml
+	url = https://github.com/cespare/vim-toml.git
+[submodule "pack/custom/start/nvim-yarp"]
+	path = pack/custom/start/nvim-yarp
+	url = https://github.com/roxma/nvim-yarp
+[submodule "pack/custom/start/vim-hug-neovim-rpc"]
+	path = pack/custom/start/vim-hug-neovim-rpc
+	url = https://github.com/roxma/vim-hug-neovim-rpc
+[submodule "pack/custom/start/vim-ripgrep"]
+	path = pack/custom/start/vim-ripgrep
+	url = https://github.com/jremmen/vim-ripgrep.git

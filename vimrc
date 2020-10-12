@@ -80,7 +80,7 @@ nnoremap <leader>ye "+ye
 
 augroup vimrc 
   autocmd!
-  autocmd VimEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
+  autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
 augroup END
 
 "##########################################################################}}}1
@@ -249,6 +249,16 @@ vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 function! Codify()
 
 endfunction
+
+" https://vim.fandom.com/wiki/Diff_current_buffer_and_the_original_file
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
 
 "##########################################################################}}}1"}}}
 " Plugins {{{1{{{
@@ -468,3 +478,4 @@ nnoremap <silent> l :TmuxNavigateRight<cr>
 nnoremap <silent> \ :TmuxNavigatePrevious<cr>
 "##########################################################################}}}2
 "##########################################################################}}}1
+let g:deoplete#enable_at_startup = 1
