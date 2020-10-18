@@ -107,12 +107,28 @@ nnoremap <C-w>\| <C-w>v
 "# └─┸─┘ Think of | (pipe symbol) as the separating line.
 nnoremap <C-w>_ <C-w>s
 
-nnoremap <c-w>z <c-w>_ \| <c-w>\|
+" let s:resize_tmux_pane=system('tmux resize-pane -Z')
 
-nnoremap <leader>ph <C-w>H
-nnoremap <leader>pj <C-w>J
-nnoremap <leader>pk <C-w>K
-nnoremap <leader>pl <C-w>L
+function ZoomPane()
+  let l:buffer_count = len(tabpagebuflist())
+  let l:pane_count = system('tmux list-panes | wc -l')
+  let l:is_vim_zoomed = zoom#statusline() != '' ? 1 : 0
+  let l:is_tmux_zoomed = system('tmux list-panes -F "#F" | grep -q Z && echo 1')
+
+  if l:is_tmux_zoomed
+    silent exec('!tmux resize-pane -Z')
+    call zoom#toggle()
+  elseif l:buffer_count > 1 && ! l:is_vim_zoomed
+    call zoom#toggle()
+    " silent exe<Plug>(zoom-toggle)c('!tmux resize-pane -Z')
+  else 
+    silent exec('!tmux resize-pane -Z')
+  endif 
+endfunction
+
+if !hasmapto('<Plug>(zoom-toggle)')
+  nmap <c-w>z :call ZoomPane()<CR>
+endif
 
 "##########################################################################}}}1
 " Appearence and status bar {{{1
