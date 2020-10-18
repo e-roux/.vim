@@ -100,17 +100,15 @@ nnoremap <leader>d :bd<CR>  " Delete buffer
 "# ┌───┐ Splitting windows into panes with memorizable commands
 "# ┝━━━┥ A vertical split positions panes up and down.
 "# └───┘ Think of - as the separating line.
-nnoremap \| <C-w>v
+nnoremap <C-w>\| <C-w>v
 
 "# ┌─┰─┐ Splitting windows into panes with memorizable commands
 "# │ ┃ │ A horizontal split positions panes left and right.
 "# └─┸─┘ Think of | (pipe symbol) as the separating line.
-nnoremap _ <C-w>s
+nnoremap <C-w>_ <C-w>s
 
 nnoremap <c-w>z <c-w>_ \| <c-w>\|
 
-" Close pane
-nnoremap <leader>pc <C-w>c
 nnoremap <leader>ph <C-w>H
 nnoremap <leader>pj <C-w>J
 nnoremap <leader>pk <C-w>K
@@ -263,7 +261,8 @@ com! DiffSaved call s:DiffWithSaved()
 "##########################################################################}}}1"}}}
 " Plugins {{{1{{{
 "##############################################################################
-
+" airline {{{2
+"##############################################################################
 let g:airline_right_sep=''
 let g:airline_left_sep=''
 " tabline acivated in airline
@@ -276,7 +275,7 @@ let g:airline_powerline_fonts = 1
 
 set background=light
 
-"##############################################################################
+"##########################################################################}}}2
 " fzf {{{2
 "##############################################################################
  
@@ -471,11 +470,16 @@ let g:tmux_navigator_no_mappings = 1
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 
-nnoremap <silent> h :TmuxNavigateLeft<cr>
-nnoremap <silent> j :TmuxNavigateDown<cr>
-nnoremap <silent> k :TmuxNavigateUp<cr>
-nnoremap <silent> l :TmuxNavigateRight<cr>
-nnoremap <silent> \ :TmuxNavigatePrevious<cr>
+noremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+noremap <silent> <C-w>j :TmuxNavigateDown<cr>
+noremap <silent> <C-w>k :TmuxNavigateUp<cr>
+noremap <silent> <C-w>l :TmuxNavigateRight<cr>
+noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
+"##########################################################################}}}2
+" netrw{{{2
+"##############################################################################
+" Disable netrw.
+let g:loaded_netrw  = 1
 "##########################################################################}}}2
 "##########################################################################}}}1
 let g:deoplete#enable_at_startup = 1
