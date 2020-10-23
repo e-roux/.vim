@@ -147,14 +147,7 @@ endif
 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 "
 " Theme
-"" https://github.com/tomasr/molokai
-
-" colorscheme molokai
-" let g:molokai_original = 0
 colorscheme solarized
-set background=light
-
-highlight Normal ctermbg=black
 
 set cursorline
 highlight clear CursorLine
@@ -260,6 +253,11 @@ endfunction
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 
 
+:command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
+:command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
+:command! BadgeWiki :normal i <badge-wiki href=''></badge-wiki><ESC>T=
+:command! BadgeDoc :normal i <badge-doc href=''></badge-doc><ESC>T= 
+
 function! Codify()
 
 endfunction
@@ -279,17 +277,34 @@ com! DiffSaved call s:DiffWithSaved()
 "##############################################################################
 " airline {{{2
 "##############################################################################
+
 let g:airline_right_sep=''
+let g:airline_right_alt_sep = ''
 let g:airline_left_sep=''
+let g:airline_left_alt_sep = ''
+
+" Diplay only encoding if not 'utf-8[unix]'
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+  
+let g:airline_powerline_fonts = 1
+"
 " tabline acivated in airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-" let g:airline_theme = 'sonokai'
-let g:airline_powerline_fonts = 1
 
-set background=light
+" Unicode emoij
+" http://unicode.org/emoji/charts/full-emoji-list.html
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.dirty='💥'
+
+" let g:airline#extensions#ale#enabled = 0
+" let g:airline#extensions#battery#enabled = 0
+" let g:airline#extensions#bookmark#enabled = 0
+" let g:airline#extensions#coc#enabled = 0
+" let g:airline#extensions#lsp#enabled = 0
+
 
 "##########################################################################}}}2
 " fzf {{{2
