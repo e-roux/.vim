@@ -255,7 +255,6 @@ set mouse=a           " Enable mouse for scrolling and resizing
 " 	autocmd FileType go,python setlocal omnifunc=LanguageClient#complete
 " augroup END
 
-set omnifunc=ale#completion#OmniFunc
 set dictionary=/usr/share/dict/british-english
 
 "##########################################################################}}}1
@@ -328,15 +327,15 @@ let g:airline_symbols.dirty='💥'
 "##############################################################################
  
 " Fix different install location on ubuntu
-let s:ubuntu_fzf = [
-\ "/usr/share/doc/fzf/examples/fzf.vim",
-\ "/usr/local/share/fzf/plugin/fzf.vim",
-\ ]
-for f in s:ubuntu_fzf
-if filereadable(f)
-  execute 'source '.fnameescape(f)
-endif
-endfor
+" let s:ubuntu_fzf = [
+" \ "/usr/share/doc/fzf/examples/fzf.vim",
+" \ "/usr/local/share/fzf/plugin/fzf.vim",
+" \ ]
+" for f in s:ubuntu_fzf
+" if filereadable(f)
+"   execute 'source '.fnameescape(f)
+" endif
+" endfor
 " if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
 "   source /usr/local/share/fzf/plugin/fzf.vim
 " endif
@@ -399,10 +398,10 @@ nnoremap <leader>z :FZF<CR>
 "##############################################################################
 " let g:LanguageClient_serverCommands = {
 
-let g:LanguageClient_loggingFile = "/tmp/LSP.log"
-let g:LanguageClient_loggingLevel = "DEBUG"
-let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
-let g:LanguageClient_trace = "verbose"
+" let g:LanguageClient_loggingFile = "/tmp/LSP.log"
+" let g:LanguageClient_loggingLevel = "DEBUG"
+" let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
+" let g:LanguageClient_trace = "verbose"
 
 " For references, see
 " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
@@ -429,16 +428,6 @@ function SetLSPShortcuts() " {{{3
   nnoremap <leader>lh :Hover<CR>
   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <leader>lm LSPMenu<CR>
-  " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-  " nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-  " nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-  " nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-  " nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-  " nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-  " nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-  " nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-  " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-
 endfunction() " }}}3
 
 " augroup LanguageServerOpts
@@ -519,6 +508,7 @@ let g:loaded_netrw  = 1
 "##########################################################################}}}2
 "##########################################################################}}}1
 
+set omnifunc=ale#completion#OmniFunc
 
 packloadall
 " Load all of the helptags now, after plugins have been loaded.
