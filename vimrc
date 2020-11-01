@@ -9,18 +9,28 @@ syntax on                 " Set syntax color on
 set dir=~/.cache/vim
 
 set history=500           " number of command-lines that are remembered
-set shiftwidth=2          " number of spaces to use for (auto)indent step
+
+" softtabs, 2 spaces
 set softtabstop=2         " number of spaces that <Tab> uses while editing
-set tabstop=4             " number of spaces that <Tab> in file uses
+set tabstop=2             " number of spaces that <Tab> in file uses
+set shiftwidth=2          " number of spaces to use for (auto)indent step
+set shiftround
+set expandtab             " Convert tabs to spaces
 
-set bs=2   " how backspace (bs) works at start of line
+set backspace=2           " Backspace deletes like most programs in insert mode
 
+" Use one space, not two, after punctuation.
+set nojoinspaces
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
+"
 let mapleader=','         " map the leader to ','
 
 filetype on               " Enable filetype detection
 filetype plugin on        " Enable filetype-specific plugins
 
-set expandtab             " Convert tabs to spaces
 set autoindent            " New lines inherit indentation of previous line
 set smartindent
 filetype indent on        " Enable filetype-specific indenting
@@ -48,6 +58,9 @@ nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
+
+" Always use vertical diffs
+set diffopt+=vertical
 
 "---------------------------------------------------------------------------{{{0
 " Clipboard
@@ -206,40 +219,44 @@ set mouse=a           " Enable mouse for scrolling and resizing
 "##########################################################################}}}1
 " Completion {{{1 
 "###############################################################################
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
-  " from the start of the current line to one character right of the cursor
-  let substr = strpart(line, -1, col('.')+1)     
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction
+" function! Smart_TabComplete()
+"   let line = getline('.')                         " current line
+"   " from the start of the current line to one character right of the cursor
+"   let substr = strpart(line, -1, col('.')+1)     
+"   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+"   if (strlen(substr)==0)                          " nothing to match on empty string
+"     return "\<tab>"
+"   endif
+"   let has_period = match(substr, '\.') != -1      " position of period, if any
+"   let has_slash = match(substr, '\/') != -1       " position of slash, if any
+"   if (!has_period && !has_slash)
+"     return "\<C-X>\<C-P>"                         " existing text matching
+"   elseif ( has_slash )
+"     return "\<C-X>\<C-F>"                         " file matching
+"   else
+"     return "\<C-X>\<C-O>"                         " plugin matching
+"   endif
+" endfunction
 
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 
-set omnifunc=syntaxcomplete#Complete
-set completepopup=height:10,width:60,highlight:InfoPopup
+" set omnifunc=syntaxcomplete#Complete
+" set completepopup=height:10,width:60,highlight:InfoPopup
 " set wildmenu
 " set wildmode=longest,list,full
 
 " https://vimhelp.org/options.txt.html#%27completeopt%27
 " menu: Use a popup menu to show the possible completions
 " preview
-set completeopt=menu,longest,noinsert,preview
+" set completeopt=menu,longest,noinsert,preview
+" set completeopt+=menuone
 " augroup completion
 " 	autocmd!
 " 	autocmd FileType go,python setlocal omnifunc=LanguageClient#complete
 " augroup END
+
+set omnifunc=ale#completion#OmniFunc
+set dictionary=/usr/share/dict/british-english
 
 "##########################################################################}}}1
 " Custom functions {{{1 
@@ -380,19 +397,7 @@ nnoremap <leader>z :FZF<CR>
 "##########################################################################}}}2
 " LanguageClient {{{2
 "##############################################################################
-let g:LanguageClient_serverCommands = {
-    \ 'bash': ['bash-language-server', 'start'],
-    \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'go': ['gopls'],
-    \ 'python': ['pyls'],
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'vim': ['vim-language-server', '--stdio'],
-    \ 'yaml': ['yaml-language-server', '--stdio'],
-    \}
-    " \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+" let g:LanguageClient_serverCommands = {
 
 let g:LanguageClient_loggingFile = "/tmp/LSP.log"
 let g:LanguageClient_loggingLevel = "DEBUG"
@@ -436,11 +441,11 @@ function SetLSPShortcuts() " {{{3
 
 endfunction() " }}}3
 
-augroup LanguageServerOpts
-  autocmd!
-  autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
-  autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
-augroup END
+" augroup LanguageServerOpts
+"   autocmd!
+"   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
+"   autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
+" augroup END
 
 " set cmdheight=2
 let g:echodoc#enable_at_startup = 1
@@ -513,4 +518,9 @@ noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
 let g:loaded_netrw  = 1
 "##########################################################################}}}2
 "##########################################################################}}}1
-let g:deoplete#enable_at_startup = 1
+
+
+packloadall
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL

@@ -47,24 +47,21 @@
 [submodule "pack/custom/start/vim-slime"]
 	path = pack/custom/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime
-[submodule "pack/custom/start/deoplete"]
-	path = pack/custom/start/deoplete
-	url = https://github.com/Shougo/deoplete.nvim.git
 [submodule "pack/custom/start/webapi-git"]
 	path = pack/custom/start/webapi-git
 	url = https://github.com/mattn/webapi-vim.git
 [submodule "pack/custom/start/vim-toml"]
 	path = pack/custom/start/vim-toml
 	url = https://github.com/cespare/vim-toml.git
-[submodule "pack/custom/start/nvim-yarp"]
-	path = pack/custom/start/nvim-yarp
-	url = https://github.com/roxma/nvim-yarp
-[submodule "pack/custom/start/vim-hug-neovim-rpc"]
-	path = pack/custom/start/vim-hug-neovim-rpc
-	url = https://github.com/roxma/vim-hug-neovim-rpc
 [submodule "pack/custom/start/vim-ripgrep"]
 	path = pack/custom/start/vim-ripgrep
 	url = https://github.com/jremmen/vim-ripgrep.git
 [submodule "pack/custom/start/vim-zoom"]
 	path = pack/custom/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
+[submodule "pack/custom/start/vim-mucomplete"]
+	path = pack/custom/start/vim-mucomplete
+	url = https://github.com/lifepillar/vim-mucomplete.git
+[submodule "ale"]
+	path = pack/vim-ale
+	url = https://github.com/fesaille/vim-ale.git
