@@ -5,35 +5,35 @@
 	path = pack/custom/start/fzf-vim
 	url = https://github.com/junegunn/fzf.vim.git
 [submodule "pack/custom/start/vim-commentary"]
-	path = pack/custom/start/vim-commentary
+	path = pack/editing/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "pack/custom/start/nnn-vim"]
 	path = pack/custom/start/nnn-vim
 	url = https://github.com/mcchrish/nnn.vim
   ignore = dirty
 [submodule "pack/custom/start/vim-tmux-navigator"]
-	path = pack/custom/start/vim-tmux-navigator
+	path = pack/interface/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
 [submodule "pack/custom/start/vim-dadbod"]
 	path = pack/custom/start/vim-dadbod
 	url = https://github.com/tpope/vim-dadbod.git
 [submodule "pack/custom/start/vim-surround"]
-	path = pack/custom/start/vim-surround
+	path = pack/editing/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule "pack/custom/start/vim-fugitive"]
 	path = pack/custom/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "pack/custom/start/vim-go"]
-	path = pack/custom/start/vim-go
+	path = pack/languages/start/vim-go
 	url = https://github.com/fatih/vim-go.git
 [submodule "pack/custom/start/vim-table-mode"]
-	path = pack/custom/start/vim-table-mode
+	path = pack/editing/start/vim-table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode.git
 [submodule "pack/custom/start/auto-pairs"]
-	path = pack/custom/start/auto-pairs
+	path = pack/editing/start/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs
 [submodule "airline"]
-	path = pack/custom/start/vim-airline
+	path = pack/interface/start/vim-airline
 	url = https://github.com/vim-airline/vim-airline
 [submodule "pack/custom/start/vim-slime"]
 	path = pack/custom/start/vim-slime
@@ -42,13 +42,13 @@
 	path = pack/custom/start/webapi-git
 	url = https://github.com/mattn/webapi-vim.git
 [submodule "pack/custom/start/vim-toml"]
-	path = pack/custom/start/vim-toml
+	path = pack/languages/start/vim-toml
 	url = https://github.com/cespare/vim-toml.git
 [submodule "pack/custom/start/vim-ripgrep"]
 	path = pack/custom/start/vim-ripgrep
 	url = https://github.com/jremmen/vim-ripgrep.git
 [submodule "pack/custom/start/vim-zoom"]
-	path = pack/custom/start/vim-zoom
+	path = pack/interface/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
   ignore = dirty
 [submodule "ale"]
