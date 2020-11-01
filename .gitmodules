@@ -10,6 +10,7 @@
 [submodule "pack/custom/start/nnn-vim"]
 	path = pack/custom/start/nnn-vim
 	url = https://github.com/mcchrish/nnn.vim
+  ignore = dirty
 [submodule "pack/custom/start/vim-tmux-navigator"]
 	path = pack/custom/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
@@ -49,6 +50,7 @@
 [submodule "pack/custom/start/vim-zoom"]
 	path = pack/custom/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
+  ignore = dirty
 [submodule "ale"]
 	path = pack/vim-ale
 	url = https://github.com/fesaille/vim-ale.git
