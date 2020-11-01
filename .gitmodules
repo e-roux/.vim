@@ -19,18 +19,12 @@
 [submodule "pack/custom/start/vim-surround"]
 	path = pack/custom/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule "pack/custom/start/vim-repeat"]
-	path = pack/custom/start/vim-repeat
-	url = https://github.com/tpope/vim-repeat
 [submodule "pack/custom/start/vim-fugitive"]
 	path = pack/custom/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "pack/custom/start/vim-go"]
 	path = pack/custom/start/vim-go
 	url = https://github.com/fatih/vim-go.git
-[submodule "pack/custom/start/vim-dadbod-ui"]
-	path = pack/custom/start/vim-dadbod-ui
-	url = https://github.com/kristijanhusak/vim-dadbod-ui.git
 [submodule "pack/custom/start/vim-table-mode"]
 	path = pack/custom/start/vim-table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode.git
@@ -55,9 +49,6 @@
 [submodule "pack/custom/start/vim-zoom"]
 	path = pack/custom/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
-[submodule "pack/custom/start/vim-mucomplete"]
-	path = pack/custom/start/vim-mucomplete
-	url = https://github.com/lifepillar/vim-mucomplete.git
 [submodule "ale"]
 	path = pack/vim-ale
 	url = https://github.com/fesaille/vim-ale.git
