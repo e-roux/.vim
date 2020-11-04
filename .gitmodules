@@ -54,3 +54,6 @@
 [submodule "ale"]
 	path = pack/vim-ale
 	url = https://github.com/fesaille/vim-ale.git
+[submodule "pack/testing/start/vim-test"]
+	path = pack/testing/start/vim-test
+	url = https://github.com/vim-test/vim-test.git

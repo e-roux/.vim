@@ -506,7 +506,16 @@ noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
 " Disable netrw.
 let g:loaded_netrw  = 1
 "##########################################################################}}}2
+" vim-test {{{2
+"##############################################################################
+nnoremap <leader>tn :TestNearest<CR>
+nnoremap <leader>tf :TestFile<CR>
+nnoremap <leader>ts :TestSuite<CR>
+nnoremap <leader>tl :TestLast<CR>
+nnoremap <leader>tv :TestVisit<CR>
+"##########################################################################}}}2
 "##########################################################################}}}1
+
 
 set omnifunc=ale#completion#OmniFunc
 
