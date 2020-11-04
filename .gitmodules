@@ -57,3 +57,6 @@
 [submodule "pack/testing/start/vim-test"]
 	path = pack/testing/start/vim-test
 	url = https://github.com/vim-test/vim-test.git
+[submodule "pack/custom/start/asyncrun.vim"]
+	path = pack/custom/start/asyncrun.vim
+	url = https://github.com/skywind3000/asyncrun.vim
