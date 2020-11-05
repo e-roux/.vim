@@ -323,6 +323,15 @@ let g:airline_symbols.dirty='💥'
 
 
 "##########################################################################}}}2
+" ale {{{2
+"##############################################################################
+nnoremap <leader>lf :ALEFirst<CR>
+nnoremap <leader>l<Space> :ALELint<CR>
+nnoremap <leader>ll :ALELast<CR>
+nnoremap <leader>ln :ALENext<CR>
+nnoremap <leader>lp :ALEPrevious<CR>
+
+"##########################################################################}}}2
 " fzf {{{2
 "##############################################################################
  
@@ -513,6 +522,23 @@ nnoremap <leader>tf :TestFile<CR>
 nnoremap <leader>ts :TestSuite<CR>
 nnoremap <leader>tl :TestLast<CR>
 nnoremap <leader>tv :TestVisit<CR>
+"
+let test#strategy = {
+  \ 'nearest': 'asyncrun_background',
+  \ 'file':    'asyncrun_background_term',
+  \ 'suite':    'asyncrun_background_term',
+  \}
+
+function! s:syncrun_background_buff(cmd) abort
+  let g:test#strategy#cmd = a:cmd
+  call test#strategy#asyncrun_setup_unlet_global_autocmd()
+  execute 'AsyncRun -mode=term -focus=0 -post=echo\ eval("g:asyncrun_code\ ?\"Failure\":\"Success\"").":"'
+          \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
+endfunction
+let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
+let g:test#strategy = 'echo'
+
+"
 "##########################################################################}}}2
 "##########################################################################}}}1
 

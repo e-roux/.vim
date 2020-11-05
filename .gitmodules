@@ -60,3 +60,6 @@
 [submodule "pack/custom/start/asyncrun.vim"]
 	path = pack/custom/start/asyncrun.vim
 	url = https://github.com/skywind3000/asyncrun.vim
+[submodule "pack/interface/start/vim-startify"]
+	path = pack/interface/start/vim-startify
+	url = https://github.com/mhinz/vim-startify.git
