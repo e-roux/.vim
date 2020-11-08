@@ -91,10 +91,10 @@ nnoremap <leader>ye "+ye
 " nnoremap z3 :set foldlevel=3<CR>
 " nnoremap z4 :set foldlevel=4<CR>
 
-augroup vimrc 
-  autocmd!
-  autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
-augroup END
+" augroup vimrc
+"   autocmd!
+"   autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
+" augroup END
 
 "##########################################################################}}}1
 "Buffers {{{1
@@ -134,9 +134,9 @@ function ZoomPane()
   elseif l:buffer_count > 1 && ! l:is_vim_zoomed
     call zoom#toggle()
     " silent exe<Plug>(zoom-toggle)c('!tmux resize-pane -Z')
-  else 
+  else
     silent exec('!tmux resize-pane -Z')
-  endif 
+  endif
 endfunction
 
 if !hasmapto('<Plug>(zoom-toggle)')
@@ -217,12 +217,12 @@ set noerrorbells      " Disable beep on errors
 set mouse=a           " Enable mouse for scrolling and resizing
 
 "##########################################################################}}}1
-" Completion {{{1 
+" Completion {{{1
 "###############################################################################
 " function! Smart_TabComplete()
 "   let line = getline('.')                         " current line
 "   " from the start of the current line to one character right of the cursor
-"   let substr = strpart(line, -1, col('.')+1)     
+"   let substr = strpart(line, -1, col('.')+1)
 "   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
 "   if (strlen(substr)==0)                          " nothing to match on empty string
 "     return "\<tab>"
@@ -258,7 +258,7 @@ set mouse=a           " Enable mouse for scrolling and resizing
 set dictionary=/usr/share/dict/british-english
 
 "##########################################################################}}}1
-" Custom functions {{{1 
+" Custom functions {{{1
 "###############################################################################
 function! GoogleSearch()
    let searchterm = getreg("g")
@@ -272,7 +272,7 @@ vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeWiki :normal i <badge-wiki href=''></badge-wiki><ESC>T=
-:command! BadgeDoc :normal i <badge-doc href=''></badge-doc><ESC>T= 
+:command! BadgeDoc :normal i <badge-doc href=''></badge-doc><ESC>T=
 
 function! Codify()
 
@@ -301,7 +301,7 @@ let g:airline_left_alt_sep = ''
 
 " Diplay only encoding if not 'utf-8[unix]'
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-  
+
 let g:airline_powerline_fonts = 1
 "
 " tabline acivated in airline
@@ -334,7 +334,7 @@ nnoremap <leader>lp :ALEPrevious<CR>
 "##########################################################################}}}2
 " fzf {{{2
 "##############################################################################
- 
+
 " Fix different install location on ubuntu
 " let s:ubuntu_fzf = [
 " \ "/usr/share/doc/fzf/examples/fzf.vim",
@@ -345,10 +345,14 @@ nnoremap <leader>lp :ALEPrevious<CR>
 "   execute 'source '.fnameescape(f)
 " endif
 " endfor
+"
+
+" set rtp+=/usr/local/bin/fzf
 " if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
-"   source /usr/local/share/fzf/plugin/fzf.vim
+"   source fzf.vim
 " endif
-" set rtp+=/usr/bin/fzf
+
+
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -542,6 +546,14 @@ let g:test#strategy = 'echo'
 "##########################################################################}}}2
 "##########################################################################}}}1
 
+inoremap jj <ESC>
+nnoremap <leader>hh :help<CR>
+nnoremap <leader>hr :help quickref.txt<CR>
+nnoremap <leader>he :help editing.txt<CR>
+nnoremap <leader>hi :help insert.txt<CR>
+nnoremap <leader>hm :help motion.txt<CR>
+nnoremap <leader>hc :help change.txt<CR>
+nnoremap <leader>hv :help visual.txt<CR>
 
 set omnifunc=ale#completion#OmniFunc
 
@@ -549,3 +561,5 @@ packloadall
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL
+
+" vim:fdm=marker
