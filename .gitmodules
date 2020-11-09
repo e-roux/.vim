@@ -30,7 +30,7 @@
 	path = pack/editing/start/vim-table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode.git
 [submodule "pack/custom/start/auto-pairs"]
-	path = pack/editing/start/auto-pairs
+	path = pack/editing/opt/auto-pairs
 	url = https://github.com/jiangmiao/auto-pairs
 [submodule "airline"]
 	path = pack/interface/start/vim-airline
@@ -63,3 +63,6 @@
 [submodule "pack/interface/start/vim-startify"]
 	path = pack/interface/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
+[submodule "ultrasnips"]
+	path = pack/editing/start/ultrasnips
+	url = https://github.com/SirVer/ultisnips.git
