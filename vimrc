@@ -516,8 +516,28 @@ noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
 "##########################################################################}}}2
 " netrw{{{2
 "##############################################################################
-" Disable netrw.
-let g:loaded_netrw  = 1
+" suppress the banner
+let g:netrw_banner = 0
+" when browsing, <cr> will open the file by:
+" act like "P" (ie. open previous window)
+let g:netrw_browse_split = 4
+" change from left splitting to right splitting
+let g:netrw_altv = 1
+" preview window shown in a vertically split window.
+let g:netrw_preview   = 1
+" tree style listing
+let g:netrw_liststyle = 3
+" specify initial size of new windows made with "o" (see |netrw-o|), "v" (see
+" |netrw-v|), |:Hexplore| or |:Vexplore|.
+let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
+nnoremap <leader>e :Vexplore<CR>
+
+let g:nnn#layout = { 'left': '~20%' }
 "##########################################################################}}}2
 " vim-test {{{2
 "##############################################################################
@@ -554,6 +574,7 @@ nnoremap <leader>hi :help insert.txt<CR>
 nnoremap <leader>hm :help motion.txt<CR>
 nnoremap <leader>hc :help change.txt<CR>
 nnoremap <leader>hv :help visual.txt<CR>
+nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
 
 set omnifunc=ale#completion#OmniFunc
 

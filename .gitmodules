@@ -63,3 +63,6 @@
 [submodule "pack/interface/start/vim-startify"]
 	path = pack/interface/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
+[submodule "vim-vinegar"]
+	path = pack/interface/opt/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar.git
