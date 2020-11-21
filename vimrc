@@ -551,4 +551,7 @@ packloadall
 " All messages and errors will be ignored.
 silent! helptags ALL
 
+" Activate markdown plugin
+let g:markdown_folding = 1
+
 " vim:fdm=marker
