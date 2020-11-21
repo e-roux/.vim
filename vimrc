@@ -95,6 +95,7 @@ nnoremap <leader>ye "+ye
 "   autocmd!
 "   autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
 " augroup END
+let g:markdown_folding = 1
 
 "##########################################################################}}}1
 "Buffers {{{1
@@ -404,7 +405,7 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-nnoremap <leader>z :FZF<CR>
+nnoremap <leader>z :Files<CR>
 
 "##########################################################################}}}2
 " LanguageClient {{{2
@@ -565,6 +566,10 @@ let g:test#strategy = 'echo'
 "
 "##########################################################################}}}2
 "##########################################################################}}}1
+
+" Basic search for visually selected text: //
+" https://vim.fandom.com/wiki/Search_for_visually_selected_text
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 inoremap jj <ESC>
 nnoremap <leader>hh :help<CR>
