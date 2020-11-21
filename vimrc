@@ -95,7 +95,19 @@ nnoremap <leader>ye "+ye
 "   autocmd!
 "   autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
 " augroup END
-let g:markdown_folding = 1
+
+set foldopen&
+function! s:toggleFoldClose()
+  " toggle automatic folds close when you move out of it
+  if &foldclose ==? 'all'
+    set foldclose&vim
+  else
+    set foldclose=all
+  endif
+endfunction
+
+command! ToggleFoldClose :call s:toggleFoldClose()
+
 
 "##########################################################################}}}1
 "Buffers {{{1
@@ -197,10 +209,10 @@ endif
 "    requires ack.vim - it's much better than vimgrep/grep
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " When you press gv you Ack after the selected text
-vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
+" vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " When you press <leader>r you can search and replace the selected text
-vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+" vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
 "
 " Make sure that enter is never overriden in the quickfix window
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
@@ -220,41 +232,6 @@ set mouse=a           " Enable mouse for scrolling and resizing
 "##########################################################################}}}1
 " Completion {{{1
 "###############################################################################
-" function! Smart_TabComplete()
-"   let line = getline('.')                         " current line
-"   " from the start of the current line to one character right of the cursor
-"   let substr = strpart(line, -1, col('.')+1)
-"   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-"   if (strlen(substr)==0)                          " nothing to match on empty string
-"     return "\<tab>"
-"   endif
-"   let has_period = match(substr, '\.') != -1      " position of period, if any
-"   let has_slash = match(substr, '\/') != -1       " position of slash, if any
-"   if (!has_period && !has_slash)
-"     return "\<C-X>\<C-P>"                         " existing text matching
-"   elseif ( has_slash )
-"     return "\<C-X>\<C-F>"                         " file matching
-"   else
-"     return "\<C-X>\<C-O>"                         " plugin matching
-"   endif
-" endfunction
-
-" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
-
-" set omnifunc=syntaxcomplete#Complete
-" set completepopup=height:10,width:60,highlight:InfoPopup
-" set wildmenu
-" set wildmode=longest,list,full
-
-" https://vimhelp.org/options.txt.html#%27completeopt%27
-" menu: Use a popup menu to show the possible completions
-" preview
-" set completeopt=menu,longest,noinsert,preview
-" set completeopt+=menuone
-" augroup completion
-" 	autocmd!
-" 	autocmd FileType go,python setlocal omnifunc=LanguageClient#complete
-" augroup END
 
 set dictionary=/usr/share/dict/british-english
 
@@ -326,6 +303,9 @@ let g:airline_symbols.dirty='💥'
 "##########################################################################}}}2
 " ale {{{2
 "##############################################################################
+
+" Linting: <leader>l
+"
 nnoremap <leader>lf :ALEFirst<CR>
 nnoremap <leader>l<Space> :ALELint<CR>
 nnoremap <leader>ll :ALELast<CR>
@@ -335,25 +315,6 @@ nnoremap <leader>lp :ALEPrevious<CR>
 "##########################################################################}}}2
 " fzf {{{2
 "##############################################################################
-
-" Fix different install location on ubuntu
-" let s:ubuntu_fzf = [
-" \ "/usr/share/doc/fzf/examples/fzf.vim",
-" \ "/usr/local/share/fzf/plugin/fzf.vim",
-" \ ]
-" for f in s:ubuntu_fzf
-" if filereadable(f)
-"   execute 'source '.fnameescape(f)
-" endif
-" endfor
-"
-
-" set rtp+=/usr/local/bin/fzf
-" if filereadable("/usr/local/share/fzf/plugin/fzf.vim")
-"   source fzf.vim
-" endif
-
-
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -385,7 +346,8 @@ let g:fzf_layout = { 'window': '10new' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
+\ {
+\ 'fg':      ['fg', 'Normal'],
 \ 'bg':      ['bg', 'Normal'],
 \ 'hl':      ['fg', 'Comment'],
 \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -397,7 +359,8 @@ let g:fzf_colors =
 \ 'pointer': ['fg', 'Exception'],
 \ 'marker':  ['fg', 'Keyword'],
 \ 'spinner': ['fg', 'Label'],
-\ 'header':  ['fg', 'Comment'] }
+\ 'header':  ['fg', 'Comment']
+\ }
 
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
