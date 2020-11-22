@@ -66,3 +66,15 @@
 [submodule "vim-vinegar"]
 	path = pack/interface/opt/vim-vinegar
 	url = https://github.com/tpope/vim-vinegar.git
+[submodule "pack/languages/start/SimpylFold"]
+	path = pack/languages/start/SimpylFold
+	url = https://github.com/tmhedberg/SimpylFold.git
+[submodule "pack/interface/start/nerdtree"]
+	path = pack/interface/start/nerdtree
+	url = https://github.com/preservim/nerdtree.git
+[submodule "pack/interface/start/nerdtree-git-plugin"]
+	path = pack/interface/start/nerdtree-git-plugin
+	url = https://github.com/Xuyuanp/nerdtree-git-plugin
+[submodule "pack/editing/start/jedi-vim"]
+	path = pack/editing/start/jedi-vim
+	url = http://github.com/davidhalter/jedi-vim

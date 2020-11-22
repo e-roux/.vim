@@ -118,7 +118,7 @@ set hidden
 nnoremap <C-h> :bprev<CR>
 nnoremap <C-l> :bnext<CR>
 
-nnoremap <leader>d :bd<CR>  " Delete buffer
+nnoremap <leader>d :bp\|bd #<CR>  " buffer previous, buffer delete alternate
 "##########################################################################}}}1
 " Panes  {{{1
 "###############################################################################
@@ -291,7 +291,22 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-let g:airline_symbols.dirty='💥'
+let g:airline_symbols = {
+  \ 'space': ' ',
+  \ 'paste': 'PASTE',
+  \ 'spell': 'SPELL',
+  \ 'notexists': '⚠',
+  \ 'maxlinenr': ' ',
+  \ 'linenr': '📄',
+  \ 'readonly': '🔒',
+  \ 'dirty': '💥',
+  \ 'modified': '✏ ',
+  \ 'crypt': '🔑',
+  \ 'keymap': 'Keymap:',
+  \ 'ellipsis': '...',
+  \ 'branch': '⎇',
+  \ 'whitespace': '☲',
+  \ }
 
 " let g:airline#extensions#ale#enabled = 0
 " let g:airline#extensions#battery#enabled = 0
@@ -299,7 +314,33 @@ let g:airline_symbols.dirty='💥'
 " let g:airline#extensions#coc#enabled = 0
 " let g:airline#extensions#lsp#enabled = 0
 
+"##########################################################################}}}2
+" NERDTree {{{2
+"##############################################################################
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✏ ',
+                \ 'Staged'    :'➕',
+                \ 'Untracked' :'⚠ ',
+                \ 'Renamed'   :'➜ ',
+                \ 'Unmerged'  :'⛓',
+                \ 'Deleted'   :'🗑',
+                \ 'Dirty'     :'💥',
+                \ 'Ignored'   :'✅',
+                \ 'Clean'     :'✔︎ ',
+                \ 'Unknown'   :'❓',
+                \ }
+let g:NERDTreeMapCloseDir = "h"
+let g:NERDTreeMapActivateNode = "l"
 
+" Open NERDTree if no file specified
+autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter *
+            \   if !argc()
+            \ |   Startify
+            \ |   NERDTree
+            \ |   wincmd w
+            \ | endif
 "##########################################################################}}}2
 " ale {{{2
 "##############################################################################
@@ -311,6 +352,15 @@ nnoremap <leader>l<Space> :ALELint<CR>
 nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
+
+" Fix files when they are saved.
+let g:ale_fix_on_save=1
+" When to lint
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_filetype_changed = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'normal'
 
 "##########################################################################}}}2
 " fzf {{{2
@@ -384,10 +434,10 @@ nnoremap <leader>z :Files<CR>
 " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
 command! Completion :call LanguageClient#textDocument_completion()
 command! Hover :call LanguageClient#textDocument_hover()
-command! Definition :call LanguageClient#textDocument_definition()
+command! Definition :ALEGoToDefinition()
 command! DocumentFormatting :call LanguageClient#textDocument_formatting()
 command! LSPMenu :call LanguageClient_contextMenu()
-command! Reference :call LanguageClient#textDocument_references()
+command! Reference :ALEFindReferences()
 command! Rename :call LanguageClient#textDocument_rename()
 command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
 
@@ -419,6 +469,9 @@ let g:echodoc#type = 'signature'
 
 " DVC
 autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
+let g:jedi#goto_command = '<leader>gd'
+" g:goto_definitions_command = ''
+autocmd FileType python setlocal completeopt-=preview
 
 "#######################################################################}}}2
 " Python mode {{{2
@@ -452,6 +505,10 @@ autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
 
+let g:SimpylFold_fold_import=0
+let g:SimpylFold_docstring_preview=1
+let g:SimpylFold_fold_docstring=0
+let g:SimpylFold_fold_blank=1
 
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
@@ -481,6 +538,7 @@ noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
 " netrw{{{2
 "##############################################################################
 " suppress the banner
+
 let g:netrw_banner = 0
 " when browsing, <cr> will open the file by:
 " act like "P" (ie. open previous window)
@@ -499,7 +557,7 @@ let g:netrw_winsize = 25
 "   autocmd VimEnter * :Vexplore
 " augroup END
 
-nnoremap <leader>e :Vexplore<CR>
+nnoremap <leader>e :NERDTreeToggle<CR>
 
 let g:nnn#layout = { 'left': '~20%' }
 "##########################################################################}}}2
@@ -546,12 +604,12 @@ nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
 
 set omnifunc=ale#completion#OmniFunc
 
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-" All messages and errors will be ignored.
-silent! helptags ALL
-
 " Activate markdown plugin
 let g:markdown_folding = 1
+
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+packloadall
+silent! helptags ALL
 
 " vim:fdm=marker
