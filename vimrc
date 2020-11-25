@@ -127,7 +127,8 @@ command! ToggleFoldClose :call s:toggleFoldClose()
 set hidden
 
 function! s:BufferPrev()
-  if &buftype != 'nofile'
+  let l:bufferNr = len(getbufinfo({'buflisted':1}))
+  if &buftype != 'nofile' && l:bufferNr > 1
     exec('bprev')
     if &buftype == 'terminal'
       exec('bprev')
@@ -136,7 +137,8 @@ function! s:BufferPrev()
 endfunction
 
 function! s:BufferNext()
-  if &buftype != 'nofile'
+  let l:bufferNr = len(getbufinfo({'buflisted':1}))
+  if &buftype != 'nofile' && l:bufferNr > 1
     exec('bnext')
     if &buftype == 'terminal'
       exec('bnext')
@@ -155,7 +157,12 @@ function! s:Delete()
     exec('bd')
   else
     " https://stackoverflow.com/questions/4465095
-    exec('bprev|bd #')
+    let l:bufferNr = len(getbufinfo({'buflisted':1}))
+    if l:bufferNr > 1
+      exec('bprev|bd #')
+    else
+      exe('bd|Startify|NERDTree')
+    endif
   endif
 endfunction
 
