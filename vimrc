@@ -44,7 +44,17 @@ autocmd FocusGained,BufEnter * checktime
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " Remap gf: create buffer if file does not exists
-:nnoremap gf :e <cfile><cr>
+function! s:GotoFile(path)
+  echo(a:path)
+  if isdirectory(a:path)
+    exec("NERDTreeToggle " . a:path)
+  else
+    exec("edit " . a:path)
+  endif
+endfunction
+
+:nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
+" :nnoremap gf :e <cfile><cr>
 
 function! s:Saving_scroll(cmd)
   let save_scroll = &scroll
@@ -112,13 +122,45 @@ command! ToggleFoldClose :call s:toggleFoldClose()
 "##########################################################################}}}1
 "Buffers {{{1
 "##############################################################################
+"
 "  Unsaved modified buffer when opening a new file is hidden instead of closed
-
 set hidden
-nnoremap <C-h> :bprev<CR>
-nnoremap <C-l> :bnext<CR>
 
-nnoremap <leader>d :bp\|bd #<CR>  " buffer previous, buffer delete alternate
+function! s:BufferPrev()
+  if &buftype != 'nofile'
+    exec('bprev')
+    if &buftype == 'terminal'
+      exec('bprev')
+    endif
+  endif
+endfunction
+
+function! s:BufferNext()
+  if &buftype != 'nofile'
+    exec('bnext')
+    if &buftype == 'terminal'
+      exec('bnext')
+    endif
+  endif
+endfunction
+
+nnoremap <C-h> :call <SID>BufferPrev()<CR>
+nnoremap <C-l> :call <SID>BufferNext()<CR>
+
+nnoremap <leader>b :ls<cr>:b<space>
+
+
+function! s:Delete()
+  if &filetype == "help" || &filetype == "nerdtree"
+    exec('bd')
+  else
+    " https://stackoverflow.com/questions/4465095
+    exec('bprev|bd #')
+  endif
+endfunction
+
+nnoremap <leader>d :call <SID>Delete()<CR>
+" nnoremap <leader>d :bp\|bd #<CR>  " buffer previous, buffer delete alternate
 "##########################################################################}}}1
 " Panes  {{{1
 "###############################################################################
@@ -353,6 +395,8 @@ nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
 
+nnoremap <leader>i :ALEInfo<CR>
+
 " Fix files when they are saved.
 let g:ale_fix_on_save=1
 " When to lint
@@ -432,36 +476,35 @@ nnoremap <leader>z :Files<CR>
 
 " For references, see
 " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
-command! Completion :call LanguageClient#textDocument_completion()
-command! Hover :call LanguageClient#textDocument_hover()
-command! Definition :ALEGoToDefinition()
-command! DocumentFormatting :call LanguageClient#textDocument_formatting()
-command! LSPMenu :call LanguageClient_contextMenu()
-command! Reference :ALEFindReferences()
-command! Rename :call LanguageClient#textDocument_rename()
-command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
+command! FindReference :ALEFindReferences
+command! GoToDefinition :ALEGoToDefinition
+command! Rename :ALERename
+" command! Completion :call LanguageClient#textDocument_completion()
+" command! Hover :call LanguageClient#textDocument_hover()
+" command! DocumentFormatting :call LanguageClient#textDocument_formatting()
+" command! LSPMenu :call LanguageClient_contextMenu()
+" command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
 
 " nnoremap <Esc> A
 " nnoremap <Esc> <NOP>
 
 function SetLSPShortcuts() " {{{3
-  nnoremap <leader>gd :Definition<CR>
-  nnoremap <leader>gx :Reference<CR>
-  nnoremap <leader>lr :Rename<CR>
-  nnoremap <leader>lf :DocumentFormatting<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :Completion<CR>
-  nnoremap <leader>lh :Hover<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm LSPMenu<CR>
+  nnoremap <leader>gr :FindReference<CR>
+  nnoremap <leader>gd :GoToDefinition<CR>
+  nnoremap <leader>r :Rename<CR>
+  " nnoremap <leader>lf :DocumentFormatting<CR>
+  " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  " nnoremap <leader>lh :Hover<CR>
+  " nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  " nnoremap <leader>lm LSPMenu<CR>
 endfunction() " }}}3
 
-" augroup LanguageServerOpts
-"   autocmd!
-"   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
-"   autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
-" augroup END
+augroup LanguageServerOpts
+  autocmd!
+  autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
+  " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
+augroup END
 
 " set cmdheight=2
 let g:echodoc#enable_at_startup = 1
@@ -508,7 +551,7 @@ autocmd FileType python setlocal completeopt-=preview
 let g:SimpylFold_fold_import=0
 let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_docstring=0
-let g:SimpylFold_fold_blank=1
+" let g:SimpylFold_fold_blank=1
 
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
