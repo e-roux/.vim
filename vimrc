@@ -404,6 +404,7 @@ nnoremap <leader>lp :ALEPrevious<CR>
 
 nnoremap <leader>i :ALEInfo<CR>
 
+let g:ale_completion_autoimport = 1
 " Fix files when they are saved.
 let g:ale_fix_on_save=1
 " When to lint
