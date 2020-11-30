@@ -293,6 +293,12 @@ function! GoogleSearch()
    redraw!
 endfunction
 
+
+def Hello()
+  echo "Hello"
+enddef
+
+
 vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 
 
@@ -300,6 +306,7 @@ vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeWiki :normal i <badge-wiki href=''></badge-wiki><ESC>T=
 :command! BadgeDoc :normal i <badge-doc href=''></badge-doc><ESC>T=
+:command! Link :normal i [🔗]()<ESC>
 
 function! Codify()
 
@@ -509,6 +516,7 @@ function SetLSPShortcuts() " {{{3
 endfunction() " }}}3
 
 augroup LanguageServerOpts
+
   autocmd!
   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
@@ -525,7 +533,7 @@ let g:jedi#goto_command = '<leader>gd'
 autocmd FileType python setlocal completeopt-=preview
 
 "#######################################################################}}}2
-" Python mode {{{2
+" Python {{{2
 "##############################################################################
 " let g:pymode_python = 'python3'
 " let g:pymode_virtualenv_path = $VIRTUAL_ENV
@@ -533,7 +541,6 @@ autocmd FileType python setlocal completeopt-=preview
 " let g:pymode_lint_checkers = ['pep8']
 " " Trim unused white spaces on save.
 " let g:pymode_trim_whitespaces = 1
-" let g:py
 
 " Setup default python options.
 "  g:pymode_options = 1
@@ -541,13 +548,6 @@ autocmd FileType python setlocal completeopt-=preview
 
 " setlocal complete+=t
 " setlocal formatoptions-=t
-" if v:version > 702 && !&relativenumber
-"     setlocal number
-" endif
-" setlocal nowrap
-" setlocal textwidth=79
-" setlocal commentstring=#%s
-" setlocal define=^\s*\\(def\\\\|class\\)
 
 " Turn on the rope script
 " let g:pymode_rope = 0
@@ -658,6 +658,38 @@ set omnifunc=ale#completion#OmniFunc
 " Activate markdown plugin
 let g:markdown_folding = 1
 
+" ead ~/.NERDTreeBookmarks file and takes its second column
+function! s:nerdtreeBookmarks()
+    let bookmarks = systemlist("cut -d' ' -f 2 ~/.NERDTreeBookmarks")
+    let bookmarks = bookmarks[0:-2] " Slices an empty last line
+    return map(bookmarks, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" returns all modified files of the current git repo
+" `2>/dev/null` makes the command fail quietly, so that when we are not
+" in a git repo, the list will be empty
+function! s:gitModified()
+    let files = systemlist('git ls-files -m 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+let g:startify_lists = [
+        \ { 'type': 'files',     'header': ['   MRU']            },
+        \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+        \ { 'type': 'sessions',  'header': ['   Sessions']       },
+        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+        \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+        \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+        \ { 'type': function('s:nerdtreeBookmarks'), 'header': ['   NERDTree Bookmarks']},
+        \ { 'type': 'commands',  'header': ['   Commands']       },
+        \ ]
+let g:startify_bookmarks = systemlist("cut -sd' ' -f 2 ~/.NERDTreeBookmarks")
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 packloadall
