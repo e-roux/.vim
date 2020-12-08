@@ -387,6 +387,7 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ }
 let g:NERDTreeMapCloseDir = "h"
 let g:NERDTreeMapActivateNode = "l"
+let NERDTreeIgnore = ['__pycache__']
 
 " Open NERDTree if no file specified
 autocmd StdinReadPre * let s:std_in=1
