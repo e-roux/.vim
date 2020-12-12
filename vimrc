@@ -54,44 +54,16 @@ function! s:GotoFile(path)
   endif
 endfunction
 
-:nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
-" :nnoremap gf :e <cfile><cr>
-
 function! s:Saving_scroll(cmd)
   let save_scroll = &scroll
   execute 'normal! ' . a:cmd
   let &scroll = save_scroll
 endfunction
 
-nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
-vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
-nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
-vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
-nnoremap <leader>a  ggvG$yggvG$"+y
-nnoremap <leader>w :w!<cr>    " Fast saving
-
 " Always use vertical diffs
 set diffopt+=vertical
 
-"---------------------------------------------------------------------------{{{0
-" Clipboard
-"---------------------------------------------------------------------------}}}0
-" Yank selection, word or line to system clipboard
-" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 set clipboard=unnamedplus
-vnoremap <leader>y "+y
-nnoremap <leader>yy "+yy
-nnoremap <leader>yw "+yw
-nnoremap <leader>ye "+ye
-
-" Search vim help for subject under cursor: K in normal mode
-" set keywordprg=:help
-
-" see https://vi.stackexchange.com/questions/84
-" vnoremap <leader>P "+p
-" vnoremap <leader>Y "+y
-" vnoremap <leader>p "*p
-" vnoremap <leader>y "*y
 
 "##########################################################################}}}1
 " Folding {{{1
@@ -160,12 +132,6 @@ function! s:BufferDelete()
     endif
   endif
 endfunction
-
-" nnoremap <leader>b :ls<cr>:b<space>
-nnoremap <leader>b :Buffers
-nnoremap <C-h> :call <SID>BufferPrev()<CR>
-nnoremap <C-l> :call <SID>BufferNext()<CR>
-nnoremap <leader>d :call <SID>BufferDelete()<CR>
 
 " nnoremap <leader>d :bp\|bd #<CR>  " buffer previous, buffer delete alternate
 "##########################################################################}}}1
@@ -283,6 +249,7 @@ set mouse=a           " Enable mouse for scrolling and resizing
 "###############################################################################
 
 set dictionary=/usr/share/dict/british-english
+set omnifunc=ale#completion#OmniFunc
 
 "##########################################################################}}}1
 " Custom functions {{{1
@@ -293,14 +260,9 @@ function! GoogleSearch()
    redraw!
 endfunction
 
-
 def Hello()
   echo "Hello"
 enddef
-
-
-vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
-
 
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
@@ -323,7 +285,7 @@ endfunction
 com! DiffSaved call s:DiffWithSaved()
 
 "##########################################################################}}}1"}}}
-" Plugins {{{1{{{
+" Plugins {{{1
 "##############################################################################
 " airline {{{2
 "##############################################################################
@@ -338,7 +300,7 @@ let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 
 let g:airline_powerline_fonts = 1
 "
-" tabline acivated in airline
+" tabline activated
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
@@ -347,6 +309,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+
 let g:airline_symbols = {
   \ 'space': ' ',
   \ 'paste': 'PASTE',
@@ -363,12 +326,6 @@ let g:airline_symbols = {
   \ 'branch': '⎇',
   \ 'whitespace': '☲',
   \ }
-
-" let g:airline#extensions#ale#enabled = 0
-" let g:airline#extensions#battery#enabled = 0
-" let g:airline#extensions#bookmark#enabled = 0
-" let g:airline#extensions#coc#enabled = 0
-" let g:airline#extensions#lsp#enabled = 0
 
 "##########################################################################}}}2
 " NERDTree {{{2
@@ -402,16 +359,6 @@ autocmd VimEnter *
 " ale {{{2
 "##############################################################################
 
-" Linting: <leader>l
-"
-nnoremap <leader>lf :ALEFirst<CR>
-nnoremap <leader>l<Space> :ALELint<CR>
-nnoremap <leader>ll :ALELast<CR>
-nnoremap <leader>ln :ALENext<CR>
-nnoremap <leader>lp :ALEPrevious<CR>
-
-nnoremap <leader>i :ALEInfo<CR>
-
 let g:ale_completion_autoimport = 1
 " Fix files when they are saved.
 let g:ale_fix_on_save=1
@@ -425,12 +372,6 @@ let g:ale_lint_on_text_changed = 'normal'
 "##########################################################################}}}2
 " fzf {{{2
 "##############################################################################
-
-" This is the default extra key bindings
-let g:fzf_action = {
-\ 'ctrl-t': 'tab split',
-\ 'ctrl-x': 'split',
-\ 'ctrl-v': 'vsplit' }
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -478,8 +419,6 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-nnoremap <leader>z :Files<CR>
-
 "##########################################################################}}}2
 " LanguageClient {{{2
 "##############################################################################
@@ -500,39 +439,29 @@ command! Rename :ALERename
 " command! DocumentFormatting :call LanguageClient#textDocument_formatting()
 " command! LSPMenu :call LanguageClient_contextMenu()
 " command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
-
-" nnoremap <Esc> A
-" nnoremap <Esc> <NOP>
-
-function SetLSPShortcuts() " {{{3
-  nnoremap <leader>gr :FindReference<CR>
-  nnoremap <leader>gd :GoToDefinition<CR>
-  nnoremap <leader>r :Rename<CR>
-  " nnoremap <leader>lf :DocumentFormatting<CR>
-  " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  " nnoremap <leader>lh :Hover<CR>
-  " nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  " nnoremap <leader>lm LSPMenu<CR>
-endfunction() " }}}3
+"
+" set cmdheight=2
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'signature'
 
 augroup LanguageServerOpts
-
   autocmd!
   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
 augroup END
 
-" set cmdheight=2
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
-
 " DVC
 autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
+
 let g:jedi#goto_command = '<leader>gd'
 " g:goto_definitions_command = ''
 autocmd FileType python setlocal completeopt-=preview
 
+"#######################################################################}}}2
+" markdown {{{2
+"##############################################################################
+" Activate markdown plugin
+let g:markdown_folding = 1
 "#######################################################################}}}2
 " Python {{{2
 "##############################################################################
@@ -562,9 +491,6 @@ let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_docstring=0
 " let g:SimpylFold_fold_blank=1
 
-" ---------------- C ----------------------
-autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
-
 "##########################################################################}}}2
 " slime {{{2
 "##############################################################################
@@ -572,94 +498,9 @@ autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 "##########################################################################}}}2
-" Tmux Navigator {{{2
+" startify {{{2
 "##############################################################################
-" https://github.com/christoomey/vim-tmux-navigator
-"
-" Navigation
-let g:tmux_navigator_no_mappings = 1
-" Disable tmux navigator when zooming the Vim pane
-let g:tmux_navigator_disable_when_zoomed = 1
-
-noremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-noremap <silent> <C-w>j :TmuxNavigateDown<cr>
-noremap <silent> <C-w>k :TmuxNavigateUp<cr>
-noremap <silent> <C-w>l :TmuxNavigateRight<cr>
-noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
-"##########################################################################}}}2
-" netrw{{{2
-"##############################################################################
-" suppress the banner
-
-let g:netrw_banner = 0
-" when browsing, <cr> will open the file by:
-" act like "P" (ie. open previous window)
-let g:netrw_browse_split = 4
-" change from left splitting to right splitting
-let g:netrw_altv = 1
-" preview window shown in a vertically split window.
-let g:netrw_preview   = 1
-" tree style listing
-let g:netrw_liststyle = 3
-" specify initial size of new windows made with "o" (see |netrw-o|), "v" (see
-" |netrw-v|), |:Hexplore| or |:Vexplore|.
-let g:netrw_winsize = 25
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
-
-nnoremap <leader>e :NERDTreeToggle<CR>
-
-let g:nnn#layout = { 'left': '~20%' }
-"##########################################################################}}}2
-" vim-test {{{2
-"##############################################################################
-nnoremap <leader>tn :TestNearest<CR>
-nnoremap <leader>tf :TestFile<CR>
-nnoremap <leader>ts :TestSuite<CR>
-nnoremap <leader>tl :TestLast<CR>
-nnoremap <leader>tv :TestVisit<CR>
-"
-let test#strategy = {
-  \ 'nearest': 'asyncrun_background',
-  \ 'file':    'asyncrun_background_term',
-  \ 'suite':    'asyncrun_background_term',
-  \}
-
-function! s:syncrun_background_buff(cmd) abort
-  let g:test#strategy#cmd = a:cmd
-  call test#strategy#asyncrun_setup_unlet_global_autocmd()
-  execute 'AsyncRun -mode=term -focus=0 -post=echo\ eval("g:asyncrun_code\ ?\"Failure\":\"Success\"").":"'
-          \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
-endfunction
-let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
-let g:test#strategy = 'echo'
-
-"
-"##########################################################################}}}2
-"##########################################################################}}}1
-
-" Basic search for visually selected text: //
-" https://vim.fandom.com/wiki/Search_for_visually_selected_text
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-noremap jj <ESC>
-nnoremap <leader>hh :help<CR>
-nnoremap <leader>hr :help quickref.txt<CR>
-nnoremap <leader>he :help editing.txt<CR>
-nnoremap <leader>hi :help insert.txt<CR>
-nnoremap <leader>hm :help motion.txt<CR>
-nnoremap <leader>hc :help change.txt<CR>
-nnoremap <leader>hv :help visual.txt<CR>
-nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
-
-set omnifunc=ale#completion#OmniFunc
-
-" Activate markdown plugin
-let g:markdown_folding = 1
-
-" ead ~/.NERDTreeBookmarks file and takes its second column
+" read ~/.NERDTreeBookmarks file and takes its second column
 function! s:nerdtreeBookmarks()
     let bookmarks = systemlist("cut -d' ' -f 2 ~/.NERDTreeBookmarks")
     let bookmarks = bookmarks[0:-2] " Slices an empty last line
@@ -691,6 +532,162 @@ let g:startify_lists = [
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 let g:startify_bookmarks = systemlist("cut -sd' ' -f 2 ~/.NERDTreeBookmarks")
+"##########################################################################}}}2
+" Tmux Navigator {{{2
+"##############################################################################
+" https://github.com/christoomey/vim-tmux-navigator
+"
+" Navigation
+let g:tmux_navigator_no_mappings = 1
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
+"##########################################################################}}}2
+" netrw{{{2
+"##############################################################################
+" suppress the banner
+
+let g:netrw_banner = 0
+" when browsing, <cr> will open the file by:
+" act like "P" (ie. open previous window)
+let g:netrw_browse_split = 4
+" change from left splitting to right splitting
+let g:netrw_altv = 1
+" preview window shown in a vertically split window.
+let g:netrw_preview   = 1
+" tree style listing
+let g:netrw_liststyle = 3
+" specify initial size of new windows made with "o" (see |netrw-o|), "v" (see
+" |netrw-v|), |:Hexplore| or |:Vexplore|.
+let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+
+"##########################################################################}}}2
+" nnn{{{2
+"##############################################################################
+let g:nnn#layout = { 'left': '~20%' }
+"##########################################################################}}}2
+" vim-test {{{2
+"##############################################################################
+"
+let test#strategy = {
+  \ 'nearest': 'asyncrun_background',
+  \ 'file':    'asyncrun_background_term',
+  \ 'suite':    'asyncrun_background_term',
+  \}
+
+function! s:syncrun_background_buff(cmd) abort
+  let g:test#strategy#cmd = a:cmd
+  call test#strategy#asyncrun_setup_unlet_global_autocmd()
+  execute 'AsyncRun -mode=term -focus=0 -post=echo\ eval("g:asyncrun_code\ ?\"Failure\":\"Success\"").":"'
+          \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
+endfunction
+let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
+let g:test#strategy = 'echo'
+"##########################################################################}}}2
+"##########################################################################}}}1
+
+"###############################################################################
+" KEY BINDINGS
+"###############################################################################
+" vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
+nnoremap <C-h> :call <SID>BufferPrev()<CR>
+nnoremap <C-l> :call <SID>BufferNext()<CR>
+
+nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
+nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
+vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
+vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
+"
+" Basic search for visually selected text: //
+" https://vim.fandom.com/wiki/Search_for_visually_selected_text
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+inoremap jj <ESC>
+nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
+
+" <ctrl>w Pane related {{{1
+"-------------------------------------------------------------------------------
+noremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+noremap <silent> <C-w>j :TmuxNavigateDown<cr>
+noremap <silent> <C-w>k :TmuxNavigateUp<cr>
+noremap <silent> <C-w>l :TmuxNavigateRight<cr>
+noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
+"---------------------------------------------------------------------------1}}}
+
+function SetLSPShortcuts()
+  nnoremap <leader>gr :FindReference<CR>
+  nnoremap <leader>gd :GoToDefinition<CR>
+  nnoremap <leader>r :Rename<CR>
+  " nnoremap <leader>lf :DocumentFormatting<CR>
+  " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  " nnoremap <leader>lh :Hover<CR>
+  " nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  " nnoremap <leader>lm LSPMenu<CR>
+endfunction()
+
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>d :call <SID>BufferDelete()<CR>
+nnoremap <leader>a  ggvG$yggvG$"+y
+nnoremap <leader>w :w!<cr>    " Fast saving
+nnoremap <leader>i :ALEInfo<CR>
+nnoremap <leader>z :Files<CR>
+" ---------------- C ----------------------
+autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
+
+" <leader>y Clipboard {{{1
+"-------------------------------------------------------------------------------
+" Yank selection, word or line to system clipboard
+" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+vnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+nnoremap <leader>yw "+yw
+nnoremap <leader>ye "+ye
+
+" Search vim help for subject under cursor: K in normal mode
+" set keywordprg=:help
+
+"---------------------------------------------------------------------------1}}}
+" <leader>h Help {{{1
+"-------------------------------------------------------------------------------
+nnoremap <leader>hh :help<CR>
+nnoremap <leader>hr :help quickref.txt<CR>
+nnoremap <leader>he :help editing.txt<CR>
+nnoremap <leader>hi :help insert.txt<CR>
+nnoremap <leader>hm :help motion.txt<CR>
+nnoremap <leader>hc :help change.txt<CR>
+nnoremap <leader>hv :help visual.txt<CR>
+nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
+"---------------------------------------------------------------------------1}}}
+" <leader>l Linting {{{1
+"-------------------------------------------------------------------------------
+nnoremap <leader>lf :ALEFirst<CR>
+nnoremap <leader>l<Space> :ALELint<CR>
+nnoremap <leader>ll :ALELast<CR>
+nnoremap <leader>ln :ALENext<CR>
+nnoremap <leader>lp :ALEPrevious<CR>
+
+"---------------------------------------------------------------------------1}}}
+" <leader>s SVN (git) commands {{{1
+"-------------------------------------------------------------------------------
+nnoremap <leader>s :Git<CR>
+nnoremap <leader>sa :Git add %<CR>
+nnoremap <leader>sc :Git commit<CR>
+nnoremap <leader>spp :Git push<CR>
+"---------------------------------------------------------------------------1}}}
+" <leader>t Tests {{{1
+"-------------------------------------------------------------------------------
+nnoremap <leader>tn :TestNearest<CR>
+nnoremap <leader>tf :TestFile<CR>
+nnoremap <leader>ts :TestSuite<CR>
+nnoremap <leader>tl :TestLast<CR>
+nnoremap <leader>tv :TestVisit<CR>
+"---------------------------------------------------------------------------1}}}
+
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 packloadall

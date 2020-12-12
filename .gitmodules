@@ -63,9 +63,6 @@
 [submodule "pack/interface/start/vim-startify"]
 	path = pack/interface/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
-[submodule "vim-vinegar"]
-	path = pack/interface/opt/vim-vinegar
-	url = https://github.com/tpope/vim-vinegar.git
 [submodule "pack/languages/start/SimpylFold"]
 	path = pack/languages/start/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold.git
@@ -81,3 +78,6 @@
 [submodule "pack/languages/start/pytest.vim"]
 	path = pack/languages/start/pytest.vim
 	url = https://github.com/alfredodeza/pytest.vim
+[submodule "pack/editing/opt/vim-mucomplete"]
+	path = pack/editing/opt/vim-mucomplete
+	url = https://github.com/lifepillar/vim-mucomplete
