@@ -10,34 +10,32 @@ set dir=~/.cache/vim
 
 set history=500           " number of command-lines that are remembered
 
-" softtabs, 2 spaces
 set softtabstop=2         " number of spaces that <Tab> uses while editing
 set tabstop=2             " number of spaces that <Tab> in file uses
 set shiftwidth=2          " number of spaces to use for (auto)indent step
 set shiftround
 set expandtab             " Convert tabs to spaces
-
 set backspace=2           " Backspace deletes like most programs in insert mode
 
-" Use one space, not two, after punctuation.
-set nojoinspaces
-
-" Make it obvious where 80 characters is
-set textwidth=80
+set autoindent            " New lines inherit indentation of previous line
+set smartindent
+set nojoinspaces          " Use one space, not two, after punctuation.
+set textwidth=80          " Make it obvious where 80 characters is
 set colorcolumn=+1
-"
+set autoread              " Set to auto read when a file is changed
+set diffopt+=vertical     " Always use vertical diffs
+
+if has('unnamedplus')
+  set clipboard=unnamedplus
+endif
+
 let mapleader=','         " map the leader to ','
 
 filetype on               " Enable filetype detection
 filetype plugin on        " Enable filetype-specific plugins
-
-set autoindent            " New lines inherit indentation of previous line
-set smartindent
 filetype indent on        " Enable filetype-specific indenting
 filetype plugin indent on " Enable filetype-specific indenting plugin
 
-" Set to auto read when a file is changed from the outside
-set autoread
 autocmd FocusGained,BufEnter * checktime
 
 " :W sudo saves the file
@@ -60,10 +58,7 @@ function! s:Saving_scroll(cmd)
   let &scroll = save_scroll
 endfunction
 
-" Always use vertical diffs
-set diffopt+=vertical
 
-set clipboard=unnamedplus
 
 "##########################################################################}}}1
 " Folding {{{1
@@ -254,12 +249,6 @@ set omnifunc=ale#completion#OmniFunc
 "##########################################################################}}}1
 " Custom functions {{{1
 "###############################################################################
-function! GoogleSearch()
-   let searchterm = getreg("g")
-   silent! exec "silent! !firefox \"http://google.com/search?q=" . searchterm . "\" > /dev/null 2>&1 &"
-   redraw!
-endfunction
-
 def Hello()
   echo "Hello"
 enddef
@@ -662,6 +651,7 @@ nnoremap <leader>hm :help motion.txt<CR>
 nnoremap <leader>hc :help change.txt<CR>
 nnoremap <leader>hv :help visual.txt<CR>
 nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
+vnoremap <leader>h y<ESC> :help <C-r>"<CR>
 "---------------------------------------------------------------------------1}}}
 " <leader>l Linting {{{1
 "-------------------------------------------------------------------------------
