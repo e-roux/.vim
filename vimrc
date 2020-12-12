@@ -34,6 +34,7 @@ filetype plugin on        " Enable filetype-specific plugins
 set autoindent            " New lines inherit indentation of previous line
 set smartindent
 filetype indent on        " Enable filetype-specific indenting
+filetype plugin indent on " Enable filetype-specific indenting plugin
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -146,13 +147,7 @@ function! s:BufferNext()
   endif
 endfunction
 
-nnoremap <C-h> :call <SID>BufferPrev()<CR>
-nnoremap <C-l> :call <SID>BufferNext()<CR>
-
-nnoremap <leader>b :ls<cr>:b<space>
-
-
-function! s:Delete()
+function! s:BufferDelete()
   if &filetype == "help" || &filetype == "nerdtree"
     exec('bd')
   else
@@ -166,7 +161,12 @@ function! s:Delete()
   endif
 endfunction
 
-nnoremap <leader>d :call <SID>Delete()<CR>
+" nnoremap <leader>b :ls<cr>:b<space>
+nnoremap <leader>b :Buffers
+nnoremap <C-h> :call <SID>BufferPrev()<CR>
+nnoremap <C-l> :call <SID>BufferNext()<CR>
+nnoremap <leader>d :call <SID>BufferDelete()<CR>
+
 " nnoremap <leader>d :bp\|bd #<CR>  " buffer previous, buffer delete alternate
 "##########################################################################}}}1
 " Panes  {{{1
@@ -644,7 +644,7 @@ let g:test#strategy = 'echo'
 " https://vim.fandom.com/wiki/Search_for_visually_selected_text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-inoremap jj <ESC>
+noremap jj <ESC>
 nnoremap <leader>hh :help<CR>
 nnoremap <leader>hr :help quickref.txt<CR>
 nnoremap <leader>he :help editing.txt<CR>
