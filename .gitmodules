@@ -15,7 +15,7 @@
 	path = pack/interface/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
 [submodule "pack/custom/start/vim-dadbod"]
-	path = pack/custom/start/vim-dadbod
+	path = pack/lang_sql/start/vim-dadbod
 	url = https://github.com/tpope/vim-dadbod.git
 [submodule "pack/custom/start/vim-surround"]
 	path = pack/editing/start/vim-surround
@@ -24,7 +24,7 @@
 	path = pack/custom/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "pack/custom/start/vim-go"]
-	path = pack/languages/start/vim-go
+	path = pack/lang_go/start/vim-go
 	url = https://github.com/fatih/vim-go.git
 [submodule "pack/custom/start/vim-table-mode"]
 	path = pack/editing/start/vim-table-mode
@@ -73,7 +73,7 @@
 	path = pack/interface/start/nerdtree-git-plugin
 	url = https://github.com/Xuyuanp/nerdtree-git-plugin
 [submodule "pack/editing/start/jedi-vim"]
-	path = pack/editing/start/jedi-vim
+	path = pack/lang_python/start/jedi-vim
 	url = http://github.com/davidhalter/jedi-vim
 [submodule "pack/languages/start/pytest.vim"]
 	path = pack/languages/start/pytest.vim
@@ -81,3 +81,6 @@
 [submodule "pack/editing/opt/vim-mucomplete"]
 	path = pack/editing/opt/vim-mucomplete
 	url = https://github.com/lifepillar/vim-mucomplete
+[submodule "pack/lang_sql/start/vim-dadbod-ui"]
+	path = pack/lang_sql/start/vim-dadbod-ui
+	url = https://github.com/kristijanhusak/vim-dadbod-ui.git

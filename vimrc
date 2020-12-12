@@ -246,6 +246,34 @@ set mouse=a           " Enable mouse for scrolling and resizing
 set dictionary=/usr/share/dict/british-english
 set omnifunc=ale#completion#OmniFunc
 
+let g:ale_completion_symbols = {
+  \ 'text': '',
+  \ 'method': '',
+  \ 'function': '',
+  \ 'constructor': '',
+  \ 'field': '',
+  \ 'variable': '',
+  \ 'class': '',
+  \ 'interface': '',
+  \ 'module': '',
+  \ 'property': '',
+  \ 'unit': 'unit',
+  \ 'value': 'val',
+  \ 'enum': '',
+  \ 'keyword': 'keyword',
+  \ 'snippet': '',
+  \ 'color': 'color',
+  \ 'file': '',
+  \ 'reference': 'ref',
+  \ 'folder': '',
+  \ 'enum member': '',
+  \ 'constant': '',
+  \ 'struct': '',
+  \ 'event': 'event',
+  \ 'operator': '',
+  \ 'type_parameter': 'type param',
+  \ '<default>': 'v'
+  \ }
 "##########################################################################}}}1
 " Custom functions {{{1
 "###############################################################################
