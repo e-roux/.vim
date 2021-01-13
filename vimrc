@@ -3,30 +3,30 @@
 " General {{{1
 "##############################################################################
 
-set nocompatible          " We're running Vim, not Vi!
+setglobal nocompatible          " We're running Vim, not Vi!
 syntax on                 " Set syntax color on
 
-set dir=~/.cache/vim
+setglobal dir=~/.cache/vim
 
-set history=500           " number of command-lines that are remembered
+setglobal history=500           " number of command-lines that are remembered
 
-set softtabstop=2         " number of spaces that <Tab> uses while editing
-set tabstop=2             " number of spaces that <Tab> in file uses
-set shiftwidth=2          " number of spaces to use for (auto)indent step
-set shiftround
-set expandtab             " Convert tabs to spaces
-set backspace=2           " Backspace deletes like most programs in insert mode
+setglobal softtabstop=2         " number of spaces that <Tab> uses while editing
+setglobal tabstop=2             " number of spaces that <Tab> in file uses
+setglobal shiftwidth=2          " number of spaces to use for (auto)indent step
+setglobal shiftround
+setglobal expandtab             " Convert tabs to spaces
+setglobal backspace=2           " Backspace deletes like most programs in insert mode
 
-set autoindent            " New lines inherit indentation of previous line
-set smartindent
-set nojoinspaces          " Use one space, not two, after punctuation.
-set textwidth=80          " Make it obvious where 80 characters is
-set colorcolumn=+1
-set autoread              " Set to auto read when a file is changed
-set diffopt+=vertical     " Always use vertical diffs
+setglobal autoindent            " New lines inherit indentation of previous line
+setglobal smartindent
+setglobal nojoinspaces          " Use one space, not two, after punctuation.
+setglobal textwidth=80          " Make it obvious where 80 characters is
+setglobal colorcolumn=+1
+setglobal autoread              " Set to auto read when a file is changed
+setglobal diffopt+=vertical     " Always use vertical diffs
 
 if has('unnamedplus')
-  set clipboard=unnamedplus
+  setglobal clipboard=unnamedplus
 endif
 
 let mapleader=','         " map the leader to ','
@@ -92,7 +92,7 @@ command! ToggleFoldClose :call s:toggleFoldClose()
 "##############################################################################
 "
 "  Unsaved modified buffer when opening a new file is hidden instead of closed
-set hidden
+setglobal hidden
 
 function! s:BufferPrev()
   let l:bufferNr = len(getbufinfo({'buflisted':1}))
@@ -185,12 +185,12 @@ endif
 " Theme
 colorscheme solarized
 
-set cursorline
+setglobal cursorline
 highlight clear CursorLine
 highlight CursorLineNR cterm=bold ctermfg=yellow
 
 " Set highlight search and map to <leader> <space>
-set hlsearch
+setglobal hlsearch
 nnoremap <silent> <leader><space> :nohlsearch<CR>
 
 " From http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
@@ -230,21 +230,21 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 "##########################################################################}}}1
 " User Interface Options {{{1
 "##############################################################################
-set laststatus=2      " Always display the status bar
-set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+setglobal laststatus=2      " Always display the status bar
+" setglobal statusline+=%#warningmsg#
+" setglobal statusline+=%{SyntasticStatuslineFlag()}
+" setglobal statusline+=%*
 
 set number            " Show line numbers on the sidebars
-set noerrorbells      " Disable beep on errors
-set mouse=a           " Enable mouse for scrolling and resizing
+setglobal noerrorbells      " Disable beep on errors
+setglobal mouse=a           " Enable mouse for scrolling and resizing
 
 "##########################################################################}}}1
 " Completion {{{1
 "###############################################################################
 
-set dictionary=/usr/share/dict/british-english
-set omnifunc=ale#completion#OmniFunc
+setglobal dictionary=/usr/share/dict/british-english
+setglobal omnifunc=ale#completion#OmniFunc
 
 let g:ale_completion_symbols = {
   \ 'text': '',
@@ -277,10 +277,6 @@ let g:ale_completion_symbols = {
 "##########################################################################}}}1
 " Custom functions {{{1
 "###############################################################################
-def Hello()
-  echo "Hello"
-enddef
-
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeStars :normal i <badge-stars repo=''></badge-stars><ESC>T=
 :command! BadgeWiki :normal i <badge-wiki href=''></badge-wiki><ESC>T=
@@ -637,7 +633,7 @@ noremap <silent> <C-w>\ :TmuxNavigatePrevious<cr>
 function SetLSPShortcuts()
   nnoremap <leader>gr :FindReference<CR>
   nnoremap <leader>gd :GoToDefinition<CR>
-  nnoremap <leader>r :Rename<CR>
+  " nnoremap <unique> <leader>r :Rename<CR>
   " nnoremap <leader>lf :DocumentFormatting<CR>
   " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
   " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
@@ -706,9 +702,14 @@ nnoremap <leader>tl :TestLast<CR>
 nnoremap <leader>tv :TestVisit<CR>
 "---------------------------------------------------------------------------1}}}
 
+if filereadable(expand('~/.vim/vimrc.local'))
+  source ~/.vim/vimrc.local
+endif
+
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 packloadall
 silent! helptags ALL
 
-" vim:fdm=marker
+
+" vim:set et sw=2 fdm=marker:
