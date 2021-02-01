@@ -10,11 +10,13 @@ setglobal dir=~/.cache/vim
 
 setglobal history=500           " number of command-lines that are remembered
 
-setglobal softtabstop=2         " number of spaces that <Tab> uses while editing
-setglobal tabstop=2             " number of spaces that <Tab> in file uses
-setglobal shiftwidth=2          " number of spaces to use for (auto)indent step
-setglobal shiftround
+set tabstop=4                   " number of spaces that <Tab> in file uses
+
 setglobal expandtab             " Convert tabs to spaces
+setglobal softtabstop=2         " number of spaces that <Tab> uses while editing
+setglobal shiftwidth=0          " number of spaces to use for (auto)indent step
+
+setglobal shiftround
 setglobal backspace=2           " Backspace deletes like most programs in insert mode
 
 setglobal autoindent            " New lines inherit indentation of previous line
@@ -24,6 +26,9 @@ setglobal textwidth=80          " Make it obvious where 80 characters is
 setglobal colorcolumn=+1
 setglobal autoread              " Set to auto read when a file is changed
 setglobal diffopt+=vertical     " Always use vertical diffs
+
+let &t_SI = "\e[6 q"            " steady bar, insert mode
+let &t_EI = "\e[2 q"            " steady block, edit mode
 
 if has('unnamedplus')
   setglobal clipboard=unnamedplus
@@ -484,7 +489,7 @@ let g:markdown_folding = 1
 " let g:pymode_lint_checkers = ['pep8']
 " " Trim unused white spaces on save.
 " let g:pymode_trim_whitespaces = 1
-
+" let g:jedi#auto_initialization=0
 " Setup default python options.
 "  g:pymode_options = 1
 " is equivalent to:
@@ -499,19 +504,22 @@ let g:markdown_folding = 1
 " Keymap for autocomplete.
 " let g:pymode_rope_completion_bind = '<C-Space>'
 
+"##########################################################################}}}2
+" SimplyFold {{{2
+"##############################################################################
 let g:SimpylFold_fold_import=0
 let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_docstring=0
 " let g:SimpylFold_fold_blank=1
-
 "##########################################################################}}}2
 " slime {{{2
 "##############################################################################
 
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+let g:slime_target = "vimterminal"
+let g:slime_vimterminal_config = {"term_finish": "close"}
+let g:slime_python_ipython = 1
 "##########################################################################}}}2
-" startify {{{2
+" Startify {{{2
 "##############################################################################
 " read ~/.NERDTreeBookmarks file and takes its second column
 function! s:nerdtreeBookmarks()
@@ -545,6 +553,10 @@ let g:startify_lists = [
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 let g:startify_bookmarks = systemlist("cut -sd' ' -f 2 ~/.NERDTreeBookmarks")
+"##########################################################################}}}2
+" Table mode {{{2
+"##############################################################################
+let g:table_mode_disable_tableize_mappings=1
 "##########################################################################}}}2
 " Tmux Navigator {{{2
 "##############################################################################
@@ -615,6 +627,9 @@ nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 "
+inoremap <C-J> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-J>"<CR>
+inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
+
 " Basic search for visually selected text: //
 " https://vim.fandom.com/wiki/Search_for_visually_selected_text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -647,40 +662,28 @@ nnoremap <leader>e :NERDTreeToggle<CR>
 nnoremap <leader>d :call <SID>BufferDelete()<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
-nnoremap <leader>i :ALEInfo<CR>
 nnoremap <leader>z :Files<CR>
+nnoremap <unique> <leader>r :Rename<CR>
 " ---------------- C ----------------------
 autocmd FileType c nnoremap <leader>r :!clear && gcc % -o %< && %< && read<cr>
 
-" <leader>y Clipboard {{{1
-"-------------------------------------------------------------------------------
-" Yank selection, word or line to system clipboard
-" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
-vnoremap <leader>y "+y
-nnoremap <leader>yy "+yy
-nnoremap <leader>yw "+yw
-nnoremap <leader>ye "+ye
-
-" Search vim help for subject under cursor: K in normal mode
-" set keywordprg=:help
-
-"---------------------------------------------------------------------------1}}}
 " <leader>h Help {{{1
 "-------------------------------------------------------------------------------
-nnoremap <leader>hh :help<CR>
-nnoremap <leader>hr :help quickref.txt<CR>
+nnoremap <leader>hc :help change.txt<CR>
 nnoremap <leader>he :help editing.txt<CR>
+nnoremap <leader>hh :help<CR>
 nnoremap <leader>hi :help insert.txt<CR>
 nnoremap <leader>hm :help motion.txt<CR>
-nnoremap <leader>hc :help change.txt<CR>
+nnoremap <leader>hr :help quickref.txt<CR>
 nnoremap <leader>hv :help visual.txt<CR>
 nnoremap <leader>hw :normal yt <ESC> :help <C-r>"<CR>
 vnoremap <leader>h y<ESC> :help <C-r>"<CR>
 "---------------------------------------------------------------------------1}}}
 " <leader>l Linting {{{1
 "-------------------------------------------------------------------------------
-nnoremap <leader>lf :ALEFirst<CR>
 nnoremap <leader>l<Space> :ALELint<CR>
+nnoremap <leader>lf :ALEFirst<CR>
+nnoremap <leader>li :ALEInfo<CR>
 nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
@@ -695,11 +698,24 @@ nnoremap <leader>spp :Git push<CR>
 "---------------------------------------------------------------------------1}}}
 " <leader>t Tests {{{1
 "-------------------------------------------------------------------------------
-nnoremap <leader>tn :TestNearest<CR>
 nnoremap <leader>tf :TestFile<CR>
-nnoremap <leader>ts :TestSuite<CR>
 nnoremap <leader>tl :TestLast<CR>
+nnoremap <leader>tn :TestNearest<CR>
+nnoremap <leader>ts :TestSuite<CR>
 nnoremap <leader>tv :TestVisit<CR>
+"---------------------------------------------------------------------------1}}}
+" <leader>y Yank {{{1
+"-------------------------------------------------------------------------------
+" Yank selection, word or line to system clipboard
+" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+nnoremap <leader>ye "+ye
+nnoremap <leader>yw "+yw
+nnoremap <leader>yy "+yy
+vnoremap <leader>y "+y
+
+" Search vim help for subject under cursor: K in normal mode
+" set keywordprg=:help
+
 "---------------------------------------------------------------------------1}}}
 
 if filereadable(expand('~/.vim/vimrc.local'))

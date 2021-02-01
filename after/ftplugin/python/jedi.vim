@@ -3,3 +3,4 @@
 " n  ,s          *@:call jedi#goto_stubs()<CR>
 " n  ,g          *@:call jedi#goto_assignments()<CR>
 " n  ,d          *@:call jedi#goto()<CR>
+command! Rename :call jedi#rename()<CR>
