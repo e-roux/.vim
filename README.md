@@ -1,17 +1,13 @@
 # vim dotfiles
 
-This is my `.vim` 
-
-
+This is my `.vim`
 
 ## Install
 
 ```
-git clone git@github.com:fesaille/.vim.git ~/.vim
+git clone --recurse-submodules git@github.com:fesaille/.vim.git ~/.vim
 echo 'runtime vimrc' >> ~/.vimrc
-cd ~/.vim && git submodule update --init --recursive
 ```
-
 
 ## Plugins
 
