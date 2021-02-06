@@ -38,6 +38,7 @@
 [submodule "pack/custom/start/vim-slime"]
 	path = pack/custom/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime
+	branch = main
 [submodule "pack/custom/start/webapi-git"]
 	path = pack/custom/start/webapi-git
 	url = https://github.com/mattn/webapi-vim.git
