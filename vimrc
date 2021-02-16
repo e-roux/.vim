@@ -31,7 +31,7 @@ let &t_SI = "\e[6 q"            " steady bar, insert mode
 let &t_EI = "\e[2 q"            " steady block, edit mode
 
 if has("autocmd")
-  # Redraw on VimResume
+  " Redraw on VimResume
   au VimEnter,InsertLeave,VimResume *
     \ silent execute '!echo -ne "\e[2 q"' | redraw!
   au InsertEnter,InsertChange *
