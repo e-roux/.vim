@@ -30,6 +30,19 @@ setglobal diffopt+=vertical     " Always use vertical diffs
 let &t_SI = "\e[6 q"            " steady bar, insert mode
 let &t_EI = "\e[2 q"            " steady block, edit mode
 
+if has("autocmd")
+  # Redraw on VimResume
+  au VimEnter,InsertLeave,VimResume *
+    \ silent execute '!echo -ne "\e[2 q"' | redraw!
+  au InsertEnter,InsertChange *
+    \ if v:insertmode == 'i' |
+    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+    \ elseif v:insertmode == 'r' |
+    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+    \ endif
+  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
+
 if has('unnamedplus')
   setglobal clipboard=unnamedplus
 endif
