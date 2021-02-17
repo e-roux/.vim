@@ -606,6 +606,7 @@ let g:netrw_winsize = 25
 "##########################################################################}}}2
 " nnn{{{2
 "##############################################################################
+let g:nnn#set_default_mappings = 0
 let g:nnn#layout = { 'left': '~20%' }
 "##########################################################################}}}2
 " vim-test {{{2
@@ -675,7 +676,8 @@ function SetLSPShortcuts()
 endfunction()
 
 nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>d :call <SID>BufferDelete()<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
