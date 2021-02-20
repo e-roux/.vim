@@ -1,5 +1,3 @@
-" setlocal foldmethod=indent
-" setlocal foldnestmax=2
 
 func! FoldIndent() abort
     let indent = indent(v:lnum)/&sw
@@ -27,4 +25,18 @@ function! MyFoldText()
     let txt = '' . comment . expansionString . nblines
     return txt
 endfunction
+
 set foldtext=MyFoldText()
+
+" au BufNewFile,BufRead *.py
+"   \ set tabstop=4
+"   \ set softtabstop=4
+"   \ set shiftwidth=4
+"     \ set textwidth=79
+"     \ set expandtab
+"     \ set autoindent
+"     \ set fileformat=unix
+"" setlocal foldmethod=indent
+" setlocal foldnestmax=2
+
+
