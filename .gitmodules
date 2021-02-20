@@ -7,10 +7,6 @@
 [submodule "pack/custom/start/vim-commentary"]
 	path = pack/editing/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
-[submodule "pack/custom/start/nnn-vim"]
-	path = pack/custom/start/nnn-vim
-	url = https://github.com/mcchrish/nnn.vim
-  ignore = dirty
 [submodule "pack/custom/start/vim-tmux-navigator"]
 	path = pack/interface/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
@@ -52,9 +48,6 @@
 	path = pack/interface/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
   ignore = dirty
-[submodule "ale"]
-	path = pack/vim-ale
-	url = https://github.com/fesaille/vim-ale.git
 [submodule "pack/testing/start/vim-test"]
 	path = pack/testing/start/vim-test
 	url = https://github.com/vim-test/vim-test.git
@@ -65,17 +58,11 @@
 	path = pack/interface/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
 [submodule "pack/languages/start/SimpylFold"]
-	path = pack/languages/start/SimpylFold
+	path = pack/lang_python/opt/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold.git
 [submodule "pack/interface/start/nerdtree"]
 	path = pack/interface/start/nerdtree
 	url = https://github.com/preservim/nerdtree.git
-[submodule "pack/interface/start/nerdtree-git-plugin"]
-	path = pack/interface/start/nerdtree-git-plugin
-	url = https://github.com/Xuyuanp/nerdtree-git-plugin
-[submodule "pack/editing/start/jedi-vim"]
-	path = pack/lang_python/start/jedi-vim
-	url = http://github.com/davidhalter/jedi-vim
 [submodule "pack/languages/start/pytest.vim"]
 	path = pack/languages/start/pytest.vim
 	url = https://github.com/alfredodeza/pytest.vim
@@ -88,3 +75,21 @@
 [submodule "pack/lang_shell/start/vim-eunuch"]
 	path = pack/lang_shell/start/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
+[submodule "youcompleteme"]
+	path = pack/editing/opt/YouCompleteMe
+	url = https://github.com/ycm-core/YouCompleteMe
+[submodule "vim-devicons"]
+	path = pack/interface/start/vim-devicons
+	url = https://github.com/ryanoasis/vim-devicons
+[submodule "minisnip"]
+	path = pack/editing/start/minisnip
+	url = git://github.com/Jorengarenar/miniSnip.git
+[submodule "ale"]
+	path = pack/editing/opt/ale
+	url = https://github.com/dense-analysis/ale.git
+[submodule "scriptease"]
+	path = pack/custom/opt/scriptease
+	url = https://github.com/tpope/vim-scriptease.git
+[submodule "jedi"]
+	path = pack/lang_python/start/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim
