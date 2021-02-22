@@ -21,7 +21,7 @@ let g:loaded_netrw              =  1
 let g:loaded_netrwPlugin        =  1
 
 " custom
-let g:ale_enabled = 0
+let g:ale_enabled = 1
 " let g:loaded_miniSnip = 1
 " 1}}} "Init
 
@@ -417,10 +417,10 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 let g:name = 'Emmanuel Roux'
 let g:email = ''
 let g:miniSnip_trigger = '<C-f>'
+let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
 " let g:miniSnip_opening = '{{'
 " let g:miniSnip_closing = '}}'
 
-let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip/' ] 
 " imap <Nop> <Plug>(miniSnip-complete)
 
 " Basic search for visually selected text: //
