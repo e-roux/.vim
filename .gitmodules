@@ -9,7 +9,7 @@
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "pack/custom/start/vim-tmux-navigator"]
 	path = pack/interface/start/vim-tmux-navigator
-	url = https://github.com/christoomey/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "pack/custom/start/vim-dadbod"]
 	path = pack/lang_sql/start/vim-dadbod
 	url = https://github.com/tpope/vim-dadbod.git
@@ -27,13 +27,13 @@
 	url = https://github.com/dhruvasagar/vim-table-mode.git
 [submodule "pack/custom/start/auto-pairs"]
 	path = pack/editing/opt/auto-pairs
-	url = https://github.com/jiangmiao/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs.git
 [submodule "airline"]
 	path = pack/interface/start/vim-airline
-	url = https://github.com/vim-airline/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
 [submodule "pack/custom/start/vim-slime"]
 	path = pack/custom/start/vim-slime
-	url = https://github.com/jpalardy/vim-slime
+	url = https://github.com/jpalardy/vim-slime.git
 	branch = main
 [submodule "pack/custom/start/webapi-git"]
 	path = pack/custom/start/webapi-git
@@ -71,10 +71,10 @@
 	url = https://github.com/tpope/vim-eunuch.git
 [submodule "vim-devicons"]
 	path = pack/interface/start/vim-devicons
-	url = https://github.com/ryanoasis/vim-devicons
+	url = https://github.com/ryanoasis/vim-devicons.git
 [submodule "minisnip"]
 	path = pack/editing/start/minisnip
-	url = git://github.com/Jorengarenar/miniSnip.git
+	url = https://github.com/Jorengarenar/miniSnip.git
 [submodule "ale"]
 	path = pack/editing/opt/ale
 	url = https://github.com/dense-analysis/ale.git
@@ -83,7 +83,7 @@
 	url = https://github.com/tpope/vim-scriptease.git
 [submodule "jedi"]
 	path = pack/lang_python/start/jedi-vim
-	url = https://github.com/davidhalter/jedi-vim
+	url = https://github.com/davidhalter/jedi-vim.git
 [submodule "mucomplete"]
 	path = pack/editing/start/mucomplete
-	url = https://github.com/lifepillar/vim-mucomplete
+	url = https://github.com/lifepillar/vim-mucomplete.git
