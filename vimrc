@@ -4,7 +4,7 @@
 " Init: {{{1
 "##############################################################################
 if has('nvim')
-	set runtimepath^=~/.vim runtimepath+=~/.vim/after
+  set runtimepath^=~/.vim runtimepath+=~/.vim/after
 endif
 
 " Disable extra plugins
@@ -136,7 +136,7 @@ if maparg('<leader>*', 'v') == ''
   vmap <leader>* :<C-u>call <SID>VSetSearch()<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>
 endif
 
-" Cursor changed in insertmode 
+" Cursor changed in insertmode
 let &t_SI = "\e[6 q"            " steady bar, insert mode
 let &t_EI = "\e[2 q"            " steady block, edit mode
 
