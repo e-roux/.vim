@@ -344,6 +344,10 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:NERDTreeMapCloseDir = "h"
 let g:NERDTreeMapActivateNode = "l"
 let NERDTreeIgnore = ['__pycache__']
+
+autocmd BufEnter *
+  \ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree')
+  \ && b:NERDTree.isTabTree() | quit | endif
 "##########################################################################}}}2
 
 " SimplyFold {{{2
