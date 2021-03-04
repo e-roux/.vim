@@ -43,16 +43,16 @@ function! LoadAle()
     \ '<default>': 'v'
     \ }
 
-    let g:ale_linters = {
-        \ 'bash': ['bash-language-server', 'start'],
-        \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-        \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-        \ 'go': ['gopls'],
-        \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-        \ 'vim': ['vim-language-server', '--stdio'],
-        \ 'yaml': ['yaml-language-server', '--stdio'],
-        \}
+    " let g:ale_linters = {
+    "     \ 'bash': ['bash-language-server', 'start'],
+    "     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
+    "     \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
+    "     \ 'go': ['gopls'],
+    "     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    "     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    "     \ 'vim': ['vim-language-server', '--stdio'],
+    "     \ 'yaml': ['yaml-language-server', '--stdio'],
+    "     \}
         " \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
         " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
 
@@ -64,7 +64,7 @@ function! LoadAle()
     " When to lint
     let g:ale_lint_on_enter = 1
     let g:ale_lint_on_filetype_changed = 1
-    let g:ale_lint_on_insert_leave = 1
+    let g:ale_lint_on_insert_leave = 0
     let g:ale_lint_on_save = 1
     let g:ale_lint_on_text_changed = 'normal'
 
@@ -73,7 +73,7 @@ function! LoadAle()
     let g:ale_completion_enabled = 0
     let g:ale_completion_autoimport = 1
 
-    let g:ale_disable_lsp = 1
+    let g:ale_disable_lsp = 0
     let g:ale_fix_on_save = 1
 
 endfunction

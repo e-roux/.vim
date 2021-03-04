@@ -1,6 +1,5 @@
 " This is my vimrc
 "
-"
 " Init: {{{1
 "##############################################################################
 if has('nvim')
@@ -79,14 +78,6 @@ function! s:GotoFile(path)
     exec("edit " . a:path)
   endif
 endfunction
-
-function! s:Saving_scroll(cmd)
-  let save_scroll = &scroll
-  execute 'normal! ' . a:cmd
-  let &scroll = save_scroll
-endfunction
-
-
 
 "##########################################################################}}}1
 
@@ -321,9 +312,6 @@ let g:echodoc#type = 'signature'
 "   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
 " augroup END
 
-" DVC
-autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
-
 "#######################################################################}}}2
 
 " NERDTree {{{2
@@ -350,30 +338,6 @@ autocmd BufEnter *
   \ && b:NERDTree.isTabTree() | quit | endif
 "##########################################################################}}}2
 
-" SimplyFold {{{2
-"##############################################################################
-let g:SimpylFold_fold_import=0
-let g:SimpylFold_docstring_preview=1
-let g:SimpylFold_fold_docstring=0
-" let g:SimpylFold_fold_blank=1
-"##########################################################################}}}2
-"
-" Table mode {{{2
-"##############################################################################
-let g:table_mode_disable_tableize_mappings=1
-"##########################################################################}}}2
-
-" Tmux Navigator {{{2
-"##############################################################################
-" https://github.com/christoomey/vim-tmux-navigator
-"
-" Navigation
-let g:tmux_navigator_no_mappings = 1
-" Disable tmux navigator when zooming the Vim pane
-let g:tmux_navigator_disable_when_zoomed = 1
-
-"##########################################################################}}}2
-
 " netrw{{{2
 "##############################################################################
 " suppress the banner
@@ -396,17 +360,43 @@ let g:netrw_winsize = 25
 " augroup END
 
 "##########################################################################}}}2
+
 " nnn{{{2
 "##############################################################################
 let g:nnn#layout = { 'left': '~20%' }
 "##########################################################################}}}2
+
+" SimplyFold {{{2
+"##############################################################################
+let g:SimpylFold_fold_import=0
+let g:SimpylFold_docstring_preview=1
+let g:SimpylFold_fold_docstring=0
+" let g:SimpylFold_fold_blank=1
+"##########################################################################}}}2
+
+" Table mode {{{2
+"##############################################################################
+let g:table_mode_disable_tableize_mappings=1
+"##########################################################################}}}2
+
+" Tmux Navigator {{{2
+"##############################################################################
+" https://github.com/christoomey/vim-tmux-navigator
+"
+" Navigation
+let g:tmux_navigator_no_mappings = 1
+" Disable tmux navigator when zooming the Vim pane
+let g:tmux_navigator_disable_when_zoomed = 1
+
+"##########################################################################}}}2
+
 " vim-test {{{2
 "##############################################################################
 "
 let test#strategy = {
-  \ 'nearest': 'asyncrun_background',
-  \ 'file':    'asyncrun_background_term',
-  \ 'suite':    'asyncrun_background_term',
+  \ 'nearest':       'asyncrun_background',
+  \ 'file':          'asyncrun_background_term',
+  \ 'suite':         'asyncrun_background_term',
   \}
 
 function! s:syncrun_background_buff(cmd) abort
@@ -422,23 +412,30 @@ let g:test#strategy = 'echo'
 " }}}1 "Plugins
 
 " General Mappings: {{{1
-
 "###############################################################################
 " KEY BINDINGS
 "###############################################################################
-" vnoremap <F6> "gy<Esc>:call GoogleSearch()<CR>
+
+" <C-J|K> Saving scroll: {{{2
+"###############################################################################
+function! s:Saving_scroll(cmd)
+  let save_scroll = &scroll
+  execute 'normal! ' . a:cmd
+  let &scroll = save_scroll
+endfunction
 
 nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
+"##########################################################################}}}2
 
 " Insert Completion mode
 " h popupmenu-keys
-" inoremap <C-J> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-J>"<CR>
-" inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
-" inoremap <C-H> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>C-H>"<CR>
-" inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
+inoremap <C-J> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-J>"<CR>
+inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
+inoremap <C-H> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>C-H>"<CR>
+inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
 
 " let g:minisnip_autoindent = 0
 let g:name = 'Emmanuel Roux'
@@ -474,8 +471,6 @@ endfunction()
 
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>d :call <SID>BufferDelete()<CR>
-nnoremap <leader>nt :NERDTreeToggle<CR>
-nnoremap <leader>nf :NERDTreeFocus<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>
@@ -502,7 +497,10 @@ nnoremap <leader>li :ALEInfo<CR>
 nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
-
+"---------------------------------------------------------------------------1}}}
+" <leader>n NERDTree {{{2
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>nf :NERDTreeFocus<CR>
 "---------------------------------------------------------------------------1}}}
 " <leader>s SVN (git) commands {{{2
 "-------------------------------------------------------------------------------
@@ -533,6 +531,9 @@ vnoremap <leader>y "+y
 
 "---------------------------------------------------------------------------1}}}
 " 1}}} "General
+
+" DVC
+autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
 
 " setglobal omnifunc=ale#completion#OmniFunc
 " setglobal omnifunc=lsc#complete#complete

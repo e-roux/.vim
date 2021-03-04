@@ -47,7 +47,7 @@
 [submodule "pack/custom/start/vim-zoom"]
 	path = pack/interface/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
-  ignore = dirty
+	ignore = dirty
 [submodule "pack/testing/start/vim-test"]
 	path = pack/testing/start/vim-test
 	url = https://github.com/vim-test/vim-test.git
@@ -66,6 +66,7 @@
 [submodule "pack/lang_sql/start/vim-dadbod-ui"]
 	path = pack/lang_sql/start/vim-dadbod-ui
 	url = https://github.com/kristijanhusak/vim-dadbod-ui.git
+	ignore = untracked
 [submodule "pack/lang_shell/start/vim-eunuch"]
 	path = pack/lang_shell/start/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
@@ -75,6 +76,7 @@
 [submodule "minisnip"]
 	path = pack/editing/start/minisnip
 	url = https://github.com/Jorengarenar/miniSnip.git
+	ignore = untracked
 [submodule "ale"]
 	path = pack/editing/opt/ale
 	url = https://github.com/dense-analysis/ale.git
@@ -84,6 +86,7 @@
 [submodule "jedi"]
 	path = pack/lang_python/start/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim.git
+	ignore = dirty
 [submodule "mucomplete"]
 	path = pack/editing/start/mucomplete
 	url = https://github.com/lifepillar/vim-mucomplete.git
