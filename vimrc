@@ -331,7 +331,10 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ }
 let g:NERDTreeMapCloseDir = "h"
 let g:NERDTreeMapActivateNode = "l"
-let NERDTreeIgnore = ['__pycache__']
+let g:NERDTreeIgnore = ['__pycache__']
+" CWD is changed when the NERDTree is first loaded to the directory it is
+" initialized in
+let g:NERDTreeChDirMode = 1
 
 autocmd BufEnter *
   \ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree')
@@ -439,8 +442,8 @@ inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
 
 " let g:minisnip_autoindent = 0
 let g:name = 'Emmanuel Roux'
-let g:email = ''
-let g:miniSnip_trigger = '<C-f>'
+let g:email = ' '
+let g:miniSnip_trigger = '<F4>'
 let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
 " let g:miniSnip_opening = '{{'
 " let g:miniSnip_closing = '}}'
