@@ -132,8 +132,11 @@ let &t_SI = "\e[6 q"            " steady bar, insert mode
 let &t_EI = "\e[2 q"            " steady block, edit mode
 
 " Redraw on VimResume
+if has('patch-8.2.2128')
 autocmd VimEnter,InsertLeave,VimResume *
   \ silent execute '!echo -ne "\e[2 q"' | redraw!
+endif
+
 autocmd InsertEnter,InsertChange *
   \ if v:insertmode == 'i' |
   \   silent execute '!echo -ne "\e[6 q"' | redraw! |
@@ -240,7 +243,7 @@ setglobal laststatus=2      " Always display the status bar
 
 " Plugins {{{1
 "##############################################################################
-
+let g:db_ui_use_nerd_fonts=1
 " airline {{{2
 "##############################################################################
 
@@ -313,6 +316,16 @@ let g:echodoc#type = 'signature'
 " augroup END
 
 "#######################################################################}}}2
+
+" Minisnip {{{2
+" let g:minisnip_autoindent = 0
+let g:name = 'Emmanuel Roux'
+let g:email = ' '
+let g:miniSnip_trigger = '<F4>'
+let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
+" let g:miniSnip_opening = '{{'
+" let g:miniSnip_closing = '}}'
+" 2}}}
 
 " NERDTree {{{2
 "##############################################################################
@@ -440,16 +453,6 @@ inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
 inoremap <C-H> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>C-H>"<CR>
 inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
 
-" let g:minisnip_autoindent = 0
-let g:name = 'Emmanuel Roux'
-let g:email = ' '
-let g:miniSnip_trigger = '<F4>'
-let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
-" let g:miniSnip_opening = '{{'
-" let g:miniSnip_closing = '}}'
-
-" imap <Nop> <Plug>(miniSnip-complete)
-
 " Basic search for visually selected text: //
 " https://vim.fandom.com/wiki/Search_for_visually_selected_text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
@@ -492,6 +495,7 @@ nnoremap <leader>z :Files<CR>
 nnoremap <leader>hw :normal yiw<ESC>:help <C-r>"<CR>
 vnoremap <leader>h y<ESC> :help <C-r>"<CR>
 "---------------------------------------------------------------------------1}}}
+
 " <leader>l Linting {{{2
 "-------------------------------------------------------------------------------
 nnoremap <leader>l<Space> :ALELint<CR>
@@ -501,10 +505,12 @@ nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
 "---------------------------------------------------------------------------1}}}
+
 " <leader>n NERDTree {{{2
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFocus<CR>
 "---------------------------------------------------------------------------1}}}
+
 " <leader>s SVN (git) commands {{{2
 "-------------------------------------------------------------------------------
 nnoremap <leader>s :Git<CR>
@@ -512,6 +518,7 @@ nnoremap <leader>sa :Git add %<CR>
 nnoremap <leader>sc :Git commit<CR>
 nnoremap <leader>spp :Git push<CR>
 "---------------------------------------------------------------------------1}}}
+
 " <leader>t Tests {{{2
 "-------------------------------------------------------------------------------
 nnoremap <leader>tf :TestFile<CR>
@@ -520,6 +527,7 @@ nnoremap <leader>tn :TestNearest<CR>
 nnoremap <leader>ts :TestSuite<CR>
 nnoremap <leader>tv :TestVisit<CR>
 "---------------------------------------------------------------------------1}}}
+
 " <leader>y Yank {{{2
 "-------------------------------------------------------------------------------
 " Yank selection, word or line to system clipboard
@@ -529,10 +537,21 @@ nnoremap <leader>yw "+yw
 nnoremap <leader>yy "+yy
 vnoremap <leader>y "+y
 
+" WSL yank support: https://superuser.com/questions/1291425
+let s:clip = 'clip.exe'
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' |
+              \ call system(s:clip, @0) | endif
+    augroup END
+endif
+
 " Search vim help for subject under cursor: K in normal mode
 " set keywordprg=:help
 
 "---------------------------------------------------------------------------1}}}
+
 " 1}}} "General
 
 " DVC
