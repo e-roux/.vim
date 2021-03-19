@@ -58,7 +58,7 @@
 	path = pack/interface/start/vim-startify
 	url = https://github.com/mhinz/vim-startify.git
 [submodule "pack/languages/start/SimpylFold"]
-	path = pack/lang_python/opt/SimpylFold
+	path = pack/lang_python/start/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold.git
 [submodule "pack/interface/start/nerdtree"]
 	path = pack/interface/start/nerdtree
