@@ -96,7 +96,17 @@ endfunction
 " ┃                                                                           ┃
 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 "
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+source ~/.vim/colors/background.vim
+
 " Theme
+" let g:solarized_termcolors=256
+let s:terminal_italic=1
 colorscheme solarized
 
 setglobal cursorline
@@ -145,17 +155,6 @@ autocmd InsertEnter,InsertChange *
   \ endif
 autocmd VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ack searching and cope displaying
-"    requires ack.vim - it's much better than vimgrep/grep
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" When you press gv you Ack after the selected text
-" vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
-
-" When you press <leader>r you can search and replace the selected text
-" vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-"
-" Make sure that enter is never overriden in the quickfix window
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 "##########################################################################}}}1
@@ -224,9 +223,6 @@ if !hasmapto('<Plug>(zoom-toggle)')
   nmap <c-w>z :call <SID>ZoomPane()<CR>
 endif
 
-if hasmapto('<Plug>(zoom-toggle)')
-  echom "Yo:"
-endif
 "##########################################################################}}}1
 
 " User Interface Options {{{1
@@ -460,8 +456,12 @@ inoremap jj <ESC>
 nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
 
 " <ctrl>w Pane related {{{2
-"-------------------------------------------------------------------------------
-"---------------------------------------------------------------------------1}}}
+nnoremap <C-W><up> :resize -1<CR>
+nnoremap <C-W><down> :resize +1<CR>
+nnoremap <C-W><left> :vertical resize -1<CR>
+nnoremap <C-W><right> :vertical resize +1<CR>
+
+"---------------------------------------------------------------------------2}}}
 
 function SetLSPShortcuts()
   nnoremap <leader>gr :FindReference<CR>
