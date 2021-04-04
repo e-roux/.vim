@@ -81,7 +81,7 @@
 	path = pack/editing/opt/ale
 	url = https://github.com/dense-analysis/ale.git
 [submodule "scriptease"]
-	path = pack/custom/opt/scriptease
+	path = pack/custom/start/scriptease
 	url = https://github.com/tpope/vim-scriptease.git
 [submodule "jedi"]
 	path = pack/lang_python/start/jedi-vim
@@ -90,3 +90,6 @@
 [submodule "mucomplete"]
 	path = pack/editing/start/mucomplete
 	url = https://github.com/lifepillar/vim-mucomplete.git
+[submodule "vim-javascript-syntax"]
+	path = pack/lang_js/start/vim/javascript-syntax
+	url = https://github.com/jelera/vim-javascript-syntax.git
