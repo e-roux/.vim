@@ -115,7 +115,7 @@ highlight CursorLineNR cterm=bold ctermfg=yellow
 
 " Set highlight search and map to <leader> <space>
 setglobal hlsearch
-nnoremap <unique> <leader><space> :nohlsearch<CR>
+nnoremap <leader><space> :nohlsearch<CR>
 
 " makes * and # work on visual mode too.
 " From http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
@@ -319,9 +319,21 @@ let g:name = 'Emmanuel Roux'
 let g:email = ' '
 let g:miniSnip_trigger = '<F4>'
 let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
-" let g:miniSnip_opening = '{{'
-" let g:miniSnip_closing = '}}'
+let g:miniSnip_opening = '{{'
+let g:miniSnip_closing = '}}'
 " 2}}}
+
+" Mucomplete
+
+let g:mucomplete#user_mappings = {
+					\'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
+					\ }
+let g:mucomplete#chains = {}
+    let g:mucomplete#chains['default']   =  {
+                \              'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
+              \              '.*string.*': ['uspl'],
+              \              '.*comment.*': ['uspl']
+              \            }
 
 " NERDTree {{{2
 "##############################################################################
@@ -456,11 +468,14 @@ inoremap jj <ESC>
 nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
 
 " <ctrl>w Pane related {{{2
-nnoremap <C-W><up> :resize -1<CR>
-nnoremap <C-W><down> :resize +1<CR>
-nnoremap <C-W><left> :vertical resize -1<CR>
-nnoremap <C-W><right> :vertical resize +1<CR>
-
+nnoremap <silent> C-W><up> :silent resize -1<CR>
+nnoremap <silent> C-W><down> :silent resize +1<CR>
+nnoremap <silent> C-W><left> :silent vertical resize +1<CR>
+nnoremap <silent> C-W><right> :silent vertical resize -1<CR>
+nnoremap <silent> <C-Right> <c-w>l
+nnoremap <silent> <C-Left> <c-w>h
+nnoremap <silent> <C-Up> <c-w>k
+nnoremap <silent> <C-Down> <c-w>j
 "---------------------------------------------------------------------------2}}}
 
 function SetLSPShortcuts()
@@ -476,7 +491,6 @@ function SetLSPShortcuts()
 endfunction()
 
 nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>d :call <SID>BufferDelete()<CR>
 nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>
@@ -581,7 +595,9 @@ set wildmode=list:longest,full
 " remove beeps during completion
 set belloff=all
 set completeopt-=preview
-set completeopt+=longest,menuone,noselect,noinsert
+set completeopt+=menuone,noselect,noinsert
 let g:mucomplete#enable_auto_at_startup = 1
+
+let g:xml_syntax_folding = 1
 
 " vim:set et sw=2 fdm=marker:
