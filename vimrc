@@ -49,8 +49,8 @@ setglobal backspace=2           " Backspace deletes like most programs in insert
 setglobal autoindent            " New lines inherit indentation of previous line
 setglobal smartindent
 setglobal nojoinspaces          " Use one space, not two, after punctuation.
-setglobal textwidth=80          " Make it obvious where 80 characters is
-setglobal colorcolumn=+1
+setglobal textwidth=0           " Make it obvious where 80 characters is
+setglobal colorcolumn=80
 setglobal autoread              " Set to auto read when a file is changed
 setglobal diffopt+=vertical     " Always use vertical diffs
 
