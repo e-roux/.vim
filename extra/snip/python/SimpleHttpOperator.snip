@@ -1,0 +1,14 @@
+? SimpleHttpOperator
+$ `{{` `}}`
+SimpleHttpOperator(
+  task_id: str = '{{}}',
+  endpoint: Optional[str] = None,
+  method: str = 'POST',
+  data: Any = None,
+  headers: Optional[Dict[str, str]] = None,
+  response_check: Optional[Callable[..., bool]] = None,
+  response_filter: Optional[Callable[..., Any]] = None,
+  extra_options: Optional[Dict[str, Any]] = None,
+  http_conn_id: str = 'http_default',
+  log_response: bool = False,
+}

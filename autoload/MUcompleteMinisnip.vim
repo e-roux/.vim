@@ -1,3 +1,6 @@
+" Source:
+" https://github.com/jonasw234/vim-mucomplete-minisnip
+"
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -30,7 +33,7 @@ function! MUcompleteMinisnip#complete() abort
     endif
     let l:candidates = map(filter(copy(b:snippet_candidates), s:cmp),
         \ '{
-        \      "word": v:val,
+        \      "word": fnamemodify(v:val, ":r"),
         \      "menu": "[snip] " . v:val,
         \      "dup": 1
         \ }')

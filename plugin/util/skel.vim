@@ -7,6 +7,11 @@
 "
 " Description:
 " Simple Template functionality using read and a file
+"
+" Links:
+" - https://shapeshed.com/vim-templates
+
+let s:templates_search_dir = trim(get(g:, 'templates_search_dir', 'extra/templates'), '/', 2)
 
 function! s:load_skeleton(type, name)
 	" do nothing if no filetype
@@ -21,21 +26,22 @@ function! s:load_skeleton(type, name)
 		return
 	endif
 	" glob every directory of rtp to search for skeleton/filetype
-	let skeletons = globpath(&rtp, 'extra/skeleton/' . a:name , 0, 1)
-	" let skeletons = globpath(&rtp, 'skeleton/' . a:type , 0, 1)
-	" echoerr 'skeletons is ' . skeletons
+	let skeletons = globpath(&rtp, s:templates_search_dir . '/' . a:name , 0, 1)
+
 	if empty(skeletons)
-		let skeletons = globpath(&rtp, 'extra/skeleton/' . a:type , 0, 1)
+		let skeletons = globpath(&rtp, s:templates_search_dir . '/' . a:type , 0, 1)
 		if empty(skeletons)
 			return
 		endif
 	endif
 	" read last skeleton into 1st line.
 	exe 'silent! 0read ' . skeletons[-1]
-	call feedkeys("i\<Plug>(miniSnip)", 'x')
+	call feedkeys("i\<Plug>(miniSnip)", "x")
 endfunction
 
-augroup aug_skeleton
-	au!
+if has("autocmd")
+  augroup aug_skeleton
+	autocmd!
 	autocmd BufNewFile * call s:load_skeleton(&filetype, expand('%'))
-augroup end
+  augroup end
+endif

@@ -1,0 +1,10 @@
+#! /usr/bin/env python
+######################################################################
+# @author      : {{!get(g:, 'name', '')}} {{!get(g:, 'email', '')}}
+# @file        : Makefile
+# @created     : {{!strftime("%c")}}
+######################################################################
+
+#    It has been {{!localtime()}} seconds since the Unix epoch
+"""
+"""

@@ -38,5 +38,3 @@ set foldtext=MyFoldText()
 "     \ set fileformat=unix
 "" setlocal foldmethod=indent
 " setlocal foldnestmax=2
-
-

@@ -7,17 +7,14 @@ if has('nvim')
 endif
 
 " Disable extra plugins
-let g:loaded_gzip               =  1
-let g:loaded_tarPlugin          =  1
-let g:loaded_zipPlugin          =  1
 let g:loaded_2html_plugin       =  1
-
-let g:loaded_netrw              =  1
-" Remote plugins
-let g:loaded_rrhelper           =  1
-let g:loaded_remote_plugins     =  1
+let g:loaded_gzip               =  1
 let g:loaded_netrw              =  1
 let g:loaded_netrwPlugin        =  1
+let g:loaded_remote_plugins     =  1
+let g:loaded_rrhelper           =  1
+let g:loaded_tarPlugin          =  1
+let g:loaded_zipPlugin          =  1
 
 " custom
 let g:ale_enabled = 1
@@ -31,37 +28,37 @@ setglobal nocompatible          " We're running Vim, not Vi!
 
 " Enables syntax color and ftplugin, see :h filetype-overview
 syntax on                       " Set syntax color on
-filetype plugin indent on       " Enable filetype-specific indenting plugin
 
 setglobal dir=~/.cache/vim
 
 setglobal history=500           " number of command-lines that are remembered
 
+" Indentation {{{2
+filetype plugin indent on       " Enable filetype-specific indenting plugin
+
 set tabstop=4                   " number of spaces that <Tab> in file uses
-
 setglobal expandtab             " Convert tabs to spaces
-setglobal softtabstop=2         " number of spaces that <Tab> uses while editing
+setglobal softtabstop=2         " number of spaces used by <Tab> while editing
 setglobal shiftwidth=0          " number of spaces to use for (auto)indent step
-
-setglobal shiftround
-setglobal backspace=2           " Backspace deletes like most programs in insert mode
-
-setglobal autoindent            " New lines inherit indentation of previous line
+setglobal autoindent            " New lines inherit indentation of prev. line
 setglobal smartindent
+setglobal shiftround            " Round indent to multiple of 'shiftwidth'
+" 2}}}
+
+setglobal backspace=2           " Backspace deletes in insert mode
 setglobal nojoinspaces          " Use one space, not two, after punctuation.
-setglobal textwidth=0           " Make it obvious where 80 characters is
-setglobal colorcolumn=80
+setglobal textwidth=0
+setglobal colorcolumn=80        " Make it obvious where 80 characters is
 setglobal autoread              " Set to auto read when a file is changed
 setglobal diffopt+=vertical     " Always use vertical diffs
 
-if has('unnamedplus')
-  setglobal clipboard=unnamedplus
-endif
+if has('unnamedplus') | setglobal clipboard=unnamedplus | endif
 
-let mapleader=','         " map the leader to ','
+let mapleader=','               " map the leader to ','
+let maplocalleader=';'          " map the localleader to ';'
 
-"  Unsaved modified buffer when opening a new file is hidden instead of closed
-setglobal hidden
+setglobal hidden                "  Unsaved modified buffer when opening a new
+                                " file is hidden instead of closed
 
 autocmd FocusGained,BufEnter * checktime
 
@@ -102,6 +99,10 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+setglobal cursorline
+highlight clear CursorLine
+highlight CursorLineNR cterm=bold ctermfg=yellow
+
 source ~/.vim/colors/background.vim
 
 " Theme
@@ -109,12 +110,9 @@ source ~/.vim/colors/background.vim
 let s:terminal_italic=1
 colorscheme solarized
 
-setglobal cursorline
-highlight clear CursorLine
-highlight CursorLineNR cterm=bold ctermfg=yellow
-
-" Set highlight search and map to <leader> <space>
+" Set highlight search
 setglobal hlsearch
+" Map 'stop highligting' to <leader><space>
 nnoremap <leader><space> :nohlsearch<CR>
 
 " makes * and # work on visual mode too.
@@ -172,17 +170,17 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 "   autocmd BufEnter * for f in ['vimrc', 'zshrc', 'tmux.conf'] | if @% =~ f | set foldmethod=marker | endif | endfor
 " augroup END
 
-set foldopen&
-function! s:toggleFoldClose()
-  " toggle automatic folds close when you move out of it
-  if &foldclose ==? 'all'
-    set foldclose&vim
-  else
-    set foldclose=all
-  endif
-endfunction
+" set foldopen&
+" function! s:toggleFoldClose()
+"   " toggle automatic folds close when you move out of it
+"   if &foldclose ==? 'all'
+"     set foldclose&vim
+"   else
+"     set foldclose=all
+"   endif
+" endfunction
 
-command! ToggleFoldClose :call <SID>toggleFoldClose()
+" command! ToggleFoldClose :call <SID>toggleFoldClose()
 
 
 "##########################################################################}}}1
@@ -239,7 +237,6 @@ setglobal laststatus=2      " Always display the status bar
 
 " Plugins {{{1
 "##############################################################################
-let g:db_ui_use_nerd_fonts=1
 " airline {{{2
 "##############################################################################
 
@@ -281,6 +278,12 @@ let g:airline_symbols = {
   \ }
 "##########################################################################}}}2
 
+" dbui {{{2
+
+let g:db_ui_use_nerd_fonts=1
+nnoremap <localleader>db :NERDTreeClose \| DBUIToggle<CR>
+" 2}}}
+
 " LanguageClient {{{2
 "##############################################################################
 " let g:LanguageClient_serverCommands = {
@@ -317,23 +320,24 @@ let g:echodoc#type = 'signature'
 " let g:minisnip_autoindent = 0
 let g:name = 'Emmanuel Roux'
 let g:email = ' '
-let g:miniSnip_trigger = '<F4>'
-let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  '~/.vim/extra/snip' ]
+let g:miniSnip_trigger = '<C-F4>'
+let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ]
 let g:miniSnip_opening = '{{'
 let g:miniSnip_closing = '}}'
 " 2}}}
 
-" Mucomplete
-
+" Mucomplete {{{2
 let g:mucomplete#user_mappings = {
-					\'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
-					\ }
+  \ 'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
+  \ }
 let g:mucomplete#chains = {}
-    let g:mucomplete#chains['default']   =  {
-                \              'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
-              \              '.*string.*': ['uspl'],
-              \              '.*comment.*': ['uspl']
-              \            }
+let g:mucomplete#chains['default']   =  {
+  \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
+  \ '.*string.*': ['uspl'],
+  \ '.*comment.*': ['uspl']
+  \ }
+" let g:mucomplete#no_mappings = 1
+" 2}}}
 
 " NERDTree {{{2
 "##############################################################################
@@ -456,10 +460,10 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 
 " Insert Completion mode
 " h popupmenu-keys
-inoremap <C-J> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-J>"<CR>
-inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
-inoremap <C-H> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>C-H>"<CR>
-inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
+" inoremap <C-J> <C-R>=pumvisible() ? "\<lt>C-N>" : "\<lt>C-J>"<CR>
+" inoremap <C-K> <C-R>=pumvisible() ? "\<lt>C-P>" : "\<lt>C-K>"<CR>
+" inoremap <C-H> <C-R>=pumvisible() ? "\<lt>C-E>" : "\<lt>C-H>"<CR>
+" inoremap <C-L> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>C-L>"<CR>
 
 " Basic search for visually selected text: //
 " https://vim.fandom.com/wiki/Search_for_visually_selected_text
@@ -496,6 +500,9 @@ nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>
 " nnoremap <unique> <leader>r :Rename<CR>
 
+" <leader>e Execute {{{2
+
+" 2}}}
 
 " <leader>h Help {{{2
 "-------------------------------------------------------------------------------
@@ -587,6 +594,7 @@ endif
 " packloadall
 " silent! helptags ALL
 
+nnoremap <leader>q <Plug>(miniSnip)
 
 set wildmode=list:longest,full
 "----------- completion chains

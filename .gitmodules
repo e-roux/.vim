@@ -93,3 +93,9 @@
 [submodule "vim-javascript-syntax"]
 	path = pack/lang_js/start/vim/javascript-syntax
 	url = https://github.com/jelera/vim-javascript-syntax.git
+[submodule "rust"]
+	path = pack/lang_rust/start/rust.vim
+	url = https://github.com/rust-lang/rust.vim.git
+[submodule "dbext"]
+	path = pack/lang_sql/start/dbext
+	url = https://github.com/vim-scripts/dbext.vim
