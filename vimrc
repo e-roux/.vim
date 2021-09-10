@@ -30,6 +30,10 @@ setglobal nocompatible          " We're running Vim, not Vi!
 syntax on                       " Set syntax color on
 
 setglobal dir=~/.cache/vim
+" Create it if does not exists
+if !isdirectory(&dir)
+    call mkdir(&dir)
+endif
 
 setglobal history=500           " number of command-lines that are remembered
 
