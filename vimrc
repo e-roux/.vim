@@ -579,9 +579,6 @@ endif
 
 " 1}}} "General
 
-" DVC
-autocmd! BufNewFile,BufRead Dvcfile,*.dvc,dvc.lock setfiletype yaml
-
 " setglobal omnifunc=ale#completion#OmniFunc
 " setglobal omnifunc=lsc#complete#complete
 "
