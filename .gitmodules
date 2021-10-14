@@ -41,9 +41,6 @@
 [submodule "pack/custom/start/vim-toml"]
 	path = pack/languages/start/vim-toml
 	url = https://github.com/cespare/vim-toml.git
-[submodule "pack/custom/start/vim-ripgrep"]
-	path = pack/custom/start/vim-ripgrep
-	url = https://github.com/jremmen/vim-ripgrep.git
 [submodule "pack/custom/start/vim-zoom"]
 	path = pack/interface/start/vim-zoom
 	url = https://github.com/dhruvasagar/vim-zoom.git
