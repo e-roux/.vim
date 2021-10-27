@@ -33,10 +33,13 @@ function! PackInit() abort
   call minpac#add('airblade/vim-gitgutter')
   call minpac#add('tpope/vim-fugitive')
   " call minpac#add('mattn/gist-vim')
-  
+
   " Code edition
-  call minpac#add('Jorengarenar/miniSnip')
+  call minpac#add('Gavinok/vim-minisnip', { 'branch': 'optionalautoindent' })
+  " call minpac#add('Jorengarenar/miniSnip')
   call minpac#add('lifepillar/vim-mucomplete')
+  call minpac#add('jonasw234/vim-mucomplete-minisnip')
+
   call minpac#add('jiangmiao/auto-pairs', {'type': 'opt'})
   call minpac#add('dhruvasagar/vim-table-mode')
 
@@ -51,9 +54,10 @@ function! PackInit() abort
   " Tests
   call minpac#add('vim-test/vim-test')
 
-  " Buffer to REPL 
+  " Buffer to REPL
   call minpac#add('jpalardy/vim-slime')
 
+  call minpac#add('junegunn/fzf')
   call minpac#add('junegunn/fzf.vim')
 
   " Themes
@@ -65,7 +69,7 @@ function! PackInit() abort
 
   " Vim sugar for the UNIX shell commands
   call minpac#add('tpope/vim-eunuch')
- 
+
   " language specific
   call minpac#add('davidhalter/jedi-vim')
   call minpac#add('jelera/vim-javascript-syntax')
@@ -105,7 +109,6 @@ let g:loaded_rrhelper           =  1
 let g:loaded_tarPlugin          =  1
 let g:loaded_zipPlugin          =  1
 
-" let g:loaded_miniSnip = 1
 " }}}1 "Init
 
 " General {{{1
@@ -397,13 +400,14 @@ let g:echodoc#type = 'signature'
 
 " }}}2
 " Minisnip {{{2
-" let g:minisnip_autoindent = 0
+let g:minisnip_autoindent = 0
+let g:minisnip_trigger = '<C-f>'
+imap <Nop> <Plug>(minisnip-complete)
 let g:name = 'Emmanuel Roux'
-let g:email = ' '
-let g:miniSnip_trigger = '<C-F4>'
-let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ]
-let g:miniSnip_opening = '{{'
-let g:miniSnip_closing = '}}'
+
+let g:email = '15956441+fesaille@users.noreply.github.com'
+" let g:miniSnip_trigger = '<C-F4>'
+let g:minisnip_dir = join([ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ], ":")
 " }}}2
 " Mucomplete {{{2
 let g:mucomplete#user_mappings = {
@@ -413,7 +417,8 @@ let g:mucomplete#chains = {}
 let g:mucomplete#chains['default']   =  {
       \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
       \ '.*string.*': ['uspl'],
-      \ '.*comment.*': ['uspl']
+      \ '.*comment.*': ['uspl'],
+      \ 'go': ['list', 'omni', 'c-n']
       \ }
 " let g:mucomplete#no_mappings = 1
 " }}}2

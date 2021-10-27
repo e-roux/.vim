@@ -14,5 +14,5 @@ if exists("g:loaded_test")
     endfunction
     let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
     let g:test#strategy = 'echo'
-endif
 
+endif

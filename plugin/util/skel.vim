@@ -36,7 +36,8 @@ function! s:load_skeleton(type, name)
 	endif
 	" read last skeleton into 1st line.
 	exe 'silent! 0read ' . skeletons[-1]
-	call feedkeys("i\<Plug>(miniSnip)", "x")
+	call feedkeys("i\<Plug>(minisnip)", 'i')
+	" call feedkeys("i", "m")
 endfunction
 
 if has("autocmd")
