@@ -1,10 +1,99 @@
-" This is my vimrc
-"
+" This is my vimrc, borrowed from various places
+
 " Init: {{{1
-"##############################################################################
+
 if has('nvim')
   set runtimepath^=~/.vim runtimepath+=~/.vim/after
+else
+  let g:lspconfig = 1
 endif
+
+" Use minpac as pkg manager
+function! PackInit() abort
+  try
+    packadd minpac
+  catch /.*/ " catch error E123
+    echoc "minpac is not installed, no package will be installed"
+  endtry
+
+  call minpac#init()
+
+  " Interface
+  call minpac#add('vim-airline/vim-airline')
+  call minpac#add('christoomey/vim-tmux-navigator')
+  call minpac#add('dhruvasagar/vim-zoom')
+  call minpac#add('tmhedberg/SimpylFold')
+  " Interface · nerdtree
+  call minpac#add('preservim/nerdtree')
+  call minpac#add('ryanoasis/vim-devicons')
+  " Interface · startify
+  call minpac#add('mhinz/vim-startify')
+
+  "Source version control
+  call minpac#add('airblade/vim-gitgutter')
+  call minpac#add('tpope/vim-fugitive')
+  " call minpac#add('mattn/gist-vim')
+  
+  " Code edition
+  call minpac#add('Jorengarenar/miniSnip')
+  call minpac#add('lifepillar/vim-mucomplete')
+  call minpac#add('jiangmiao/auto-pairs', {'type': 'opt'})
+  call minpac#add('dhruvasagar/vim-table-mode')
+
+  call minpac#add('tpope/vim-commentary')
+  call minpac#add('tpope/vim-surround')
+  " manipulating and moving between function arguments
+  call minpac#add('PeterRincker/vim-argumentative')
+
+  " Linting
+  call minpac#add('dense-analysis/ale')
+
+  " Tests
+  call minpac#add('vim-test/vim-test')
+
+  " Buffer to REPL 
+  call minpac#add('jpalardy/vim-slime')
+
+  call minpac#add('junegunn/fzf.vim')
+
+  " Themes
+  call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " gruvbox theme
+
+  " DB related
+  call minpac#add('tpope/vim-dadbod')
+  call minpac#add('kristijanhusak/vim-dadbod-ui')
+
+  " Vim sugar for the UNIX shell commands
+  call minpac#add('tpope/vim-eunuch')
+ 
+  " language specific
+  call minpac#add('davidhalter/jedi-vim')
+  call minpac#add('jelera/vim-javascript-syntax')
+  " call minpac#add('leafgarland/typescript-vim')
+  call minpac#add('rust-lang/rust.vim')
+  call minpac#add('fatih/vim-go')
+  call minpac#add('cespare/vim-toml')
+
+  call minpac#add('skywind3000/asyncrun.vim') " dependency of vim-test
+  " call minpac#add('tpope/vim-scriptease')
+  " call minpac#add('mattn/webapi-vim') " dependency of gist
+
+  call minpac#add('neovim/nvim-lspconfig')
+
+endfunction
+
+"
+function! s:install_minpac() abort
+  let l:packdir = split(&packpath, ',')[0]
+  let l:minipac_src_url = 'https://github.com/k-takata/minpac.git'
+  "
+  let job = system(["/bin/sh", "-c", "echo hello"])
+endfunction
+
+
+command! -bar PackUpdate call PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
+command! -bar PackClean  call PackInit() | call minpac#clean()
+command! -bar PackStatus call PackInit() | call minpac#status()
 
 " Disable extra plugins
 let g:loaded_2html_plugin       =  1
@@ -16,26 +105,21 @@ let g:loaded_rrhelper           =  1
 let g:loaded_tarPlugin          =  1
 let g:loaded_zipPlugin          =  1
 
-" custom
-let g:ale_enabled = 1
 " let g:loaded_miniSnip = 1
-" 1}}} "Init
+" }}}1 "Init
 
 " General {{{1
-"##############################################################################
 
-setglobal nocompatible          " We're running Vim, not Vi!
+setglobal nocompatible          " We're running Vim
+setglobal history=500           " number of command-lines that are remembered
 
 " Enables syntax color and ftplugin, see :h filetype-overview
 syntax on                       " Set syntax color on
 
+" Set cache dir and creates it if does not exists
 setglobal dir=~/.cache/vim
-" Create it if does not exists
-if !isdirectory(&dir)
-    call mkdir(&dir)
-endif
+if !isdirectory(&dir) | call mkdir(&dir) | endif
 
-setglobal history=500           " number of command-lines that are remembered
 
 " Indentation {{{2
 filetype plugin indent on       " Enable filetype-specific indenting plugin
@@ -47,14 +131,14 @@ setglobal shiftwidth=0          " number of spaces to use for (auto)indent step
 setglobal autoindent            " New lines inherit indentation of prev. line
 setglobal smartindent
 setglobal shiftround            " Round indent to multiple of 'shiftwidth'
-" 2}}}
+" }}}2
 
+setglobal autoread              " Set to auto read when a file is changed
 setglobal backspace=2           " Backspace deletes in insert mode
+setglobal colorcolumn=80        " Make it obvious where 80 characters is
+setglobal diffopt+=vertical     " Always use vertical diffs
 setglobal nojoinspaces          " Use one space, not two, after punctuation.
 setglobal textwidth=0
-setglobal colorcolumn=80        " Make it obvious where 80 characters is
-setglobal autoread              " Set to auto read when a file is changed
-setglobal diffopt+=vertical     " Always use vertical diffs
 
 if has('unnamedplus') | setglobal clipboard=unnamedplus | endif
 
@@ -62,7 +146,7 @@ let mapleader=','               " map the leader to ','
 let maplocalleader=';'          " map the localleader to ';'
 
 setglobal hidden                "  Unsaved modified buffer when opening a new
-                                " file is hidden instead of closed
+" file is hidden instead of closed
 
 autocmd FocusGained,BufEnter * checktime
 
@@ -80,23 +164,11 @@ function! s:GotoFile(path)
   endif
 endfunction
 
-"##########################################################################}}}1
+" }}}1
 
 " Appearence and status bar {{{1
-"##############################################################################
-" ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-" ┃buf01 │ buf02 │ buf03                                                      ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┃                                                                           ┃
-" ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-"
+
+" see :help xterm-true-color
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -113,6 +185,7 @@ source ~/.vim/colors/background.vim
 " let g:solarized_termcolors=256
 let s:terminal_italic=1
 colorscheme solarized
+" colorscheme gruvbox
 
 " Set highlight search
 setglobal hlsearch
@@ -145,24 +218,23 @@ let &t_EI = "\e[2 q"            " steady block, edit mode
 
 " Redraw on VimResume
 if has('patch-8.2.2128')
-autocmd VimEnter,InsertLeave,VimResume *
-  \ silent execute '!echo -ne "\e[2 q"' | redraw!
+  autocmd VimEnter,InsertLeave,VimResume *
+        \ silent execute '!echo -ne "\e[2 q"' | redraw!
 endif
 
 autocmd InsertEnter,InsertChange *
-  \ if v:insertmode == 'i' |
-  \   silent execute '!echo -ne "\e[6 q"' | redraw! |
-  \ elseif v:insertmode == 'r' |
-  \   silent execute '!echo -ne "\e[4 q"' | redraw! |
-  \ endif
+      \ if v:insertmode == 'i' |
+      \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+      \ elseif v:insertmode == 'r' |
+      \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+      \ endif
 autocmd VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
-"##########################################################################}}}1
+" }}}1
 
 " Folding {{{1
-"##############################################################################
 
 " nnoremap z1 :set foldlevel=1<CR>
 " nnoremap z2 :set foldlevel=2<CR>
@@ -187,11 +259,10 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 " command! ToggleFoldClose :call <SID>toggleFoldClose()
 
 
-"##########################################################################}}}1
+" }}}1
 
 " Panes  {{{1
-"###############################################################################
-"#
+
 "# ┌───┐ Splitting windows into panes with memorizable commands
 "# ┝━━━┥ A vertical split positions panes up and down.
 "# └───┘ Think of - as the separating line.
@@ -225,10 +296,10 @@ if !hasmapto('<Plug>(zoom-toggle)')
   nmap <c-w>z :call <SID>ZoomPane()<CR>
 endif
 
-"##########################################################################}}}1
+" }}}1
 
 " User Interface Options {{{1
-"##############################################################################
+
 set number                  " Show line numbers on the sidebars
 setglobal noerrorbells      " Disable beep on errors
 setglobal mouse=a           " Enable mouse for scrolling and resizing
@@ -237,13 +308,11 @@ setglobal laststatus=2      " Always display the status bar
 " setglobal statusline+=%#warningmsg#
 " setglobal statusline+=%{SyntasticStatuslineFlag()}
 " setglobal statusline+=%*
-"##########################################################################}}}1
+" }}}1
 
 " Plugins {{{1
-"##############################################################################
-" airline {{{2
-"##############################################################################
 
+" Airline {{{2
 let g:airline_right_sep=''
 let g:airline_right_alt_sep = ''
 let g:airline_left_sep=''
@@ -265,29 +334,37 @@ if !exists('g:airline_symbols')
 endif
 
 let g:airline_symbols = {
-  \ 'space': ' ',
-  \ 'paste': 'PASTE',
-  \ 'spell': 'SPELL',
-  \ 'notexists': '⚠',
-  \ 'maxlinenr': ' ',
-  \ 'linenr': '📄',
-  \ 'readonly': '🔒',
-  \ 'dirty': '💥',
-  \ 'modified': '✏ ',
-  \ 'crypt': '🔑',
-  \ 'keymap': 'Keymap:',
-  \ 'ellipsis': '...',
-  \ 'branch': '⎇',
-  \ 'whitespace': '☲',
-  \ }
-"##########################################################################}}}2
-
+      \ 'space': ' ',
+      \ 'paste': 'PASTE',
+      \ 'spell': 'SPELL',
+      \ 'notexists': '⚠',
+      \ 'maxlinenr': ' ',
+      \ 'linenr': '📄',
+      \ 'readonly': '🔒',
+      \ 'dirty': '💥',
+      \ 'modified': '✏ ',
+      \ 'crypt': '🔑',
+      \ 'keymap': 'Keymap:',
+      \ 'ellipsis': '...',
+      \ 'branch': '⎇',
+      \ 'whitespace': '☲',
+      \ }
+" }}}2
+" Argumentative {{{2
+" https://github.com/PeterRincker/vim-argumentative
+let g:argumentative_no_mappings = 1
+nmap <leader>ah <Plug>Argumentative_MoveLeft
+nmap <leader>al <Plug>Argumentative_MoveRight
+" }}}2
 " dbui {{{2
-
 let g:db_ui_use_nerd_fonts=1
-nnoremap <localleader>db :NERDTreeClose \| DBUIToggle<CR>
-" 2}}}
-
+" }}}2
+" gitgutter {{{2
+" let g:gitgutter_enabled = 1
+" set signcolumn=yes
+"
+" let g:gitgutter_override_sign_column_highlight = 1
+" }}}2
 " LanguageClient {{{2
 "##############################################################################
 " let g:LanguageClient_serverCommands = {
@@ -318,8 +395,7 @@ let g:echodoc#type = 'signature'
 "   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
 " augroup END
 
-"#######################################################################}}}2
-
+" }}}2
 " Minisnip {{{2
 " let g:minisnip_autoindent = 0
 let g:name = 'Emmanuel Roux'
@@ -328,36 +404,37 @@ let g:miniSnip_trigger = '<C-F4>'
 let g:miniSnip_dirs = [ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ]
 let g:miniSnip_opening = '{{'
 let g:miniSnip_closing = '}}'
-" 2}}}
-
+" }}}2
 " Mucomplete {{{2
 let g:mucomplete#user_mappings = {
-  \ 'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
-  \ }
+      \ 'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
+      \ }
 let g:mucomplete#chains = {}
 let g:mucomplete#chains['default']   =  {
-  \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
-  \ '.*string.*': ['uspl'],
-  \ '.*comment.*': ['uspl']
-  \ }
+      \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
+      \ '.*string.*': ['uspl'],
+      \ '.*comment.*': ['uspl']
+      \ }
 " let g:mucomplete#no_mappings = 1
-" 2}}}
-
+" }}}2
 " NERDTree {{{2
 "##############################################################################
 " Those must be set before NERDTree is loaded
+let g:NERDTreeDirArrows = '▸'
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✏ ',
-                \ 'Staged'    :'➕',
-                \ 'Untracked' :'⚠ ',
-                \ 'Renamed'   :'➜ ',
-                \ 'Unmerged'  :'⛓',
-                \ 'Deleted'   :'🗑',
-                \ 'Dirty'     :'💥',
-                \ 'Ignored'   :'✅',
-                \ 'Clean'     :'✔︎ ',
-                \ 'Unknown'   :'❓',
-                \ }
+      \ 'Modified'  :'✏ ',
+      \ 'Staged'    :'➕',
+      \ 'Untracked' :'⚠ ',
+      \ 'Renamed'   :'➜ ',
+      \ 'Unmerged'  :'⛓',
+      \ 'Deleted'   :'🗑',
+      \ 'Dirty'     :'💥',
+      \ 'Ignored'   :'✅',
+      \ 'Clean'     :'✔︎ ',
+      \ 'Unknown'   :'❓',
+      \ }
 let g:NERDTreeMapCloseDir = "h"
 let g:NERDTreeMapActivateNode = "l"
 let g:NERDTreeIgnore = ['__pycache__']
@@ -366,10 +443,12 @@ let g:NERDTreeIgnore = ['__pycache__']
 let g:NERDTreeChDirMode = 1
 
 autocmd BufEnter *
-  \ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree')
-  \ && b:NERDTree.isTabTree() | quit | endif
-"##########################################################################}}}2
+      \ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree')
+      \ && b:NERDTree.isTabTree() | quit | endif
 
+nnoremap <localleader>db :NERDTreeClose \| DBUIToggle<CR>
+
+" }}}2
 " netrw{{{2
 "##############################################################################
 " suppress the banner
@@ -391,62 +470,49 @@ let g:netrw_winsize = 25
 "   autocmd VimEnter * :Vexplore
 " augroup END
 
-"##########################################################################}}}2
-
+" }}}2
 " nnn{{{2
 "##############################################################################
 let g:nnn#layout = { 'left': '~20%' }
-"##########################################################################}}}2
-
+" }}}2
 " SimplyFold {{{2
-"##############################################################################
+"
 let g:SimpylFold_fold_import=0
 let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_docstring=0
 " let g:SimpylFold_fold_blank=1
-"##########################################################################}}}2
-
+" }}}2
 " Table mode {{{2
-"##############################################################################
 let g:table_mode_disable_tableize_mappings=1
-"##########################################################################}}}2
-
+" }}}2
 " Tmux Navigator {{{2
-"##############################################################################
 " https://github.com/christoomey/vim-tmux-navigator
 "
-" Navigation
-let g:tmux_navigator_no_mappings = 1
+let g:tmux_navigator_no_mappings = 1 " Navigation
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 
-"##########################################################################}}}2
-
+" }}}2
 " vim-test {{{2
-"##############################################################################
-"
 let test#strategy = {
-  \ 'nearest':       'asyncrun_background',
-  \ 'file':          'asyncrun_background_term',
-  \ 'suite':         'asyncrun_background_term',
-  \}
+      \ 'nearest':       'asyncrun_background',
+      \ 'file':          'asyncrun_background_term',
+      \ 'suite':         'asyncrun_background_term',
+      \}
 
 function! s:syncrun_background_buff(cmd) abort
   let g:test#strategy#cmd = a:cmd
   call test#strategy#asyncrun_setup_unlet_global_autocmd()
   execute 'AsyncRun -mode=term -focus=0 -post=echo\ eval("g:asyncrun_code\ ?\"Failure\":\"Success\"").":"'
-          \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
+        \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
 endfunction
 let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
 let g:test#strategy = 'echo'
-"##########################################################################}}}2
-"##########################################################################}}}1
+" }}}2
+
 " }}}1 "Plugins
 
 " General Mappings: {{{1
-"###############################################################################
-" KEY BINDINGS
-"###############################################################################
 
 " <C-J|K> Saving scroll: {{{2
 "###############################################################################
@@ -460,7 +526,7 @@ nnoremap <C-J> :call <SID>Saving_scroll("1<C-V><C-D>")<CR>
 nnoremap <C-K> :call <SID>Saving_scroll("1<C-V><C-U>")<CR>
 vnoremap <C-J> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-D>")<CR>
 vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
-"##########################################################################}}}2
+" }}}2
 
 " Insert Completion mode
 " h popupmenu-keys
@@ -484,7 +550,7 @@ nnoremap <silent> <C-Right> <c-w>l
 nnoremap <silent> <C-Left> <c-w>h
 nnoremap <silent> <C-Up> <c-w>k
 nnoremap <silent> <C-Down> <c-w>j
-"---------------------------------------------------------------------------2}}}
+"---------------------------------------------------------------------------}}}2
 
 function SetLSPShortcuts()
   nnoremap <leader>gr :FindReference<CR>
@@ -499,14 +565,13 @@ function SetLSPShortcuts()
 endfunction()
 
 nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>a  ggvG$yggvG$"+y
 nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>
 " nnoremap <unique> <leader>r :Rename<CR>
 
 " <leader>e Execute {{{2
 
-" 2}}}
+" }}}2
 
 " <leader>h Help {{{2
 "-------------------------------------------------------------------------------
@@ -519,76 +584,53 @@ nnoremap <leader>z :Files<CR>
 " nnoremap <leader>hv :help visual.txt<CR>
 nnoremap <leader>hw :normal yiw<ESC>:help <C-r>"<CR>
 vnoremap <leader>h y<ESC> :help <C-r>"<CR>
-"---------------------------------------------------------------------------1}}}
+"---------------------------------------------------------------------------}}}1
 
 " <leader>l Linting {{{2
-"-------------------------------------------------------------------------------
 nnoremap <leader>l<Space> :ALELint<CR>
 nnoremap <leader>lf :ALEFirst<CR>
 nnoremap <leader>li :ALEInfo<CR>
 nnoremap <leader>ll :ALELast<CR>
 nnoremap <leader>ln :ALENext<CR>
 nnoremap <leader>lp :ALEPrevious<CR>
-"---------------------------------------------------------------------------1}}}
+" }}}2
 
 " <leader>n NERDTree {{{2
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFocus<CR>
-"---------------------------------------------------------------------------1}}}
+" }}}2
 
 " <leader>s SVN (git) commands {{{2
-"-------------------------------------------------------------------------------
 nnoremap <leader>s :Git<CR>
 nnoremap <leader>sa :Git add %<CR>
 nnoremap <leader>sc :Git commit<CR>
 nnoremap <leader>spp :Git push<CR>
-"---------------------------------------------------------------------------1}}}
+" }}}2
 
 " <leader>t Tests {{{2
-"-------------------------------------------------------------------------------
 nnoremap <leader>tf :TestFile<CR>
 nnoremap <leader>tl :TestLast<CR>
 nnoremap <leader>tn :TestNearest<CR>
 nnoremap <leader>ts :TestSuite<CR>
 nnoremap <leader>tv :TestVisit<CR>
-"---------------------------------------------------------------------------1}}}
+" }}}2
 
 " <leader>y Yank {{{2
-"-------------------------------------------------------------------------------
 " Yank selection, word or line to system clipboard
 " https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 nnoremap <leader>ye "+ye
 nnoremap <leader>yw "+yw
 nnoremap <leader>yy "+yy
 vnoremap <leader>y "+y
+" }}}2
 
-" WSL yank support: https://superuser.com/questions/1291425
-let s:clip = 'clip.exe'
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' |
-              \ call system(s:clip, @0) | endif
-    augroup END
-endif
+" }}}1 "General
 
-" Search vim help for subject under cursor: K in normal mode
-" set keywordprg=:help
-
-"---------------------------------------------------------------------------1}}}
-
-" 1}}} "General
-
-" setglobal omnifunc=ale#completion#OmniFunc
-" setglobal omnifunc=lsc#complete#complete
-"
 setglobal dictionary=/usr/share/dict/british-english
 
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
 endif
-
-" set g:myopt = "yes"
 
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
@@ -606,7 +648,5 @@ set belloff=all
 set completeopt-=preview
 set completeopt+=menuone,noselect,noinsert
 let g:mucomplete#enable_auto_at_startup = 1
-
-let g:xml_syntax_folding = 1
 
 " vim:set et sw=2 fdm=marker:

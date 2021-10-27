@@ -5,3 +5,4 @@ view
 session
 vimrc.local
 colors/background.vim
+pack/minpac
