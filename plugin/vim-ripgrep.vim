@@ -1,23 +1,16 @@
+" if exists('g:loaded_rg') | finish | endif
 if exists('g:loaded_rg') || &cp
   finish
 endif
 
 let g:loaded_rg = 1
 
-if !exists('g:rg_binary')
-  let g:rg_binary = 'rg'
-endif
-
 if !exists('g:rg_format')
   let g:rg_format = "%f:%l:%c:%m"
 endif
 
 if !exists('g:rg_command')
-  let g:rg_command = g:rg_binary . ' --vimgrep'
-endif
-
-if !exists('g:rg_root_types')
-  let g:rg_root_types = ['.git']
+  let g:rg_command = get(g:, 'rg_binary', 'rg') . ' --vimgrep'
 endif
 
 if !exists('g:rg_window_location')
@@ -119,7 +112,7 @@ fun! s:RgRootDir()
   let l:dirs = split(getcwd(), '/')
 
   for l:dir in reverse(copy(l:dirs))
-    for l:type in g:rg_root_types
+    for l:type in get(g:, 'rg_root_types', ['.git'])
       let l:path = s:RgMakePath(l:dirs, l:dir)
       if s:RgHasFile(l:path.'/'.l:type)
         return l:path

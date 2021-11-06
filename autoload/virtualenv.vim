@@ -1,10 +1,13 @@
-if has('python3')
-    python3 import sys, vim
-    python3 if vim.eval('expand("<sfile>:p:h")') not in sys.path: sys.path.append(vim.eval('expand("<sfile>:p:h")'))
-    python3 import pyvenv
-endif
 
 function! virtualenv#activate(...)
+  let l:virtualenv_list = virtualenv#names('')
+  if len(l:virtualenv_list) == 1
+    echo "Activate ".l:virtualenv_list[0]
+    let $PATH =  l:virtualenv_list[0]."/bin:".$PATH
+  endif
+endfunction
+
+function! virtualenv#activate_bla(...)
     let name   = a:0 > 0 ? a:1 : ''
     let silent = a:0 > 1 ? a:2 : 0
     let env_dir = ''
@@ -34,27 +37,19 @@ function! virtualenv#activate(...)
         return
     endif
 
-    let bin = env_dir.(has('win32')? '/Scripts': '/bin')
+    let bin = env_dir.'/bin'
     call virtualenv#deactivate()
 
     let s:prev_path = $PATH
 
-    if has('python3')
-        python3 pyvenv.activate(vim.eval('l:env_dir'))
-    endif
-
     let g:virtualenv_name = name
     let $VIRTUAL_ENV = env_dir
 
-    if exists("*airline#extensions#virtualenv#update")
-           call airline#extensions#virtualenv#update()
-    endif
 endfunction
 
 function! virtualenv#deactivate()
-    if has('python3')
-        python3 pyvenv.deactivate()
-    endif
+
+    call system(deactivate)
 
     unlet! g:virtualenv_name
 
@@ -64,9 +59,9 @@ function! virtualenv#deactivate()
         let $PATH = s:prev_path
     endif
 
-    if exists("*airline#extensions#virtualenv#update")
-           call airline#extensions#virtualenv#update()
-    endif
+    " if exists("*airline#extensions#virtualenv#update")
+    "        call airline#extensions#virtualenv#update()
+    " endif
 endfunction
 
 function! virtualenv#list()
@@ -77,7 +72,8 @@ endfunction
 
 function! virtualenv#statusline()
     if exists('g:virtualenv_name')
-        return substitute(g:virtualenv_stl_format, '\C%n', g:virtualenv_name, 'g')
+        " Status line format
+        return substitute(get(g:, "virtualenv_stl_format", "%n"), '\C%n', g:virtualenv_name, 'g')
     else
         return ''
     endif
@@ -85,15 +81,11 @@ endfunction
 
 function! virtualenv#names(prefix)
     let venvs = []
-    for dir in split(glob(g:virtualenv_directory.'/'.a:prefix.'*'), '\n')
-        if !isdirectory(dir)
-            continue
-        endif
-        let fn = dir.(has('win32')? '/Scripts': '/bin').'/activate'
+    for fn in split(system('fd -HIp "bin/activate$"'), '\n')
         if !filereadable(fn)
             continue
         endif
-        call add(venvs, fnamemodify(dir, ':t'))
+        call add(venvs, expand(fnamemodify(fn, ':p:h:h')))
     endfor
     return venvs
 endfunction

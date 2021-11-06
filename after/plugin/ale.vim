@@ -58,6 +58,7 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_completion_enabled = 0
 let g:ale_completion_autoimport = 1
 
-let g:ale_disable_lsp = 0
+if has('nvim')
+  let g:ale_disable_lsp = 1
+endif
 let g:ale_fix_on_save = 1
-
