@@ -1,12 +1,8 @@
 " ---------------- JS ----------------------
 
-autocmd! BufNewFile,BufReadPost *.{js,ts,json}
-      \ set filetype=javascript foldmethod=expr
+autocmd! BufNewFile,BufReadPost *.{js,ts,json} set filetype=javascript foldmethod=expr
 
-autocmd! BufNewFile,BufRead *.{js,html,css}
-    \ set tabstop=2
-    \ set softtabstop=2
-    \ set shiftwidth=2
+autocmd! BufNewFile,BufRead *.{js,html,css} set tabstop=2 softtabstop=2 shiftwidth=2
 
 function! JSFolds()
   let thisline = getline(v:lnum)
