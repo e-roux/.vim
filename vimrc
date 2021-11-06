@@ -109,6 +109,12 @@ let g:loaded_rrhelper           =  1
 let g:loaded_tarPlugin          =  1
 let g:loaded_zipPlugin          =  1
 
+
+
+if has('nvim')
+lua require("lsp-config")
+endif
+
 " }}}1 "Init
 
 " General {{{1
@@ -404,7 +410,6 @@ let g:minisnip_autoindent = 0
 let g:minisnip_trigger = '<C-f>'
 imap <Nop> <Plug>(minisnip-complete)
 let g:name = 'Emmanuel Roux'
-
 let g:email = '15956441+fesaille@users.noreply.github.com'
 " let g:miniSnip_trigger = '<C-F4>'
 let g:minisnip_dir = join([ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ], ":")
@@ -413,8 +418,7 @@ let g:minisnip_dir = join([ expand('%:p:h') . '/extra/snip',  expand('~/.vim/ext
 let g:mucomplete#user_mappings = {
       \ 'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
       \ }
-let g:mucomplete#chains = {}
-let g:mucomplete#chains['default']   =  {
+let g:mucomplete#chains   =  {
       \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
       \ '.*string.*': ['uspl'],
       \ '.*comment.*': ['uspl'],
@@ -649,6 +653,10 @@ set wildmode=list:longest,full
 " set complete-=i
 " set complete-=t
 " remove beeps during completion
+
+set shortmess+=c    " Shut off completion messages
+set belloff+=ctrlg  " If Vim beeps during completion
+
 set belloff=all
 set completeopt-=preview
 set completeopt+=menuone,noselect,noinsert
