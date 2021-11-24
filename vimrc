@@ -35,7 +35,7 @@ function! PackInit() abort
   " call minpac#add('mattn/gist-vim')
 
   " Code edition
-  call minpac#add('Gavinok/vim-minisnip', { 'branch': 'optionalautoindent' })
+  call minpac#add('e-roux/vim-minisnip', { 'branch': 'optionalautoindent' })
   " call minpac#add('Jorengarenar/miniSnip')
   call minpac#add('lifepillar/vim-mucomplete')
   call minpac#add('jonasw234/vim-mucomplete-minisnip')
@@ -62,6 +62,7 @@ function! PackInit() abort
 
   " Themes
   call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " gruvbox theme
+  call minpac#add('lifepillar/vim-solarized8')
 
   " DB related
   call minpac#add('tpope/vim-dadbod')
@@ -119,44 +120,52 @@ endif
 
 " General {{{1
 
-setglobal nocompatible          " We're running Vim
-setglobal history=500           " number of command-lines that are remembered
+set nocompatible          " We're running Vim
+set history=500           " number of command-lines that are remembered
 
 " Enables syntax color and ftplugin, see :h filetype-overview
 syntax enable                       " Set syntax color on
 
 " Set cache dir and creates it if does not exists
-setglobal dir=~/.cache/vim
+set dir=~/.cache/vim
 if !isdirectory(&dir) | call mkdir(&dir) | endif
-
 
 " Indentation {{{2
 filetype plugin indent on       " Enable filetype-specific indenting plugin
 
 set tabstop=4                   " number of spaces that <Tab> in file uses
-setglobal expandtab             " Convert tabs to spaces
-setglobal softtabstop=2         " number of spaces used by <Tab> while editing
-setglobal shiftwidth=0          " number of spaces to use for (auto)indent step
+set expandtab                   " Convert tabs to spaces
+set softtabstop=2               " number of spaces used by <Tab> while editing
+set shiftwidth=0                " number of spaces to use for (auto)indent step
 
-setglobal autoindent            " New lines inherit indentation of prev. line
-setglobal smartindent
-setglobal shiftround            " Round indent to multiple of 'shiftwidth'
+set autoindent                  " New lines inherit indentation of prev. line
+set smartindent
+set shiftround                  " Round indent to multiple of 'shiftwidth'
 " }}}2
 
-setglobal autoread              " Set to auto read when a file is changed
-setglobal backspace=2           " Backspace deletes in insert mode
-setglobal colorcolumn=80        " Make it obvious where 80 characters is
-setglobal diffopt+=vertical     " Always use vertical diffs
-setglobal nojoinspaces          " Use one space, not two, after punctuation.
-setglobal textwidth=0
+set autoread                    " Set to auto read when a file is changed
+set backspace=indent,eol,start  " Backspace deletes in insert mode, see h:bs
 
-if has('unnamedplus') | setglobal clipboard=unnamedplus | endif
+set colorcolumn=80              " Make it obvious where 80 characters is
+set diffopt+=vertical           " Always use vertical diffs
+set nojoinspaces                " Use one space, not two, after punctuation.
+set textwidth=0
+
+if has('unnamedplus') | set clipboard=unnamedplus | endif
 
 let mapleader=','               " map the leader to ','
 let maplocalleader=';'          " map the localleader to ';'
 
-setglobal hidden                "  Unsaved modified buffer when opening a new
-" file is hidden instead of closed
+set hidden                      " Unsaved modified buffer when opening a new
+                                " file is hidden instead of closed
+
+set number                      " Show line numbers on the sidebars
+set nrformats-=octal
+
+set noerrorbells                " Disable beep on errors
+set mouse=a                     " Enable mouse for scrolling and resizing
+
+set laststatus=2                " Always display the status bar
 
 autocmd FocusGained,BufEnter * checktime
 
@@ -185,7 +194,7 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-setglobal cursorline
+set cursorline
 highlight clear CursorLine
 highlight CursorLineNR cterm=bold ctermfg=yellow
 
@@ -194,11 +203,11 @@ source ~/.vim/colors/background.vim
 " Theme
 " let g:solarized_termcolors=256
 let s:terminal_italic=1
-colorscheme solarized
+colorscheme solarized8
 " colorscheme gruvbox
 
 " Set highlight search
-setglobal hlsearch
+set hlsearch
 " Map 'stop highligting' to <leader><space>
 nnoremap <leader><space> :nohlsearch<CR>
 
@@ -310,11 +319,6 @@ endif
 
 " User Interface Options {{{1
 
-set number                  " Show line numbers on the sidebars
-setglobal noerrorbells      " Disable beep on errors
-setglobal mouse=a           " Enable mouse for scrolling and resizing
-
-setglobal laststatus=2      " Always display the status bar
 " setglobal statusline+=%#warningmsg#
 " setglobal statusline+=%{SyntasticStatuslineFlag()}
 " setglobal statusline+=%*
@@ -415,13 +419,11 @@ let g:email = '15956441+fesaille@users.noreply.github.com'
 " let g:miniSnip_trigger = '<C-F4>'
 let g:minisnip_dir = join([
       \ expand('%:p:h') . '/extra/snip',
-      \ expand('~/.vim/extra/snip/all'),
-      \ expand('~/.vim/extra/snip/') . &filetype
+      \ expand('~/.vim/extra/snip/all')
       \], ":")
 
 augroup bla
-autocmd FileType * let g:minisnip_dir .= ':' . expand('~/.vim/extra/snip/') . &filetype | echo g:minisnip_dir
-
+autocmd FileType * let g:minisnip_dir .= ':' . expand('~/.vim/extra/snip/') . &filetype
 augroup END
 
 " let g:minisnip_dir = s:snipdir . ':' . join(split(glob( s:snipdir . '**/'), '\n'), ':')
@@ -536,6 +538,8 @@ let g:test#strategy = 'echo'
 
 " General Mappings: {{{1
 
+noremap <localleader>" 0f"Di                              <Esc>033\|P:s/\s*$//<CR>0
+"
 " <C-J|K> Saving scroll: {{{2
 "###############################################################################
 function! s:Saving_scroll(cmd)
@@ -648,7 +652,7 @@ vnoremap <leader>y "+y
 
 " }}}1 "General
 
-setglobal dictionary=/usr/share/dict/british-english
+set dictionary=/usr/share/dict/british-english
 
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
