@@ -123,7 +123,7 @@ setglobal nocompatible          " We're running Vim
 setglobal history=500           " number of command-lines that are remembered
 
 " Enables syntax color and ftplugin, see :h filetype-overview
-syntax on                       " Set syntax color on
+syntax enable                       " Set syntax color on
 
 " Set cache dir and creates it if does not exists
 setglobal dir=~/.cache/vim
@@ -137,6 +137,7 @@ set tabstop=4                   " number of spaces that <Tab> in file uses
 setglobal expandtab             " Convert tabs to spaces
 setglobal softtabstop=2         " number of spaces used by <Tab> while editing
 setglobal shiftwidth=0          " number of spaces to use for (auto)indent step
+
 setglobal autoindent            " New lines inherit indentation of prev. line
 setglobal smartindent
 setglobal shiftround            " Round indent to multiple of 'shiftwidth'
@@ -407,12 +408,23 @@ let g:echodoc#type = 'signature'
 " }}}2
 " Minisnip {{{2
 let g:minisnip_autoindent = 0
-let g:minisnip_trigger = '<C-f>'
+let g:minisnip_trigger = '<CR>'
 imap <Nop> <Plug>(minisnip-complete)
 let g:name = 'Emmanuel Roux'
 let g:email = '15956441+fesaille@users.noreply.github.com'
 " let g:miniSnip_trigger = '<C-F4>'
-let g:minisnip_dir = join([ expand('%:p:h') . '/extra/snip',  expand('~/.vim/extra/snip') ], ":")
+let g:minisnip_dir = join([
+      \ expand('%:p:h') . '/extra/snip',
+      \ expand('~/.vim/extra/snip/all'),
+      \ expand('~/.vim/extra/snip/') . &filetype
+      \], ":")
+
+augroup bla
+autocmd FileType * let g:minisnip_dir .= ':' . expand('~/.vim/extra/snip/') . &filetype | echo g:minisnip_dir
+
+augroup END
+
+" let g:minisnip_dir = s:snipdir . ':' . join(split(glob( s:snipdir . '**/'), '\n'), ':')
 " }}}2
 " Mucomplete {{{2
 let g:mucomplete#user_mappings = {
@@ -422,6 +434,7 @@ let g:mucomplete#chains   =  {
       \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
       \ '.*string.*': ['uspl'],
       \ '.*comment.*': ['uspl'],
+      \ 'zsh': ['mini'],
       \ 'go': ['list', 'omni', 'c-n']
       \ }
 " let g:mucomplete#no_mappings = 1
