@@ -32,3 +32,5 @@ endfunction
 setlocal foldmethod=expr
 setlocal foldexpr=YamlFolds()
 setlocal foldtext=YamlFoldText()
+
+au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
