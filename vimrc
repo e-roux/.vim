@@ -63,6 +63,7 @@ function! PackInit() abort
   " Themes
   call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " gruvbox theme
   call minpac#add('lifepillar/vim-solarized8')
+  call minpac#add('vim-airline/vim-airline-themes')
 
   " DB related
   call minpac#add('tpope/vim-dadbod')
@@ -113,7 +114,7 @@ let g:loaded_zipPlugin          =  1
 
 
 if has('nvim')
-lua require("lsp-config")
+  lua require("lspconfig")
 endif
 
 " }}}1 "Init
