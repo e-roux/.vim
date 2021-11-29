@@ -36,9 +36,7 @@ function! PackInit() abort
 
   " Code edition
   call minpac#add('e-roux/vim-minisnip', { 'branch': 'optionalautoindent' })
-  " call minpac#add('Jorengarenar/miniSnip')
   call minpac#add('lifepillar/vim-mucomplete')
-  call minpac#add('jonasw234/vim-mucomplete-minisnip')
 
   call minpac#add('jiangmiao/auto-pairs', {'type': 'opt'})
   call minpac#add('dhruvasagar/vim-table-mode')
@@ -158,7 +156,7 @@ let mapleader=','               " map the leader to ','
 let maplocalleader=';'          " map the localleader to ';'
 
 set hidden                      " Unsaved modified buffer when opening a new
-                                " file is hidden instead of closed
+" file is hidden instead of closed
 
 set number                      " Show line numbers on the sidebars
 set nrformats-=octal
@@ -327,49 +325,12 @@ endif
 
 " Plugins {{{1
 
-" Airline {{{2
-let g:airline_right_sep=''
-let g:airline_right_alt_sep = ''
-let g:airline_left_sep=''
-let g:airline_left_alt_sep = ''
 
-" Diplay only encoding if not 'utf-8[unix]'
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-
-let g:airline_powerline_fonts = 1
-"
-" tabline activated
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-
-" Unicode emoij
-" http://unicode.org/emoji/charts/full-emoji-list.html
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_symbols = {
-      \ 'space': ' ',
-      \ 'paste': 'PASTE',
-      \ 'spell': 'SPELL',
-      \ 'notexists': '⚠',
-      \ 'maxlinenr': ' ',
-      \ 'linenr': '📄',
-      \ 'readonly': '🔒',
-      \ 'dirty': '💥',
-      \ 'modified': '✏ ',
-      \ 'crypt': '🔑',
-      \ 'keymap': 'Keymap:',
-      \ 'ellipsis': '...',
-      \ 'branch': '⎇',
-      \ 'whitespace': '☲',
-      \ }
-" }}}2
 " Argumentative {{{2
 " https://github.com/PeterRincker/vim-argumentative
 let g:argumentative_no_mappings = 1
-nmap <leader>ah <Plug>Argumentative_MoveLeft
-nmap <leader>al <Plug>Argumentative_MoveRight
+nmap <localleader>ah <Plug>Argumentative_MoveLeft
+nmap <localleader>al <Plug>Argumentative_MoveRight
 " }}}2
 " dbui {{{2
 let g:db_ui_use_nerd_fonts=1
@@ -412,26 +373,21 @@ let g:echodoc#type = 'signature'
 
 " }}}2
 " Minisnip {{{2
-let g:minisnip_autoindent = 0
-let g:minisnip_trigger = '<CR>'
 imap <Nop> <Plug>(minisnip-complete)
 let g:name = 'Emmanuel Roux'
-let g:email = '15956441+fesaille@users.noreply.github.com'
+let g:email = ''
 " let g:miniSnip_trigger = '<C-F4>'
+let g:minisnip_autoindent = 0
+let g:minisnip_trigger = '<CR>'
 let g:minisnip_dir = join([
       \ expand('%:p:h') . '/extra/snip',
-      \ expand('~/.vim/extra/snip/all')
+      \ expand('~/.vim/extra/snip')
       \], ":")
 
-augroup bla
-autocmd FileType * let g:minisnip_dir .= ':' . expand('~/.vim/extra/snip/') . &filetype
-augroup END
-
-" let g:minisnip_dir = s:snipdir . ':' . join(split(glob( s:snipdir . '**/'), '\n'), ':')
 " }}}2
 " Mucomplete {{{2
 let g:mucomplete#user_mappings = {
-      \ 'mini': "\<C-r>=MUcompleteMinisnip#complete()\<CR>",
+      \ 'mini': "\<C-r>=minisnip#complete()\<CR>",
       \ }
 let g:mucomplete#chains   =  {
       \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
@@ -539,6 +495,7 @@ let g:test#strategy = 'echo'
 
 " General Mappings: {{{1
 
+" Move comment to column (33)
 noremap <localleader>" 0f"Di                              <Esc>033\|P:s/\s*$//<CR>0
 "
 " <C-J|K> Saving scroll: {{{2
@@ -568,6 +525,19 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 inoremap jj <ESC>
 nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
 
+" <leader>y Yank {{{2
+" Yank selection, word or line to system clipboard
+" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+nnoremap <leader>ye "+ye
+nnoremap <leader>yw "+yw
+nnoremap <leader>yy "+yy
+vnoremap <leader>y "+y
+" }}}2
+
+" <leader>p Paste {{{2
+nnoremap <leader>p "+p
+" 2}}}
+
 " <ctrl>w Pane related {{{2
 nnoremap <silent> C-W><up> :silent resize -1<CR>
 nnoremap <silent> C-W><down> :silent resize +1<CR>
@@ -579,6 +549,7 @@ nnoremap <silent> <C-Up> <c-w>k
 nnoremap <silent> <C-Down> <c-w>j
 "---------------------------------------------------------------------------}}}2
 
+" LSP {{{2
 function SetLSPShortcuts()
   nnoremap <leader>gr :FindReference<CR>
   nnoremap <leader>gd :GoToDefinition<CR>
@@ -594,7 +565,7 @@ endfunction()
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>
-" nnoremap <unique> <leader>r :Rename<CR>
+" 2}}}
 
 " <leader>e Execute {{{2
 
@@ -611,45 +582,38 @@ nnoremap <leader>z :Files<CR>
 " nnoremap <leader>hv :help visual.txt<CR>
 nnoremap <leader>hw :normal yiw<ESC>:help <C-r>"<CR>
 vnoremap <leader>h y<ESC> :help <C-r>"<CR>
-"---------------------------------------------------------------------------}}}1
+"
+"---------------------------------------------------------------------------2}}}
 
-" <leader>l Linting {{{2
-nnoremap <leader>l<Space> :ALELint<CR>
-nnoremap <leader>lf :ALEFirst<CR>
-nnoremap <leader>li :ALEInfo<CR>
-nnoremap <leader>ll :ALELast<CR>
-nnoremap <leader>ln :ALENext<CR>
-nnoremap <leader>lp :ALEPrevious<CR>
+" <localleader>l Linting {{{2
+nnoremap <localleader>l<Space> :ALELint<CR>
+nnoremap <localleader>lf :ALEFirst<CR>
+nnoremap <localleader>li :ALEInfo<CR>
+nnoremap <localleader>ll :ALELast<CR>
+nnoremap <localleader>ln :ALENext<CR>
+nnoremap <localleader>lp :ALEPrevious<CR>
 " }}}2
 
-" <leader>n NERDTree {{{2
-nnoremap <leader>nt :NERDTreeToggle<CR>
-nnoremap <leader>nf :NERDTreeFocus<CR>
+" <localleader>n NERDTree {{{2
+nnoremap <localleader>nt :NERDTreeToggle<CR>
+nnoremap <localleader>nf :NERDTreeFocus<CR>
 " }}}2
 
-" <leader>s SVN (git) commands {{{2
-nnoremap <leader>s :Git<CR>
-nnoremap <leader>sa :Git add %<CR>
-nnoremap <leader>sc :Git commit<CR>
-nnoremap <leader>spp :Git push<CR>
+" <localleader>s SVN (git) commands {{{2
+nnoremap <localleader>s :Git<CR>
+nnoremap <localleader>sa :Git add %<CR>
+nnoremap <localleader>sc :Git commit<CR>
+nnoremap <localleader>spp :Git push<CR>
 " }}}2
 
-" <leader>t Tests {{{2
-nnoremap <leader>tf :TestFile<CR>
-nnoremap <leader>tl :TestLast<CR>
-nnoremap <leader>tn :TestNearest<CR>
-nnoremap <leader>ts :TestSuite<CR>
-nnoremap <leader>tv :TestVisit<CR>
+" <localleader>t Tests {{{2
+nnoremap <localleader>tf :TestFile<CR>
+nnoremap <localleader>tl :TestLast<CR>
+nnoremap <localleader>tn :TestNearest<CR>
+nnoremap <localleader>ts :TestSuite<CR>
+nnoremap <localleader>tv :TestVisit<CR>
 " }}}2
 
-" <leader>y Yank {{{2
-" Yank selection, word or line to system clipboard
-" https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
-nnoremap <leader>ye "+ye
-nnoremap <leader>yw "+yw
-nnoremap <leader>yy "+yy
-vnoremap <leader>y "+y
-" }}}2
 
 " }}}1 "General
 
@@ -663,8 +627,6 @@ endif
 " All messages and errors will be ignored.
 " packloadall
 " silent! helptags ALL
-
-nnoremap <leader>q <Plug>(miniSnip)
 
 set wildmode=list:longest,full
 "----------- completion chains
