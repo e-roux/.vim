@@ -8,6 +8,7 @@
 " Description:
 " Desc
 
+
 " Use minpac as pkg manager
 function! PackInit() abort
   try
@@ -45,6 +46,7 @@ function! PackInit() abort
 
   call minpac#add('tpope/vim-commentary')
   call minpac#add('tpope/vim-surround')
+  call minpac#add('tpope/vim-surround')
   " call minpac#add('ThePrimeagen/refactoring.nvim')
   " deps of refactoring.nvim
   " call minpac#add('nvim-lua/plenary.nvim')
@@ -57,7 +59,7 @@ function! PackInit() abort
   call minpac#add('dense-analysis/ale')
 
   " Tests
-  call minpac#add('vim-test/vim-test')
+  call minpac#add('e-roux/vim-test')
 
   " Buffer to REPL
   call minpac#add('jpalardy/vim-slime')
@@ -71,6 +73,7 @@ function! PackInit() abort
   call minpac#add('vim-airline/vim-airline-themes')
 
   " DB related
+  call minpac#add('vim-scripts/dbext.vim')
   call minpac#add('tpope/vim-dadbod')
   call minpac#add('kristijanhusak/vim-dadbod-ui')
 
@@ -80,6 +83,8 @@ function! PackInit() abort
   " language specific
   call minpac#add('davidhalter/jedi-vim')
   call minpac#add('jelera/vim-javascript-syntax')
+  call minpac#add('tmhedberg/SimpylFold')
+  "
   " call minpac#add('leafgarland/typescript-vim')
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('fatih/vim-go')
@@ -126,36 +131,49 @@ let g:db_ui_use_nerd_fonts=1
 "
 " let g:gitgutter_override_sign_column_highlight = 1
 " }}}2
+" Jedi {{{2
+if has("nvim")
+  let g:jedi#auto_initialization = 0
+  let g:jedi#auto_vim_configuration = 0
+else
+  let g:jedi#auto_initialization = 1
+  let g:jedi#goto_assignments_command = "<leader>gd"
+  let g:jedi#goto_command = ""
+  let g:jedi#popup_on_dot = 0  " It may be 1 as well
+  let g:jedi#show_call_signatures = 2
+end
+" 2}}}
 " LanguageClient {{{2
 "##############################################################################
-" let g:LanguageClient_serverCommands = {
+if ! has('nvim')
+  " let g:LanguageClient_serverCommands = {
 
-" let g:LanguageClient_loggingFile = "/tmp/LSP.log"
-" let g:LanguageClient_loggingLevel = "DEBUG"
-" let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
-" let g:LanguageClient_trace = "verbose"
+  " let g:LanguageClient_loggingFile = "/tmp/LSP.log"
+  " let g:LanguageClient_loggingLevel = "DEBUG"
+  " let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
+  " let g:LanguageClient_trace = "verbose"
 
-" For references, see
-" https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
-command! FindReference :ALEFindReferences
-command! GoToDefinition :ALEGoToDefinition
-command! Rename :ALERename
-" command! Completion :call LanguageClient#textDocument_completion()
-" command! Hover :call LanguageClient#textDocument_hover()
-" command! DocumentFormatting :call LanguageClient#textDocument_formatting()
-" command! LSPMenu :call LanguageClient_contextMenu()
-" command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
-"
-" set cmdheight=2
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'signature'
+  " For references, see
+  " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
+  command! FindReference :ALEFindReferences
+  command! GoToDefinition :ALEGoToDefinition
+  command! Rename :ALERename
+  " command! Completion :call LanguageClient#textDocument_completion()
+  " command! Hover :call LanguageClient#textDocument_hover()
+  " command! DocumentFormatting :call LanguageClient#textDocument_formatting()
+  " command! LSPMenu :call LanguageClient_contextMenu()
+  " command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
+  "
+  " set cmdheight=2
+  let g:echodoc#enable_at_startup = 1
+  let g:echodoc#type = 'signature'
 
-" augroup LanguageServerOpts
-"   autocmd!
-"   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
-"   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
-" augroup END
-
+  " augroup LanguageServerOpts
+  "   autocmd!
+  "   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
+  "   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
+  " augroup END
+end
 " }}}2
 " Minisnip {{{2
 imap <Nop> <Plug>(minisnip-complete)
@@ -239,10 +257,6 @@ let g:netrw_winsize = 25
 " augroup END
 
 " }}}2
-" nnn{{{2
-"##############################################################################
-let g:nnn#layout = { 'left': '~20%' }
-" }}}2
 " SimplyFold {{{2
 "
 let g:SimpylFold_fold_import=0
@@ -276,7 +290,7 @@ function! s:syncrun_background_buff(cmd) abort
         \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
 endfunction
 let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
-let g:test#strategy = 'echo'
+let g:test#strategy = 'slime'
 " 2}}}
 " 1}}}
 " vim:set et sw=2 fdm=marker:

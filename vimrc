@@ -324,33 +324,33 @@ vnoremap <leader>h y<ESC> :help <C-r>"<CR>
 "
 "---------------------------------------------------------------------------2}}}
 
-" <localleader>l Linting {{{2
-nnoremap <localleader>l<Space> :ALELint<CR>
-nnoremap <localleader>lf :ALEFirst<CR>
-nnoremap <localleader>li :ALEInfo<CR>
-nnoremap <localleader>ll :ALELast<CR>
-nnoremap <localleader>ln :ALENext<CR>
-nnoremap <localleader>lp :ALEPrevious<CR>
+" <leader>l Linting {{{2
+nnoremap <leader>l<Space> :ALELint<CR>
+nnoremap <leader>lf :ALEFirst<CR>
+nnoremap <leader>li :ALEInfo<CR>
+nnoremap <leader>ll :ALELast<CR>
+nnoremap <leader>ln :ALENext<CR>
+nnoremap <leader>lp :ALEPrevious<CR>
 " }}}2
 
-" <localleader>n NERDTree {{{2
-nnoremap <localleader>nt :NERDTreeToggle<CR>
-nnoremap <localleader>nf :NERDTreeFocus<CR>
+" <leader>n NERDTree {{{2
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>nf :NERDTreeFocus<CR>
 " }}}2
 
-" <localleader>s SVN (git) commands {{{2
-nnoremap <localleader>s :Git<CR>
-nnoremap <localleader>sa :Git add %<CR>
-nnoremap <localleader>sc :Git commit<CR>
-nnoremap <localleader>spp :Git push<CR>
+" <leader>s SVN (git) commands {{{2
+nnoremap <leader>s :Git<CR>
+nnoremap <leader>sa :Git add %<CR>
+nnoremap <leader>sc :Git commit<CR>
+nnoremap <leader>spp :Git push<CR>
 " }}}2
 
-" <localleader>t Tests {{{2
-nnoremap <localleader>tf :TestFile<CR>
-nnoremap <localleader>tl :TestLast<CR>
-nnoremap <localleader>tn :TestNearest<CR>
-nnoremap <localleader>ts :TestSuite<CR>
-nnoremap <localleader>tv :TestVisit<CR>
+" <leader>t Tests {{{2
+nnoremap <leader>tf :TestFile<CR>
+nnoremap <leader>tl :TestLast<CR>
+nnoremap <leader>tn :TestNearest<CR>
+nnoremap <leader>ts :TestSuite<CR>
+nnoremap <leader>tv :TestVisit<CR>
 " }}}2
 " }}}1 "General
 
