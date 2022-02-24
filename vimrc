@@ -29,11 +29,11 @@ endif
 
 " General {{{1
 
-set nocompatible          " We're running Vim
-set history=500           " number of command-lines that are remembered
+set nocompatible                " We're running Vim
+set history=500                 " number of command-lines that are remembered
 
 " Enables syntax color and ftplugin, see :h filetype-overview
-syntax enable                       " Set syntax color on
+syntax enable                   " Set syntax color on
 
 " Set cache dir and creates it if does not exists
 set dir=~/.cache/vim
@@ -165,6 +165,9 @@ autocmd VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
+" Delete other buffers only
+nnoremap <silent> <leader>do :%bd\|e#\|bd#<CR>
+
 " }}}1
 
 " Folding {{{1
@@ -234,8 +237,17 @@ endif
 " General Mappings: {{{1
 
 " Move comment to column (33)
-noremap <localleader>" 0f"Di                              <Esc>033\|P:s/\s*$//<CR>0
-"
+" explanation:
+"   - ident the line: ==
+"   - mark the position to p
+"   - go to begin of line and search ": 0f"
+"   - delete to end of line and insert 32 space: D32i <ESC>
+"   - go to begin of line back to col 33: 033|
+"   - paste buffer and remove trailing characters: P:s/\s*$//<CR>
+"   - go to mark p: `p
+"   - no highlight search: :nohlsearch<CR>
+noremap <localleader>" ==mp0f"D32i <Esc>033\|P:s/\s*$//<CR>`p:nohlsearch<CR>
+
 " <C-J|K> Saving scroll: {{{2
 "###############################################################################
 function! s:Saving_scroll(cmd)
@@ -371,8 +383,8 @@ set wildmode=list:longest,full
 " set complete-=t
 " remove beeps during completion
 
-set shortmess+=c    " Shut off completion messages
-set belloff+=ctrlg  " If Vim beeps during completion
+set shortmess+=c                " Shut off completion messages
+set belloff+=ctrlg              " If Vim beeps during completion
 
 set completeopt-=preview
 set completeopt+=menuone,noselect,noinsert
