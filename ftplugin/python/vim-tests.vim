@@ -8,3 +8,4 @@
 " Description:
 
 let test#python#runner = 'pytest'
+let test#filename_modifier = ':p'  " generate filename absolute paths
