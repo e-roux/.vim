@@ -35,7 +35,8 @@ function! PackInit() abort
   "Source version control
   call minpac#add('airblade/vim-gitgutter')
   call minpac#add('tpope/vim-fugitive')
-  " call minpac#add('mattn/gist-vim')
+  call minpac#add('mattn/gist-vim')
+  call minpac#add('mattn/webapi-vim') " dependency of gist
 
   " Code edition
   call minpac#add('e-roux/vim-minisnip', { 'branch': 'optionalautoindent' })
@@ -64,11 +65,14 @@ function! PackInit() abort
   " Buffer to REPL
   call minpac#add('jpalardy/vim-slime')
 
+  " fzf is managed there, available in brew
+  " alternativ would be to set
+  " set rtp+=/opt/homebrew/opt/fzf
   call minpac#add('junegunn/fzf')
   call minpac#add('junegunn/fzf.vim')
 
   " Themes
-  call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " gruvbox theme
+  " call minpac#add('morhetz/gruvbox', {'type': 'opt'}) " gruvbox theme
   call minpac#add('lifepillar/vim-solarized8')
   call minpac#add('vim-airline/vim-airline-themes')
 
@@ -95,7 +99,6 @@ function! PackInit() abort
 
   call minpac#add('skywind3000/asyncrun.vim') " dependency of vim-test
   " call minpac#add('tpope/vim-scriptease')
-  " call minpac#add('mattn/webapi-vim') " dependency of gist
 
   call minpac#add('neovim/nvim-lspconfig')
 
@@ -116,21 +119,35 @@ command! -bar PackStatus call PackInit() | call minpac#status()
 
 
 " Configuration {{{1
+
 " Argumentative {{{2
 " https://github.com/PeterRincker/vim-argumentative
 let g:argumentative_no_mappings = 1
 nmap <localleader>ah <Plug>Argumentative_MoveLeft
 nmap <localleader>al <Plug>Argumentative_MoveRight
 " }}}2
+
 " dbui {{{2
 let g:db_ui_use_nerd_fonts=1
 " }}}2
+
+" fzf {{{2
+
+" 2}}}
+
+" {{{2 Gist
+let g:gist_detect_filetype = 1  " detect filetype from the filename
+let g:gist_list_vsplit = 1      " open gist in vertical split
+
+" 2}}}
+
 " gitgutter {{{2
 " let g:gitgutter_enabled = 1
 " set signcolumn=yes
 "
 " let g:gitgutter_override_sign_column_highlight = 1
 " }}}2
+"
 " Jedi {{{2
 if has("nvim")
   let g:jedi#auto_initialization = 0
@@ -143,15 +160,10 @@ else
   let g:jedi#show_call_signatures = 2
 end
 " 2}}}
+
 " LanguageClient {{{2
 "##############################################################################
 if ! has('nvim')
-  " let g:LanguageClient_serverCommands = {
-
-  " let g:LanguageClient_loggingFile = "/tmp/LSP.log"
-  " let g:LanguageClient_loggingLevel = "DEBUG"
-  " let g:LanguageClient_settingsPath="/home/manu/.vim/coc-settings.json"
-  " let g:LanguageClient_trace = "verbose"
 
   " For references, see
   " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
@@ -165,8 +177,8 @@ if ! has('nvim')
   " command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
   "
   " set cmdheight=2
-  let g:echodoc#enable_at_startup = 1
-  let g:echodoc#type = 'signature'
+  " let g:echodoc#enable_at_startup = 1
+  " let g:echodoc#type = 'signature'
 
   " augroup LanguageServerOpts
   "   autocmd!
@@ -175,6 +187,7 @@ if ! has('nvim')
   " augroup END
 end
 " }}}2
+
 " Minisnip {{{2
 imap <Nop> <Plug>(minisnip-complete)
 let g:name = 'Emmanuel Roux'
@@ -190,6 +203,7 @@ let g:minisnip_dir = join([
       \], ":")
 
 " }}}2
+
 " Mucomplete {{{2
 let g:mucomplete#user_mappings = {
       \ 'mini': "\<C-r>=minisnip#complete()\<CR>",
@@ -203,6 +217,7 @@ let g:mucomplete#chains   =  {
       \ }
 " let g:mucomplete#no_mappings = 1
 " }}}2
+
 " NERDTree {{{2
 "##############################################################################
 " Those must be set before NERDTree is loaded
@@ -235,6 +250,7 @@ autocmd BufEnter *
 nnoremap <localleader>db :NERDTreeClose \| DBUIToggle<CR>
 
 " }}}2
+
 " netrw{{{2
 "##############################################################################
 " suppress the banner
@@ -257,6 +273,7 @@ let g:netrw_winsize = 25
 " augroup END
 
 " }}}2
+
 " SimplyFold {{{2
 "
 let g:SimpylFold_fold_import=0
@@ -264,10 +281,12 @@ let g:SimpylFold_docstring_preview=1
 let g:SimpylFold_fold_docstring=0
 " let g:SimpylFold_fold_blank=1
 " }}}2
+
 " Table mode {{{2
 let g:table_mode_disable_tableize_mappings=1
 let g:table_mode_map_prefix="<localleader>t"
 " }}}2
+
 " Tmux Navigator {{{2
 " https://github.com/christoomey/vim-tmux-navigator
 "
@@ -276,6 +295,7 @@ let g:tmux_navigator_no_mappings = 1 " Navigation
 let g:tmux_navigator_disable_when_zoomed = 1
 
 " }}}2
+
 " vim-test {{{2
 let test#strategy = {
       \ 'nearest':       'asyncrun_background',
@@ -292,5 +312,7 @@ endfunction
 let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
 let g:test#strategy = 'slime'
 " 2}}}
+
 " 1}}}
+"
 " vim:set et sw=2 fdm=marker:
