@@ -247,6 +247,8 @@ endif
 "   - go to mark p: `p
 "   - no highlight search: :nohlsearch<CR>
 noremap <localleader>" ==mp0f"D32i <Esc>033\|P:s/\s*$//<CR>`p:nohlsearch<CR>
+" TODO: buffer specific comment string, using commentstring
+" noremap <buffer> <localleader>" :execute "normal! '==mp0f' . split(&commentstring, '%s')[0] . 'D32i <Esc>033\|P:s/\s*$//<CR>`p:nohlsearch<CR>'"
 
 " <C-J|K> Saving scroll: {{{2
 "###############################################################################
@@ -274,6 +276,11 @@ vnoremap <C-K> <Esc>:call <SID>Saving_scroll("gv1<C-V><C-U>")<CR>
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 inoremap jj <ESC>
 nnoremap gf :call <SID>GotoFile(expand('<cfile>'))<CR>
+
+" <leader>c quickfix {{{2
+nnoremap <leader>co :copen<CR>
+nnoremap <leader>cc :cclose<CR>
+" 2}}}
 
 " <leader>y Yank {{{2
 " Yank selection, word or line to system clipboard
