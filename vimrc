@@ -308,18 +308,6 @@ nnoremap <silent> <C-Down> <c-w>j
 "---------------------------------------------------------------------------}}}2
 
 " LSP {{{2
-function SetLSPShortcuts()
-  nnoremap <leader>gr :FindReference<CR>
-  nnoremap <leader>gd :GoToDefinition<CR>
-  " nnoremap <unique> <leader>r :Rename<CR>
-  " nnoremap <leader>lf :DocumentFormatting<CR>
-  " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  " nnoremap <leader>lh :Hover<CR>
-  " nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  " nnoremap <leader>lm LSPMenu<CR>
-endfunction()
-
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>w :w!<cr>    " Fast saving
 nnoremap <leader>z :Files<CR>

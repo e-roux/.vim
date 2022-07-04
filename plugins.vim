@@ -85,7 +85,7 @@ function! PackInit() abort
   call minpac#add('tpope/vim-eunuch')
 
   " language specific
-  call minpac#add('davidhalter/jedi-vim')
+  call minpac#add('davidhalter/jedi-vim', {'type': 'opt'})
   call minpac#add('jelera/vim-javascript-syntax')
   call minpac#add('tmhedberg/SimpylFold')
   "
@@ -163,29 +163,32 @@ end
 
 " LanguageClient {{{2
 "##############################################################################
+
+  " nnoremap <unique> <leader>r :Rename<CR>
+  " nnoremap <leader>lf :DocumentFormatting<CR>
+  " nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  " nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  " nnoremap <leader>lh :Hover<CR>
+  " nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  " nnoremap <leader>lm LSPMenu<CR>
+
 if ! has('nvim')
 
   " For references, see
   " https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
-  command! FindReference :ALEFindReferences
-  command! GoToDefinition :ALEGoToDefinition
-  command! Rename :ALERename
+  command!  LspFindReferences  :ALEFindReferences
+  command!  GoToDefinition     :ALEGoToDefinition
+  command!  LspRename          :ALERename
   " command! Completion :call LanguageClient#textDocument_completion()
   " command! Hover :call LanguageClient#textDocument_hover()
   " command! DocumentFormatting :call LanguageClient#textDocument_formatting()
   " command! LSPMenu :call LanguageClient_contextMenu()
   " command! SignatureHelp :call LanguageClient#textDocument_signatureHelp()
   "
-  " set cmdheight=2
-  " let g:echodoc#enable_at_startup = 1
-  " let g:echodoc#type = 'signature'
-
-  " augroup LanguageServerOpts
-  "   autocmd!
-  "   autocmd FileType yaml,python,js,c,go,vim call SetLSPShortcuts()
-  "   " autocmd FileType yaml,python,js,c,go,vim setlocal omnifunc=LanguageClient#complete
-  " augroup END
 end
+
+nnoremap <leader>gr :FindReference<CR>
+nnoremap <leader>gd :GoToDefinition<CR>
 " }}}2
 
 " Minisnip {{{2

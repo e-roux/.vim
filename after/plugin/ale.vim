@@ -41,7 +41,6 @@ let g:ale_completion_symbols = {
 " \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
 " \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
 
-
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \}
@@ -58,6 +57,10 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_completion_enabled = 0
 let g:ale_completion_autoimport = 1
 
-let g:ale_disable_lsp = 0
+let g:ale_disable_lsp = 1
 let g:ale_fix_on_save = 1
-
+let g:ale_pattern_options = {
+      \ '\.lua$': {
+        \ 'ale_enabled': 0
+        \ }
+      \ }
