@@ -40,7 +40,7 @@ function! PackInit() abort
 
   " Code edition
   call minpac#add('e-roux/vim-minisnip', { 'branch': 'optionalautoindent' })
-  call minpac#add('lifepillar/vim-mucomplete')
+  call minpac#add('lifepillar/vim-mucomplete', {'type': 'opt'})
 
   call minpac#add('jiangmiao/auto-pairs', {'type': 'opt'})
   call minpac#add('dhruvasagar/vim-table-mode')
@@ -48,10 +48,6 @@ function! PackInit() abort
   call minpac#add('tpope/vim-commentary')
   call minpac#add('tpope/vim-surround')
   call minpac#add('tpope/vim-surround')
-  " call minpac#add('ThePrimeagen/refactoring.nvim')
-  " deps of refactoring.nvim
-  " call minpac#add('nvim-lua/plenary.nvim')
-  " call minpac#add('nvim-treesitter/nvim-treesitter')
 
   " manipulating and moving between function arguments
   call minpac#add('PeterRincker/vim-argumentative')
@@ -60,7 +56,7 @@ function! PackInit() abort
   call minpac#add('dense-analysis/ale')
 
   " Tests
-  call minpac#add('e-roux/vim-test')
+  call minpac#add('vim-test/vim-test')
 
   " Buffer to REPL
   call minpac#add('jpalardy/vim-slime')
@@ -187,7 +183,7 @@ if ! has('nvim')
   "
 end
 
-nnoremap <leader>gr :FindReference<CR>
+nnoremap <leader>gr :LspFindReferences<CR>
 nnoremap <leader>gd :GoToDefinition<CR>
 " }}}2
 
@@ -208,17 +204,19 @@ let g:minisnip_dir = join([
 " }}}2
 
 " Mucomplete {{{2
-let g:mucomplete#user_mappings = {
-      \ 'mini': "\<C-r>=minisnip#complete()\<CR>",
-      \ }
-let g:mucomplete#chains   =  {
-      \ 'default': ['mini',  'list',  'omni',  'path',  'c-n',   'uspl'],
-      \ '.*string.*': ['uspl'],
-      \ '.*comment.*': ['uspl'],
-      \ 'zsh': ['mini'],
-      \ 'go': ['list', 'omni', 'c-n']
-      \ }
-" let g:mucomplete#no_mappings = 1
+if ! has('nvim')
+  let g:mucomplete#user_mappings = {
+        \ 'mini': "\<C-r>=minisnip#complete()\<CR>",
+        \ }
+  let g:mucomplete#chains   =  {
+        \ 'default': ['list',  'omni',  'path',  'c-n',   'uspl'],
+        \ '.*string.*': ['uspl'],
+        \ '.*comment.*': ['uspl'],
+        \ 'zsh': ['mini'],
+        \ 'go': ['list', 'omni', 'c-n']
+        \ }
+  " let g:mucomplete#no_mappings = 1
+end
 " }}}2
 
 " NERDTree {{{2
@@ -300,11 +298,6 @@ let g:tmux_navigator_disable_when_zoomed = 1
 " }}}2
 
 " vim-test {{{2
-let test#strategy = {
-      \ 'nearest':       'asyncrun_background',
-      \ 'file':          'asyncrun_background_term',
-      \ 'suite':         'asyncrun_background_term',
-      \}
 
 function! s:syncrun_background_buff(cmd) abort
   let g:test#strategy#cmd = a:cmd
@@ -312,7 +305,49 @@ function! s:syncrun_background_buff(cmd) abort
   execute 'AsyncRun -mode=term -focus=0 -post=echo\ eval("g:asyncrun_code\ ?\"Failure\":\"Success\"").":"'
         \ .'\ substitute(g:test\#strategy\#cmd,\ "\\",\ "",\ "") '.a:cmd
 endfunction
-let g:test#custom_strategies = {'echo': function('s:syncrun_background_buff')}
+
+" Those two come from vim-test autocmd (strategy.vim)
+function! s:pretty_command(cmd) abort
+  let cmds = []
+  let separator = ';'
+
+  if !get(g:, 'test#preserve_screen')
+    call add(l:cmds, 'clear')
+  endif
+
+  if get(g:, 'test#echo_command', 1)
+    call add(l:cmds, 'echo -e '.shellescape(a:cmd) )
+  endif
+
+  call add(l:cmds, a:cmd)
+
+  return join(l:cmds, l:separator)
+endfunction
+
+function! s:command(cmd) abort
+  let separator = ';'
+
+  return join([a:cmd], l:separator)
+endfunction
+
+function! s:SlimeStrategy(cmd) abort
+  if exists('g:test#preserve_screen') && !g:test#preserve_screen
+    call slime#send(s:pretty_command(a:cmd) . "\r")
+  else
+    call slime#send(s:command(a:cmd) . "\r")
+  endif
+endfunction
+
+let g:test#custom_strategies = {
+      \ 'echo': function('s:syncrun_background_buff'),
+      \ 'slime': function('s:SlimeStrategy')
+      \ }
+
+let test#strategy = {
+      \ 'nearest':       'asyncrun_background',
+      \ 'file':          'asyncrun_background_term',
+      \ 'suite':         'asyncrun_background_term',
+      \}
 let g:test#strategy = 'slime'
 " 2}}}
 

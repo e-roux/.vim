@@ -381,8 +381,14 @@ set wildmode=list:longest,full
 set shortmess+=c                " Shut off completion messages
 set belloff+=ctrlg              " If Vim beeps during completion
 
+set pumheight=10
+
 set completeopt-=preview
 set completeopt+=menuone,noselect,noinsert
-let g:mucomplete#enable_auto_at_startup = 1
+
+if ! has('nvim')
+  let g:mucomplete#enable_auto_at_startup = 1
+  packadd vim-mucomplete
+end
 
 " vim:set et sw=2 fdm=marker:
