@@ -47,7 +47,7 @@ function! PackInit() abort
 
   call minpac#add('tpope/vim-commentary')
   call minpac#add('tpope/vim-surround')
-  call minpac#add('tpope/vim-surround')
+  call minpac#add('jremmen/vim-ripgrep')
 
   " manipulating and moving between function arguments
   call minpac#add('PeterRincker/vim-argumentative')
