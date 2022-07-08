@@ -283,6 +283,13 @@ let g:SimpylFold_fold_docstring=0
 " let g:SimpylFold_fold_blank=1
 " }}}2
 
+" Slime {{{2
+let g:slime_target = "tmux"
+let g:slime_vimterminal_config = {"term_finish": "close"}
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+" let g:slime_python_ipython = 0
+" 2}}}
+
 " Table mode {{{2
 let g:table_mode_disable_tableize_mappings=1
 let g:table_mode_map_prefix="<localleader>t"
