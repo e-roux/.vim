@@ -4,8 +4,6 @@
 
 if has('nvim')
   set runtimepath^=~/.vim runtimepath+=~/.vim/after
-else
-  let g:lspconfig = 1
 endif
 
 " Override system LANG

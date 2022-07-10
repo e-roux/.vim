@@ -82,10 +82,9 @@ function! PackInit() abort
 
   " language specific
   call minpac#add('davidhalter/jedi-vim', {'type': 'opt'})
-  call minpac#add('jelera/vim-javascript-syntax')
+  call minpac#add('jelera/vim-javascript-syntax', {'type': 'opt'})
   call minpac#add('tmhedberg/SimpylFold')
   "
-  " call minpac#add('leafgarland/typescript-vim')
   call minpac#add('rust-lang/rust.vim')
   call minpac#add('fatih/vim-go')
   call minpac#add('cespare/vim-toml')
@@ -95,8 +94,6 @@ function! PackInit() abort
 
   call minpac#add('skywind3000/asyncrun.vim') " dependency of vim-test
   " call minpac#add('tpope/vim-scriptease')
-
-  call minpac#add('neovim/nvim-lspconfig')
 
 endfunction
 
