@@ -8,6 +8,9 @@ else
   let g:lspconfig = 1
 endif
 
+" Override system LANG
+let $LANG = 'en'
+
 " Disable extra plugins
 let g:loaded_2html_plugin       =  1
 let g:loaded_gzip               =  1
